@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp......"
+    },
+    {
+      "name": "go",
+      "wave": "10......"
+    },
+    {
+      "name": "a",
+      "wave": "10.10..."
+    },
+    {
+      "name": "b",
+      "wave": "0.10.10."
+    },
+    {
+      "name": "c",
+      "wave": "0.....10"
+    },
+    {
+      "name": "fail",
+      "wave": "0......."
+    },
+    {
+      "name": "pass",
+      "wave": "0.....10"
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_9_2_repetition_range_1_to_5_second_iteration",
+    "tock": 0
+  }
+}

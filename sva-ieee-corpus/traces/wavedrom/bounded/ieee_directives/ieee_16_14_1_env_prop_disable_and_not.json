@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "x",
+      "wave": "=..=",
+      "data": [
+        "0",
+        "2"
+      ]
+    },
+    {
+      "name": "b",
+      "wave": "1010"
+    },
+    {
+      "name": "c",
+      "wave": "0101"
+    },
+    {
+      "name": "fail",
+      "wave": "010."
+    },
+    {
+      "name": "pass",
+      "wave": "0101"
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_14_1_env_prop_disable_and_not",
+    "tock": 0
+  },
+  "foot": {
+    "text": "x: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp......"
+    },
+    {
+      "name": "go",
+      "wave": "10......"
+    },
+    {
+      "name": "a",
+      "wave": "10......"
+    },
+    {
+      "name": "b",
+      "wave": "010....."
+    },
+    {
+      "name": "c",
+      "wave": "0.10...."
+    },
+    {
+      "name": "fail",
+      "wave": "0......."
+    },
+    {
+      "name": "pass",
+      "wave": "0....10."
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_7_extension_with_true",
+    "tock": 0
+  }
+}

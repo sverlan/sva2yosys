@@ -1,0 +1,31 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "b",
+      "wave": "0.10."
+    },
+    {
+      "name": "d",
+      "wave": "0...1"
+    },
+    {
+      "name": "fail",
+      "wave": "0...."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10."
+    }
+  ],
+  "head": {
+    "text": "liveness/s_eventually_with_disable",
+    "tock": 0
+  },
+  "foot": {
+    "text": "d: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

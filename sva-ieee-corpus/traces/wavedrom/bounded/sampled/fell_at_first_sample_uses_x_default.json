@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "a",
+      "wave": "0."
+    },
+    {
+      "name": "b",
+      "wave": "0."
+    },
+    {
+      "name": "fail",
+      "wave": "10"
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    }
+  ],
+  "head": {
+    "text": "sampled/fell_at_first_sample_uses_x_default",
+    "tock": 0
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "a",
+      "wave": "10...."
+    },
+    {
+      "name": "b",
+      "wave": "01010."
+    },
+    {
+      "name": "fail",
+      "wave": "0....."
+    },
+    {
+      "name": "pass",
+      "wave": "0..10."
+    }
+  ],
+  "head": {
+    "text": "unbounded_consequents/nonoverlapping_goto_consequent_matches",
+    "tock": 0
+  }
+}

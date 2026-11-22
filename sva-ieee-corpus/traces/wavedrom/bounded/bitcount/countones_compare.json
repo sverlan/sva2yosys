@@ -1,0 +1,34 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1..."
+    },
+    {
+      "name": "v",
+      "wave": "====",
+      "data": [
+        "3",
+        "5",
+        "7",
+        "0"
+      ]
+    },
+    {
+      "name": "fail",
+      "wave": "0.1."
+    },
+    {
+      "name": "pass",
+      "wave": "1.0."
+    }
+  ],
+  "head": {
+    "text": "bitcount/countones_compare",
+    "tock": 0
+  }
+}

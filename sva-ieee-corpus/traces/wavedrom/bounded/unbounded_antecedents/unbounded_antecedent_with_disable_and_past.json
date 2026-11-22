@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "a",
+      "wave": "10...."
+    },
+    {
+      "name": "b",
+      "wave": "010101"
+    },
+    {
+      "name": "c",
+      "wave": "10...."
+    },
+    {
+      "name": "r",
+      "wave": "0....1"
+    },
+    {
+      "name": "fail",
+      "wave": "0..10."
+    },
+    {
+      "name": "pass",
+      "wave": "010..."
+    }
+  ],
+  "head": {
+    "text": "unbounded_antecedents/unbounded_antecedent_with_disable_and_past",
+    "tock": 0
+  },
+  "foot": {
+    "text": "r: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

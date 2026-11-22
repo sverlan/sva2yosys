@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "a",
+      "wave": "010.10"
+    },
+    {
+      "name": "b",
+      "wave": "1..01."
+    },
+    {
+      "name": "fail",
+      "wave": "0..10."
+    },
+    {
+      "name": "pass",
+      "wave": "01.01."
+    }
+  ],
+  "head": {
+    "text": "unbounded_antecedents/implication_into_always",
+    "tock": 0
+  }
+}

@@ -1,0 +1,16 @@
+[tasks]
+fail bmc
+
+[options]
+fail: mode bmc
+fail: depth 2
+
+[engines]
+fail: smtbmc yices
+
+[script]
+script sva2yosys_read.ys
+prep -top top
+
+[files]
+build/sva2yosys_read.ys

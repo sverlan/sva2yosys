@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "010"
+    },
+    {
+      "name": "b",
+      "wave": "0.."
+    },
+    {
+      "name": "c",
+      "wave": "1.."
+    },
+    {
+      "name": "fail",
+      "wave": "010"
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "isunknown/x_part_in_a_disjunction_of_the_antecedent",
+    "tock": 0
+  }
+}

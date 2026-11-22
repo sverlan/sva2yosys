@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "b",
+      "wave": "1.0."
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "1.0."
+    },
+    {
+      "name": "repeat",
+      "wave": "0.1."
+    },
+    {
+      "name": "outcome",
+      "wave": "=.=.",
+      "data": [
+        "T",
+        "F"
+      ]
+    }
+  ],
+  "head": {
+    "text": "fairness/assume_s_eventually_b_never_again_after_the_prefix",
+    "tock": 0
+  }
+}

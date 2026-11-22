@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "rst",
+      "wave": "0.10"
+    },
+    {
+      "name": "a",
+      "wave": "1010"
+    },
+    {
+      "name": "b",
+      "wave": "0..1"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0..1"
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_14_8_ag_disable_iff_hides_the_attempt",
+    "tock": 0
+  },
+  "foot": {
+    "text": "rst: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

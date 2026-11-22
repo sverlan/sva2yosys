@@ -1,0 +1,31 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "b",
+      "wave": "101.0"
+    },
+    {
+      "name": "r",
+      "wave": "0...1"
+    },
+    {
+      "name": "fail",
+      "wave": "010.1"
+    },
+    {
+      "name": "pass",
+      "wave": "1010."
+    }
+  ],
+  "head": {
+    "text": "unbounded_antecedents/always_with_disable_restarts_the_window",
+    "tock": 0
+  },
+  "foot": {
+    "text": "r: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

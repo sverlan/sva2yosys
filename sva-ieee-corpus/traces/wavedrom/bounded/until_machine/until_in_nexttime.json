@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "b",
+      "wave": "01.01"
+    },
+    {
+      "name": "c",
+      "wave": "0...."
+    },
+    {
+      "name": "fail",
+      "wave": "0..10"
+    },
+    {
+      "name": "pass",
+      "wave": "0...."
+    }
+  ],
+  "head": {
+    "text": "until_machine/until_in_nexttime",
+    "tock": 0
+  }
+}

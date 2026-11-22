@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "b",
+      "wave": "10.10"
+    },
+    {
+      "name": "fail",
+      "wave": "0...."
+    },
+    {
+      "name": "pass",
+      "wave": "0..10"
+    }
+  ],
+  "head": {
+    "text": "liveness/law_s_eventually_from_one_as_a_strong_sequence",
+    "tock": 0
+  }
+}

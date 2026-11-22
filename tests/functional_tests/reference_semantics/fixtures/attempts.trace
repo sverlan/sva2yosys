@@ -1,0 +1,392 @@
+# Per-attempt results (docs/semantics.md 9.2): every sample starts an attempt; the rows
+# `outcome` (T/t true nonvacuous/vacuous, F/f false nonvacuous/vacuous, p pending, d disabled)
+# and `decided` give each attempt's result, `fail` marks the decision sample of every FALSE
+# attempt, `pass` that of every TRUE attempt whose nonvacuity is known true at that sample.
+# The production pipeline runs these properties through the per-attempt machine.
+
+== nested_implication
+# a |-> (b |-> c). t0: a, b low: the inner implication is vacuously true, so is the attempt (t).
+# t1: a, b, c low: the inner attempt fails at 1 (F). t2: a low: vacuous. t3: a, b, c: true at 3.
+property: a |-> (b |-> c)
+clause: 16.12.7 16.14.8
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 1 . 1
+b       : . 1 . 1
+c       : . . . 1
+outcome : t F t T
+decided : 0 1 2 3
+fail    : . 1 . .
+pass    : . . . 1
+pending: 0
+
+== nested_implication_with_several_antecedent_matches_one_fails
+# a ##[0:1] b |-> (c |-> ##1 d). t0: matches end at 0 (a, b at 0) and at 1 (a at 0, b at 1).
+# End 0: c at 0, d at 1: its inner attempt passes at 1. End 1: c at 1, d low at 2: its inner
+# attempt fails at 2, so the attempt is FALSE at 2 (nonvacuous). t1: a low, no match: vacuous
+# at 1. t2, t3: a low: vacuous at their own sample.
+property: a ##[0:1] b |-> (c |-> ##1 d)
+clause: 16.7 16.12.7 16.14.8
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . . .
+b       : 1 1 . .
+c       : 1 1 . .
+d       : . 1 . .
+outcome : F t t t
+decided : 2 1 2 3
+fail    : . . 1 .
+pending: 0
+
+== nested_implication_with_several_antecedent_matches_all_pass
+# Same property. t0: end 0: c, then d at 1: passes. End 1: c low at 1: vacuously true. The
+# antecedent cannot match after sample 1, so the attempt is TRUE at 1, nonvacuous through
+# the first match (known since sample 0). t1, t2: a low: vacuous.
+property: a ##[0:1] b |-> (c |-> ##1 d)
+clause: 16.7 16.12.7 16.14.8
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : 1 1 .
+c       : 1 . .
+d       : . 1 .
+outcome : T t t
+decided : 1 1 2
+pass    : . 1 .
+pending: 0
+
+== nonoverlapped_implication_with_nested_implication
+# a |=> (b |-> c): the inner attempt starts one sample after the trigger.
+# t0: inner at 1: b, c low: FALSE at 1. t1: inner at 2: b, c: TRUE at 2. t2: a low: vacuous.
+# t3: inner at 4: b low: vacuous at 4. t4: the inner attempt would start beyond the trace:
+# pending, and it finalizes TRUE (no antecedent match exists inside the trace).
+property: a |=> (b |-> c)
+clause: 16.12.7 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 1 . 1 1
+b       : . 1 1 . .
+c       : . . 1 . .
+outcome : F T t t p
+decided : 1 2 2 4 .
+fail    : . 1 . . .
+pass    : . . 1 . .
+pending: 1
+final-fail: 0
+
+== not_of_implication
+# not (a |-> b). t0: a low: the implication is vacuously TRUE, so not is FALSE and vacuous (f).
+# t1: a, b: the implication is TRUE and nonvacuous: not is FALSE (F). t2: a without b: the
+# implication is FALSE, so not is TRUE and nonvacuous (T).
+property: not (a |-> b)
+clause: 16.12.3 16.12.7 16.14.8
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2
+a       : . 1 1
+b       : . 1 .
+outcome : f F T
+decided : 0 1 2
+fail    : 1 1 .
+pass    : . . 1
+pending: 0
+
+== not_of_implication_with_delayed_consequent
+# not (a |-> ##[1:2] b). t0: b at 1: the implication is TRUE at 1, so not is FALSE at 1.
+# t1: b low at 2 and 3: the consequent is refuted at 3: not is TRUE at 3. t2: b low at 3, b at
+# 4: the implication is TRUE at 4: not FALSE at 4. t3, t4, t5: a low: vacuous, not is FALSE (f).
+property: not (a |-> ##[1:2] b)
+clause: 16.7 16.12.3 16.12.7 16.14.8
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 1 1 . . .
+b       : . 1 . . 1 .
+outcome : F T F f f f
+decided : 1 3 4 3 4 5
+fail    : . 1 . 1 1 1
+pass    : . . . 1 . .
+pending: 0
+
+== or_of_implications
+# (a |-> b) or (c |-> ##1 d). Operand 1 decides at the start, operand 2 at the next sample.
+# t0: a, b: operand 1 TRUE: TRUE at 0 (T). t1: operand 1 FALSE (a, no b); c, then d at 2: operand 2
+# TRUE at 2: TRUE at 2. t2: operand 1 FALSE at 2; c, d low at 3: operand 2 FALSE at 3: FALSE at
+# 3, the later decision (F, nonvacuous). t3: a low and c low: both vacuously true: TRUE at 3,
+# vacuous (t). t4: a low (operand 1 vacuously TRUE) so TRUE at 4; c at 4 makes operand 2
+# nonvacuous at 4 although it is FALSE at 5: T. t5: both vacuous.
+property: (a |-> b) or (c |-> ##1 d)
+clause: 16.7 16.12.4 16.12.7 16.14.8
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 1 1 . . .
+b       : 1 . . . . .
+c       : . 1 1 . 1 .
+d       : . . 1 . . .
+outcome : T T F t T t
+decided : 0 2 3 3 4 5
+fail    : . . . 1 . .
+pass    : 1 . 1 . 1 .
+pending: 0
+
+== or_of_implications_one_vacuous_operand
+# (a |-> b) or (c |-> d). t0: a low: operand 1 vacuously TRUE; c, d low: operand 2 FALSE
+# (nonvacuous). TRUE at 0, nonvacuous through operand 2 (T). t1: both vacuous (t). t2: a, b low:
+# operand 1 FALSE; c low: operand 2 vacuously TRUE: TRUE at 2, nonvacuous through operand 1 (T).
+property: (a |-> b) or (c |-> d)
+clause: 16.12.4 16.12.7 16.14.8
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2
+a       : . . 1
+b       : . . .
+c       : 1 . .
+d       : . . .
+outcome : T t T
+decided : 0 1 2
+pass    : 1 . 1
+pending: 0
+
+== cover_or_with_vacuous_operand_and_sequence_operand
+# cover of (a |-> b) or strong(1'b1 ##2 c). The sequence operand is always nonvacuous, known
+# at the start, so a vacuous TRUE operand 1 gives a TRUE and nonvacuous or at once.
+# t0: a low: operand 1 vacuously TRUE: TRUE at 0, nonvacuous through operand 2: pass at 0.
+# t1: operand 1 FALSE (a, no b); operand 2 matches at 3 (c at 3): TRUE at 3, pass at 3.
+# t2: operand 1 FALSE at 2; operand 2 would end at 4, beyond the trace: pending, and strong
+# (cover), so it finalizes FALSE. t3: a low: TRUE at 3 (the same mark as t1).
+property: (a |-> b) or strong(1'b1 ##2 c)
+clause: 16.7 16.12.2 16.12.4 16.12.7 16.14.3 16.14.8 Annex F
+class: interpretation I5, I8
+kind: cover
+scope: attempt
+sample  : 0 1 2 3
+a       : . 1 1 .
+b       : . . . .
+c       : . . . 1
+outcome : T T p T
+decided : 0 3 . 3
+pass    : 1 . . 1
+pending: 1
+final-fail: 1
+
+== if_else_with_implication_branches
+# if (e) (a |-> b) else (c |-> d): only the branch selected by e at the start decides.
+# t0: e, a, b: TRUE. t1: e, a, b low: FALSE. t2: e, a low: vacuous (t). The unselected branch
+# is false or vacuous-failing there (c high, d low at t0 to t2) and must not matter.
+# t3: !e, c, d: TRUE. t4: !e, c, d low: FALSE. t5: !e, c low: vacuous (t); a high with b low
+# there (t3 to t5), which would fail the unselected branch.
+property: if (e) (a |-> b) else (c |-> d)
+clause: 16.12.6 16.12.7 16.14.8
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4 5
+e       : 1 1 1 . . .
+a       : 1 1 . 1 1 1
+b       : 1 . . . . .
+c       : 1 1 1 1 1 .
+d       : . . . 1 . .
+outcome : T F t T F t
+decided : 0 1 2 3 4 5
+fail    : . 1 . . 1 .
+pass    : 1 . . 1 . .
+pending: 0
+
+== if_else_with_implication_branches_and_delays
+# if (e) (a |-> ##1 b) else (c |-> ##2 d). t0: e, a, b at 1: TRUE at 1. t1: e, a, b low at 2:
+# FALSE at 2. t2: !e, c, d at 4: TRUE at 4 (a high there and b low at 3 would fail the other
+# branch). t3: !e, c, d low at 5: FALSE at 5. t4: e, a low: vacuous at 4. t5: !e, c: d would be
+# at 7, beyond the trace: pending (weak, so it finalizes TRUE).
+property: if (e) (a |-> ##1 b) else (c |-> ##2 d)
+clause: 16.7 16.12.2 16.12.6 16.12.7 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4 5
+e       : 1 1 . . 1 .
+a       : 1 1 1 . . .
+b       : . 1 . . . .
+c       : . . 1 1 . 1
+d       : . . . . 1 .
+outcome : T F T F t p
+decided : 1 2 4 5 4 .
+fail    : . . 1 . . 1
+pass    : . 1 . . 1 .
+pending: 1
+final-fail: 0
+
+== if_else_with_sequence_and_implication_branches
+# if (e) a else (c |-> d). t0: e, a: TRUE (c high, d low there is ignored). t1: e, a low: FALSE
+# (the sequence is nonvacuous). t2: !e, c, d: TRUE. t3: !e, c, d low: FALSE. t4: !e, c low: vacuous.
+property: if (e) a else (c |-> d)
+clause: 16.12.6 16.12.7 16.14.8
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4
+e       : 1 1 . . .
+a       : 1 . 1 1 1
+c       : 1 . 1 1 .
+d       : . . 1 . .
+outcome : T F T F t
+decided : 0 1 2 3 4
+fail    : . 1 . 1 .
+pass    : 1 . 1 . .
+pending: 0
+
+== if_else_strong_and_weak_branches_at_the_end
+# if (e) strong(a ##2 b) else weak(c ##2 d): the strength of the selected branch decides pending
+# attempts at the end. t0: e, a, b at 2: TRUE at 2. t1: !e, c, d low at 3: FALSE at 3.
+# t2: e, a: b would be at 4, beyond the trace: pending, strong: finalizes FALSE.
+# t3: !e, c: pending, weak: finalizes TRUE.
+property: if (e) strong(a ##2 b) else weak(c ##2 d)
+clause: 16.7 16.12.2 16.12.6 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3
+e       : 1 . 1 .
+a       : 1 . 1 .
+b       : . . 1 .
+c       : . 1 . 1
+d       : . . . .
+outcome : T F p p
+decided : 2 3 . .
+fail    : . . . 1
+pass    : . . 1 .
+pending: 2
+final-fail: 1
+
+== or_of_strong_and_weak_sequences_at_the_end
+# strong(a ##2 b) or weak(c ##2 d). t0: a, b at 2: TRUE at 2 (c low: operand 2 died at 0).
+# t1: a low: operand 1 FALSE at 1; c at 1, d low at 3: operand 2 FALSE at 3: FALSE at 3.
+# t2: c low: operand 2 FALSE at 2; operand 1 (a at 2) is pending and strong: finalizes FALSE,
+# so the attempt finalizes FALSE. t3: both pending, strong operand 1 finalizes FALSE, weak
+# operand 2 TRUE: the or finalizes TRUE.
+property: strong(a ##2 b) or weak(c ##2 d)
+clause: 16.7 16.12.2 16.12.4 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . 1 1
+b       : . . 1 .
+c       : . 1 . 1
+d       : . . . .
+outcome : T F p p
+decided : 2 3 . .
+fail    : . . . 1
+pass    : . . 1 .
+pending: 2
+final-fail: 1
+
+== disable_in_nested_implication
+# a |-> (b |-> ##1 c), disable iff rst, high at 1 and 4. t0: a, b: the consequent would be
+# decided at 1 (c low: false), but rst is high at 1: disabled at 1. t1: starts with rst high:
+# disabled at 1. t2: a, b, c low at 3: FALSE at 3; rst is low from 2 to 3. rst at 4 comes after
+# the decision: the attempt stays FALSE. t3: a low: vacuous at 3. t4: starts with rst high:
+# disabled at 4. t5: a, b low: vacuous at 5.
+property: a |-> (b |-> ##1 c)
+clause: 16.7 16.12 16.12.7 16.14.8
+class: interpretation I5
+disable: rst
+scope: attempt
+sample  : 0 1 2 3 4 5
+rst     : . 1 . . 1 .
+a       : 1 1 1 . 1 1
+b       : 1 1 1 . 1 .
+c       : . . . . . .
+outcome : d d F t d t
+decided : 1 1 3 3 4 5
+fail    : . . . 1 . .
+pending: 0
+
+== disable_at_the_decision_sample
+# a |-> (b |-> c), disable iff rst. The decision sample is inside the attempt's interval:
+# t0: a, b, c low would be FALSE at 0, but rst is high at 0: disabled at 0. t1: FALSE at 1.
+property: a |-> (b |-> c)
+clause: 16.12 16.12.7
+class: normative
+disable: rst
+scope: attempt
+sample  : 0 1
+rst     : 1 .
+a       : 1 1
+b       : 1 1
+c       : . .
+outcome : d F
+decided : 0 1
+fail    : . 1
+pending: 0
+
+== disable_after_the_inner_decisions_before_the_antecedent_ends
+# a ##[0:1] b |-> (c |-> d), disable iff rst. t0: match end 0 (a, b at 0): inner vacuous (c low).
+# b low at 1 ends the antecedent: the attempt would be TRUE (vacuous) at 1, but rst is high at 1:
+# disabled at 1. t1: rst high at start: disabled at 1. t2: a low: vacuous at 2.
+property: a ##[0:1] b |-> (c |-> d)
+clause: 16.7 16.12 16.12.7 16.14.8
+class: interpretation I5
+disable: rst
+scope: attempt
+sample  : 0 1 2
+rst     : . 1 .
+a       : 1 . .
+b       : 1 . .
+c       : . . .
+d       : . . .
+outcome : d d t
+decided : 1 1 2
+pending: 0
+
+== disable_while_a_nested_consequent_is_pending_at_the_end
+# a |-> (b |-> ##2 c), disable iff rst, high at 2 only. t0: c is awaited at 2 (c low would be
+# FALSE at 2), but the decision sample is inside the interval: disabled at 2. t1: c is awaited at
+# 3, beyond the trace, so it is pending; rst at 2 disables it (not pending). t2: starts with rst
+# high: disabled at 2.
+property: a |-> (b |-> ##2 c)
+clause: 16.7 16.12 16.12.7
+class: normative
+disable: rst
+scope: attempt
+sample  : 0 1 2
+rst     : . . 1
+a       : 1 1 1
+b       : 1 1 1
+c       : . . .
+outcome : d d d
+decided : 2 2 2
+pending: 0
+
+== nested_implication_with_a_strong_consequent_pending_at_the_end
+# a |-> (b |-> strong(c ##2 d)) on two samples. t0: a, b, c at 0; d is due at 2, beyond the
+# trace: pending. At the end the strong sequence fails, so the inner and the outer
+# implication fail: final-fail 1. t1: a low: vacuous at 1.
+property: a |-> (b |-> strong(c ##2 d))
+clause: 16.7 16.12.2 16.12.7 16.14.8 Annex F
+class: interpretation I5, I8
+scope: attempt
+sample  : 0 1
+a       : 1 .
+b       : 1 .
+c       : 1 .
+d       : . .
+outcome : p t
+decided : . 1
+pending: 1
+final-fail: 1
+
+== nested_implication_with_a_weak_consequent_pending_at_the_end
+# As above with weak(c ##2 d): the pending sequence passes at the end: final-fail 0.
+property: a |-> (b |-> weak(c ##2 d))
+clause: 16.7 16.12.2 16.12.7 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1
+a       : 1 .
+b       : 1 .
+c       : 1 .
+d       : . .
+outcome : p t
+decided : . 1
+pending: 1
+final-fail: 0

@@ -1,0 +1,675 @@
+# Unbounded ranges ($) (docs/semantics.md 9.2, 9.6):
+# ##[m:$], [*m:$] ([*], [+]), goto [->m:n] / [->m:$] and nonconsecutive [=m:n] / [=m:$]
+# repetition, per attempt (scope: attempt). A case is support: oracle unless the machines accept
+# it (an unbounded antecedent, a weak unbounded consequent, a cover of a strong
+# unbounded sequence). Derived by hand from the written semantics.
+# Notation: "attempt s" starts at sample s; "(k)" is a decision sample. An implication attempt is
+# TRUE when its antecedent can match no more and every started consequent is TRUE (vacuous t when
+# there is none), FALSE at the first FALSE consequent, else pending. A sequence used as a property
+# is TRUE at the first sample a non-empty match ends and FALSE when no match is possible any more.
+# $ is never replaced by a bound: an alive unbounded sequence is pending, not false. At the end of
+# the simulation a pending weak sequence is TRUE and a pending strong one is FALSE.
+
+== delay_unbounded_consequent_decides
+# a |-> ##[1:$] b. a = 1 . 1 . ., b = . . . 1 .
+# attempt 0: trigger 0, first b after sample 0 is sample 3: TRUE at 3. attempt 2: b3: TRUE at 3.
+# attempts 1, 3, 4: a low, vacuous TRUE at their own sample.
+property: a |-> ##[1:$] b
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . 1 . .
+b       : . . . 1 .
+outcome : T t T t t
+decided : 3 1 3 3 4
+pass    : . . . 1 .
+pending: 0
+final-fail: 0
+
+== weak_unbounded_consequent_pending_finalizes_true
+# a |-> ##[1:$] b with b never high: a weak consequent can never fail (docs/semantics.md 9.1).
+# attempts 0 and 3 have a trigger and stay pending; the rest are vacuous. Weak: finalize TRUE.
+property: a |-> ##[1:$] b
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+signals: a b
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . 1 .
+outcome : p t t p t
+decided : . 1 2 . 4
+pending: 2
+final-fail: 0
+
+== strong_unbounded_consequent_pending_finalizes_false
+# The trace of the previous case with strong(##[1:$] b): the pending consequents finalize FALSE.
+property: a |-> strong(##[1:$] b)
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: interpretation I8
+signals: a b
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . 1 .
+outcome : p t t p t
+decided : . 1 2 . 4
+pending: 2
+final-fail: 2
+
+== delay_from_zero_matches_the_same_sample
+# a |-> ##[0:$] b. a = 1 1 . . ., b = . 1 . 1 .
+# attempt 0: b at 0 is low, b at 1: match ends at 1: TRUE at 1. attempt 1: ##0 fuses: b1: TRUE at 1.
+# attempts 2, 3, 4: vacuous at their own sample.
+property: a |-> ##[0:$] b
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 1 . . .
+b       : . 1 . 1 .
+outcome : T T t t t
+decided : 1 1 2 3 4
+pass    : . 1 . . .
+pending: 0
+final-fail: 0
+
+== delay_star_is_zero_to_dollar
+# a |-> ##[*] b is a |-> ##[0:$] b: b at the trigger sample matches. a = 1 ., b = 1 .
+# attempt 0: TRUE at 0; attempt 1: vacuous at 1.
+property: a |-> ##[*] b
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1
+a       : 1 .
+b       : 1 .
+outcome : T t
+decided : 0 1
+pass    : 1 .
+pending: 0
+final-fail: 0
+
+== repeat_at_least_two_decides_at_the_second
+# a |-> b[*2:$]. a = 1 . 1 1 ., b = 1 1 . 1 1
+# attempt 0: b0, b1 high: the match of length 2 ends at 1: TRUE at 1. attempt 2: b2 low, no match
+# is possible: FALSE at 2. attempt 3: b3, b4: TRUE at 4. attempts 1, 4: a low, vacuous at 1 and 4.
+property: a |-> b[*2:$]
+clause: 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . 1 1 .
+b       : 1 1 . 1 1
+outcome : T t F T t
+decided : 1 1 2 4 4
+fail    : . . 1 . .
+pass    : . 1 . . 1
+pending: 0
+final-fail: 0
+
+== repeat_plus_then_c_passes
+# a |-> b[+] ##1 c. a = 1 . . . ., b = 1 1 1 . ., c = . . . 1 .
+# attempt 0: runs of b of length 1 or 2 are followed by c = 0 (samples 1, 2); the run of length 3
+# is followed by c3 = 1: the match ends at 3: TRUE at 3. Attempts 1-4: vacuous at their sample.
+property: a |-> b[+] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . . .
+b       : 1 1 1 . .
+c       : . . . 1 .
+outcome : T t t t t
+decided : 3 1 2 3 4
+pass    : . . . 1 .
+pending: 0
+final-fail: 0
+
+== repeat_plus_then_c_fails
+# The trace of the previous case with c always low: at sample 3 b is low, so the run cannot grow,
+# and c3 = 0: no path is left: FALSE at 3.
+property: a |-> b[+] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+signals: a b c
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . . .
+b       : 1 1 1 . .
+outcome : F t t t t
+decided : 3 1 2 3 4
+fail    : . . . 1 .
+pending: 0
+final-fail: 0
+
+== repeat_star_then_c
+# a |-> b[*] ##1 c ([*] is [*0:$]; the empty run lets c match at the trigger sample).
+# a = 1 . 1 ., b = 1 1 . ., c = . . 1 1
+# attempt 0: b0, b1 high, then c2: the match ends at 2: TRUE at 2. attempt 2: empty run, c2 high:
+# TRUE at 2. attempts 1, 3: vacuous at 1 and 3.
+property: a |-> b[*] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . 1 .
+b       : 1 1 . .
+c       : . . 1 1
+outcome : T t T t
+decided : 2 1 2 3
+pass    : . . 1 .
+pending: 0
+final-fail: 0
+
+== antecedent_repeat_unbounded_passes
+# b[*1:$] ##1 c |-> d. b = 1 1 1 . . ., c = . . . 1 . ., d = . . . 1 . .
+# attempt 0: b0, b1, b2 high, c3: the antecedent matches only with the run of length 3, ending at
+# 3. attempt 1: runs 1 (c2 low) and 2 (c3 high): ends at 3. attempt 2: run 1, c3: ends at 3.
+# d3 = 1: all three are TRUE at 3, where b3 = 0 stops every run (no further match possible).
+# attempt 3: b3 low: no antecedent match: vacuous at 3. attempts 4, 5: vacuous at their sample.
+property: b[*1:$] ##1 c |-> d
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : 1 1 1 . . .
+c       : . . . 1 . .
+d       : . . . 1 . .
+outcome : T T T t t t
+decided : 3 3 3 3 4 5
+pass    : . . . 1 . .
+pending: 0
+final-fail: 0
+
+== antecedent_repeat_unbounded_fails
+# The trace of the previous case with d always low: the consequent started at 3 fails: attempts 0,
+# 1 and 2 are FALSE at 3 (their antecedent match ends there).
+property: b[*1:$] ##1 c |-> d
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+signals: b c d
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : 1 1 1 . . .
+c       : . . . 1 . .
+outcome : F F F t t t
+decided : 3 3 3 3 4 5
+fail    : . . . 1 . .
+pending: 0
+final-fail: 0
+
+== antecedent_unbounded_stays_pending_even_when_consequents_pass
+# a ##[1:$] b |-> c. a = 1 . . . ., b = . 1 . 1 ., c = . 1 . 1 .
+# attempt 0: matches end at 1 and at 3 (a at 0, any later b); both consequents hold. But the
+# antecedent could match again at any later b: the attempt is never TRUE, it stays pending.
+# attempts 1-4: a low, the antecedent dies at their sample: vacuous TRUE.
+property: a ##[1:$] b |-> c
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . . .
+b       : . 1 . 1 .
+c       : . 1 . 1 .
+outcome : p t t t t
+decided : . 1 2 3 4
+pending: 1
+final-fail: 0
+
+== antecedent_unbounded_fails_at_the_first_failing_trigger
+# a ##[1:$] b |-> c. a = 1 . . . ., b = . 1 . 1 ., c = . 1 . . .
+# attempt 0: the match ending at 1 has c1 = 1; the match ending at 3 has c3 = 0: FALSE at 3.
+property: a ##[1:$] b |-> c
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . . .
+b       : . 1 . 1 .
+c       : . 1 . . .
+outcome : F t t t t
+decided : 3 1 2 3 4
+fail    : . . . 1 .
+pending: 0
+final-fail: 0
+
+== antecedent_open_at_the_end
+# b[*1:$] ##1 c |-> d on a trace that ends inside the runs: b = 1 1 1, c = d = 0.
+# no antecedent match yet, but each run could still grow or end with c: pending. The implication
+# has no started consequent, so it finalizes TRUE (final-fail 0).
+property: b[*1:$] ##1 c |-> d
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+signals: b c d
+scope: attempt
+sample  : 0 1 2
+b       : 1 1 1
+outcome : p p p
+decided : . . .
+pending: 3
+final-fail: 0
+
+== bare_unbounded_sequence_weak
+# a ##[1:$] b as a weak sequence property (assert default). a = 1 . 1, b = 0.
+# attempt 0: a, then b may come later: pending. attempt 1: a low: no match possible: FALSE at 1.
+# attempt 2: pending. Weak: both pending ones finalize TRUE.
+property: a ##[1:$] b
+clause: 16.7 16.12.2 Annex F
+class: normative
+signals: a b
+scope: attempt
+sample  : 0 1 2
+a       : 1 . 1
+outcome : p F p
+decided : . 1 .
+fail    : . 1 .
+pending: 2
+final-fail: 0
+
+== bare_unbounded_sequence_strong
+# The same trace with strong(a ##[1:$] b): the pending attempts finalize FALSE.
+property: strong(a ##[1:$] b)
+clause: 16.7 16.12.2 Annex F
+class: interpretation I8
+signals: a b
+scope: attempt
+sample  : 0 1 2
+a       : 1 . 1
+outcome : p F p
+decided : . 1 .
+fail    : . 1 .
+pending: 2
+final-fail: 2
+
+== not_of_weak_unbounded_is_strong_at_the_end
+# not (a ##[1:$] b): a weak sequence under not is strong (strength reversal, 16.12.3).
+# a = 1 . 1 . 1, b = . . . 1 .
+# attempt 0: a0, b3 matches (ends 3): the sequence is TRUE at 3, so not is FALSE at 3. attempt 2:
+# a2, b3: FALSE at 3. attempts 1, 3: a low, the sequence is FALSE, not is TRUE at 1 and 3.
+# attempt 4: a4 high, no b yet: pending; the weak sequence finalizes TRUE, so not finalizes FALSE.
+property: not (a ##[1:$] b)
+clause: 16.7 16.12.2 16.12.3 Annex F
+class: interpretation I7, I8
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . 1 . 1
+b       : . . . 1 .
+outcome : F T F T p
+decided : 3 1 3 3 .
+fail    : . . . 1 .
+pass    : . 1 . 1 .
+pending: 1
+final-fail: 1
+
+== disable_during_unbounded_consequent
+# disable iff (d) a |-> ##[1:$] b. a = 1 . . ., b = 0, d = . . 1 .
+# attempt 0 is pending, and d rises at 2, inside [0, end]: disabled at 2. attempt 1: vacuous at 1,
+# the interval [1, 1] has no d: TRUE. attempt 2: vacuous at 2 but d is high at 2: disabled.
+# attempt 3: vacuous at 3.
+property: a |-> ##[1:$] b
+clause: 16.7 16.12 16.12.2 16.12.7 Annex F
+class: normative
+signals: a b d
+disable: d
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . . .
+d       : . . 1 .
+outcome : d t d t
+decided : 2 1 2 3
+pending: 0
+final-fail: 0
+
+== cover_unbounded_delay
+# cover property (a ##[1:$] b). a = 1 . 1 . ., b = . . . 1 1
+# attempt 0: a0, b3: TRUE at 3. attempt 2: a2, b3: TRUE at 3. attempts 1, 3, 4: a low: FALSE at
+# their own sample. The cover reports the TRUE attempts: sample 3.
+property: a ##[1:$] b
+clause: 16.7 16.12.2 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . 1 . .
+b       : . . . 1 1
+outcome : T F T F F
+decided : 3 1 3 3 4
+pass    : . . . 1 .
+pending: 0
+final-fail: 0
+
+== cover_unbounded_pending_finalizes_false
+# A sequence in a cover is strong: a = 1 . 1, b = 0. Attempts 0 and 2 are pending and finalize
+# FALSE; attempt 1 is FALSE at 1 (a low).
+property: a ##[1:$] b
+clause: 16.7 16.12.2 16.14.3 Annex F
+class: interpretation I8
+signals: a b
+kind: cover
+scope: attempt
+sample  : 0 1 2
+a       : 1 . 1
+outcome : p F p
+decided : . 1 .
+pending: 2
+final-fail: 2
+
+== implication_nonoverlapping_with_zero_to_dollar
+# a |=> ##[0:$] b is a |-> ##[1:$] b (law pair with the next case).
+# a = 1 . . 1 ., b = . . 1 . .
+# attempt 0: b at 2 after the trigger: TRUE at 2. attempts 1, 2, 4: vacuous at their sample.
+# attempt 3: a high, no b after: pending (the trigger of |=> is sample 4, which exists).
+property: a |=> ##[0:$] b
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . 1 .
+b       : . . 1 . .
+outcome : T t t p t
+decided : 2 1 2 . 4
+pass    : . . 1 . .
+pending: 1
+final-fail: 0
+
+== implication_overlapping_with_one_to_dollar
+property: a |-> ##[1:$] b
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . 1 .
+b       : . . 1 . .
+outcome : T t t p t
+decided : 2 1 2 . 4
+pass    : . . 1 . .
+pending: 1
+final-fail: 0
+
+== goto_consequent_counts_occurrences
+# a |-> b[->2]. a = 1 . . 1 . ., b = . 1 . . 1 1
+# attempt 0: b is high at 1 (first), 4 (second): the match ends at 4: TRUE at 4. attempt 3: b is
+# high at 4 (first), 5 (second): TRUE at 5. attempts 1, 2, 4, 5: vacuous at their sample.
+property: a |-> b[->2]
+clause: 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 . . 1 . .
+b       : . 1 . . 1 1
+outcome : T t t T t t
+decided : 4 1 2 5 4 5
+pass    : . . . . 1 1
+pending: 0
+final-fail: 0
+
+== goto_pending_weak
+# a |-> b[->2] with only one occurrence: a = 1 . . ., b = . 1 . .
+# attempt 0: the second occurrence may still come: pending. Weak: finalizes TRUE.
+property: a |-> b[->2]
+clause: 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . . .
+b       : . 1 . .
+outcome : p t t t
+decided : . 1 2 3
+pending: 1
+final-fail: 0
+
+== goto_pending_strong
+property: a |-> strong(b[->2])
+clause: 16.9.2 16.12.2 16.12.7 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . . .
+b       : . 1 . .
+outcome : p t t t
+decided : . 1 2 3
+pending: 1
+final-fail: 1
+
+== goto_range_in_antecedent_is_a_union_of_counts
+# b[->1:2] ##1 c |-> d with d always low. b = 1 . 1 1 . ., c = . . . . 1 .
+# The antecedent is the union of the matches with exactly one and exactly two occurrences of b.
+# attempt 0: occurrences at 0, 2, 3. One occurrence: ends at 0, c1 low: dead. Two: ends at 2, c3
+# low: dead (the third occurrence at 3 is not allowed). Dead at 3: vacuous TRUE at 3.
+# attempt 1: occurrences at 2, 3: one: ends 2, c3 low; two: ends 3, c4 high: trigger at 4, d4 low:
+# FALSE at 4. attempt 2: the same two occurrences: FALSE at 4. attempt 3: one occurrence ends at 3,
+# c4 high: trigger at 4: FALSE at 4. attempts 4, 5: no occurrence yet, the antecedent is alive.
+property: b[->1:2] ##1 c |-> d
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+signals: b c d
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : 1 . 1 1 . .
+c       : . . . . 1 .
+outcome : t F F F p p
+decided : 3 4 4 4 . .
+fail    : . . . . 1 .
+pending: 2
+final-fail: 0
+
+== goto_dollar_antecedent_never_decides
+# b[->1:$] ##1 c |-> d with d always low. b = 1 . 1 . ., c = . 1 . . 1
+# attempt 0: one occurrence ends at 0 and c1 is high: trigger at 1, d1 low: FALSE at 1.
+# attempts 1-4: no antecedent match can be excluded (more occurrences may come, counts at least
+# 1): all pending although no consequent has started a failure.
+property: b[->1:$] ##1 c |-> d
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+signals: b c d
+scope: attempt
+sample  : 0 1 2 3 4
+b       : 1 . 1 . .
+c       : . 1 . . 1
+outcome : F p p p p
+decided : 1 . . . .
+fail    : . 1 . . .
+pending: 4
+final-fail: 0
+
+== nonconsecutive_allows_trailing_samples
+# a |-> b[=2] ##1 c. a = 1 . . . . ., b = . 1 . 1 . ., c = . . . . . 1
+# b[=2] ends at the second occurrence (3) or at any later sample before a third one. attempt 0: c4
+# is low, but sample 4 can be a trailing sample (b4 low) and c5 is high: the match ends at 5.
+# TRUE at 5. attempts 1-5: vacuous at their sample.
+property: a |-> b[=2] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 . . . . .
+b       : . 1 . 1 . .
+c       : . . . . . 1
+outcome : T t t t t t
+decided : 5 1 2 3 4 5
+pass    : . . . . . 1
+pending: 0
+final-fail: 0
+
+== goto_requires_c_right_after_the_occurrence
+# The trace of the previous case with b[->2] ##1 c: c must follow the second occurrence (3)
+# at once: c4 is low and nothing else can match: FALSE at 4.
+property: a |-> b[->2] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 . . . . .
+b       : . 1 . 1 . .
+c       : . . . . . 1
+outcome : F t t t t t
+decided : 4 1 2 3 4 5
+fail    : . . . . 1 .
+pending: 0
+final-fail: 0
+
+== nonconsecutive_third_occurrence_kills_trailing
+# a |-> b[=2] ##1 c. a = 1 . . . . ., b = . 1 . 1 1 ., c = . . . . . 1
+# After the second occurrence (3), sample 4 must be c (low) or a trailing sample (b4 is high: a
+# third occurrence): no path is left at 4: FALSE at 4.
+property: a |-> b[=2] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 . . . . .
+b       : . 1 . 1 1 .
+c       : . . . . . 1
+outcome : F t t t t t
+decided : 4 1 2 3 4 5
+fail    : . . . . 1 .
+pending: 0
+final-fail: 0
+
+== nonconsecutive_c_sample_may_hold_b
+# a |-> b[=2] ##1 c. b = . 1 . 1 1 ., c = . . . . 1 .
+# c4 is high right after the second occurrence (3); b4 being high is irrelevant (the c sample is
+# not constrained by b): TRUE at 4.
+property: a |-> b[=2] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 . . . . .
+b       : . 1 . 1 1 .
+c       : . . . . 1 .
+outcome : T t t t t t
+decided : 4 1 2 3 4 5
+pass    : . . . . 1 .
+pending: 0
+final-fail: 0
+
+== cover_goto
+# cover property (a ##1 b[->2]). a = 1 . . . . ., b = . 1 . 1 . .
+# attempt 0: b is high at 1 and 3: the match ends at 3: TRUE at 3. Other attempts: a low: FALSE.
+property: a ##1 b[->2]
+clause: 16.7 16.9.2 16.12.2 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 . . . . .
+b       : . 1 . 1 . .
+outcome : T F F F F F
+decided : 3 1 2 3 4 5
+pass    : . . . 1 . .
+pending: 0
+final-fail: 0
+
+== law_goto_one
+# b[->1] as a property: TRUE at the first occurrence at or after the start; never FALSE.
+# b = . . 1 . .: attempts 0-2 are TRUE at 2; attempts 3, 4 are pending (weak: TRUE at the end).
+property: b[->1]
+clause: 16.9.2 16.12.2 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+b       : . . 1 . .
+outcome : T T T p p
+decided : 2 2 2 . .
+pass    : . . 1 . .
+pending: 2
+final-fail: 0
+
+== law_goto_one_desugared
+# (!b)[*0:$] ##1 b: the expansion of b[->1], the same rows as law_goto_one.
+property: (!b)[*0:$] ##1 b
+clause: 16.7 16.9.2 16.12.2 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+b       : . . 1 . .
+outcome : T T T p p
+decided : 2 2 2 . .
+pass    : . . 1 . .
+pending: 2
+final-fail: 0
+
+== law_nonconsecutive_one
+# a |-> b[=1] ##1 c. a = 1 . . . ., b = . 1 . . ., c = . . . 1 .
+# After the occurrence (1), sample 2 is a trailing sample (b low) and c3 is high: ends at 3.
+property: a |-> b[=1] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . . .
+b       : . 1 . . .
+c       : . . . 1 .
+outcome : T t t t t
+decided : 3 1 2 3 4
+pass    : . . . 1 .
+pending: 0
+final-fail: 0
+
+== law_nonconsecutive_one_desugared
+# b[=1] is b[->1] ##1 (!b)[*0:$]: the same rows as law_nonconsecutive_one.
+property: a |-> b[->1] ##1 (!b)[*0:$] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . . .
+b       : . 1 . . .
+c       : . . . 1 .
+outcome : T t t t t
+decided : 3 1 2 3 4
+pass    : . . . 1 .
+pending: 0
+final-fail: 0
+
+== long_common_length_is_pending_not_false
+# (1 ##10 1)[*1:$] intersect (1 ##12 1)[*1:$]: the matches of the operands have the lengths 11k
+# and 13k, so the first common length is 143. On one sample the attempt is alive (constants
+# hold at every unknown sample): pending, never false. Weak, so it finalizes TRUE.
+property: (1 ##10 1)[*1:$] intersect (1 ##12 1)[*1:$]
+clause: 16.7 16.9.2 16.9.6 16.12.2 Annex F
+class: normative
+scope: attempt
+sample  : 0
+a       : .
+outcome : p
+decided : .
+pending: 1
+final-fail: 0
+
+== long_common_length_strong_finalizes_false
+property: strong((1 ##10 1)[*1:$] intersect (1 ##12 1)[*1:$])
+clause: 16.7 16.9.2 16.9.6 16.12.2 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0
+a       : .
+outcome : p
+decided : .
+pending: 1
+final-fail: 1
+
+== long_and_is_pending
+property: (1 ##10 1)[*1:$] and (1 ##12 1)[*1:$]
+clause: 16.7 16.9.2 16.9.5 16.12.2 Annex F
+class: normative
+scope: attempt
+sample  : 0
+a       : .
+outcome : p
+decided : .
+pending: 1
+final-fail: 0
+
+== long_within_is_pending
+property: (1 ##10 1)[*1:$] within (1 ##12 1)[*1:$]
+clause: 16.7 16.9.2 16.9.10 16.12.2 Annex F
+class: normative
+scope: attempt
+sample  : 0
+a       : .
+outcome : p
+decided : .
+pending: 1
+final-fail: 0

@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "010.."
+    },
+    {
+      "name": "b",
+      "wave": "0..10"
+    },
+    {
+      "name": "fail",
+      "wave": "0...."
+    },
+    {
+      "name": "pass",
+      "wave": "0..10"
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_16_cover_of_s2_default_clock_c1",
+    "tock": 0
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "b",
+      "wave": "10."
+    },
+    {
+      "name": "c",
+      "wave": "0.1"
+    },
+    {
+      "name": "fail",
+      "wave": "010"
+    },
+    {
+      "name": "pass",
+      "wave": "0.1"
+    },
+    {
+      "name": "repeat",
+      "wave": "1.."
+    },
+    {
+      "name": "outcome",
+      "wave": "=.=",
+      "data": [
+        "F",
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "strong_liveness/s_until_b_drops_before_c",
+    "tock": 0
+  }
+}

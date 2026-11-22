@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "a",
+      "wave": "1."
+    },
+    {
+      "name": "b",
+      "wave": "0."
+    },
+    {
+      "name": "fail",
+      "wave": "01"
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    }
+  ],
+  "head": {
+    "text": "counterexamples/goto_of_a_constant_true_is_decided_at_its_own_samples",
+    "tock": 0
+  }
+}

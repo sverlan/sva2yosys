@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "b",
+      "wave": "10"
+    },
+    {
+      "name": "fail",
+      "wave": "0."
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    },
+    {
+      "name": "repeat",
+      "wave": "01"
+    },
+    {
+      "name": "outcome",
+      "wave": "=.",
+      "data": [
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "lasso/past_depth_matches_once_from_the_prefix",
+    "tock": 0
+  }
+}

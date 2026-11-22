@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "go",
+      "wave": "10...."
+    },
+    {
+      "name": "a",
+      "wave": "10...."
+    },
+    {
+      "name": "b",
+      "wave": "01..0."
+    },
+    {
+      "name": "c",
+      "wave": "0...10"
+    },
+    {
+      "name": "fail",
+      "wave": "0....."
+    },
+    {
+      "name": "pass",
+      "wave": "0...10"
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_9_2_consecutive_repetition_3_match",
+    "tock": 0
+  }
+}

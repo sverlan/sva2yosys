@@ -1,0 +1,24 @@
+[tasks]
+prove
+bmc
+cover
+
+[options]
+prove: mode prove
+bmc: mode bmc
+cover: mode cover
+depth @DEPTH@
+vcd off
+
+[engines]
+prove: abc pdr
+bmc: smtbmc yices
+cover: smtbmc yices
+
+[script]
+read_verilog -formal -sv monitor.sv tb.sv
+prep -top tb
+
+[files]
+monitor.sv
+tb.sv

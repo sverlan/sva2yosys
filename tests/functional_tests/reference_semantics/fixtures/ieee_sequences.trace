@@ -1,0 +1,984 @@
+# IEEE 1800-2017 clauses 16.5 to 16.11 (PDF pages 375 to 420) as trace cases.
+# Every `go` row marks the start of the single attempt whose figure or example the case re-expresses; `pass` is that attempt's first
+# match (the earliest sample at which the property is true), `fail` the earliest sample where no match is possible.
+# Every case carries one `# evidence:` line. `figure`: the sampled inputs of every signal at every tick shown, and the outcome, reproduce a
+# figure (re-read tick by tick from the printed figure, in a review). `example`: a sentence of the standard states the outcome for the
+# situation the trace exhibits (a sequence's match, with the ticks it requires). `derived`: a variant of a figure or example, or a trace built
+# from a prose rule, with the expected rows derived by hand from the standard.
+
+== ieee_16_5_fig16_1_sampled_values
+# evidence: figure
+# §16.5.2 Figure 16-1 (ticks numbered from 1 in the figure; sample = tick - 1). The standard states req is sampled low at ticks 1, 2,
+# and 6 to 9 and high at ticks 3 to 5 (and, from the figure, 10 to 14); the sampled value, not the glitchy simulation value, is what the
+# assertion sees. The bare Boolean property req fails exactly where the sampled value is low.
+property: req
+signals: req
+clause: 16.5.2 16.5.1 16.6
+class: normative
+origin: IEEE 1800-2017 §16.5.2 Figure 16-1, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+req     : . . 1 1 1 . . . . 1 1 1 1 1
+fail    : 1 1 . . . 1 1 1 1 . . . . .
+pass    : . . 1 1 1 . . . . 1 1 1 1 1
+pending: 0
+
+== ieee_16_7_fig16_2_req_delay2_gnt
+# evidence: figure
+# §16.7 Figure 16-2: req ##2 gnt needs req now and gnt on the second subsequent tick (s0, s1, s2; samples 0 to 2). The match ends at s2.
+property: go |-> req ##2 gnt
+signals: go req gnt
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 Figure 16-2, re-expressed
+sample  : 0 1 2 3
+go      : 1 . . .
+req     : 1 . . .
+gnt     : . . 1 .
+pass    : . . 1 .
+pending: 0
+
+== ieee_16_7_fig16_2_gnt_on_first_tick_fails
+# evidence: derived
+# §16.7 text around Figure 16-2 (derived): with ##2 the first subsequent tick is not enough; gnt only at s1 leaves the sequence
+# unmatched, so the attempt fails at s2, the tick where gnt was required.
+property: go |-> req ##2 gnt
+signals: go req gnt
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 Figure 16-2, re-expressed
+sample  : 0 1 2 3
+go      : 1 . . .
+req     : 1 . . .
+gnt     : . 1 . .
+fail    : . . 1 .
+pending: 0
+
+== ieee_16_7_req_gnt_not_req_match
+# evidence: example
+# §16.7 example req ##1 gnt ##1 !req: req now, gnt on the next tick, req false the tick after. Matches at sample 2.
+property: go |-> req ##1 gnt ##1 !req
+signals: go req gnt
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 req ##1 gnt ##1 !req example, re-expressed
+sample  : 0 1 2 3
+go      : 1 . . .
+req     : 1 . . .
+gnt     : . 1 . .
+pass    : . . 1 .
+pending: 0
+
+== ieee_16_7_req_gnt_not_req_req_stays_high
+# evidence: derived
+# §16.7 example req ##1 gnt ##1 !req (derived): req still high at sample 2 makes the last element false, so the attempt fails at 2.
+property: go |-> req ##1 gnt ##1 !req
+signals: go req gnt
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 req ##1 gnt ##1 !req example, re-expressed
+sample  : 0 1 2 3
+go      : 1 . . .
+req     : 1 . 1 .
+gnt     : . 1 . .
+fail    : . . 1 .
+pending: 0
+
+== ieee_16_7_leading_delay2
+# evidence: derived
+# §16.7 list of ##N a forms: ##2 a means `true ##1 `true ##1 a, so a is checked two ticks after the start.
+# Attempt at 0 sees a at 2 and passes at 2. Attempt at 4 sees a at 5 only, one tick early, and fails at 6 (derived).
+property: go |-> ##2 a
+signals: go a
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 ##2 a example, re-expressed
+sample  : 0 1 2 3 4 5 6 7
+go      : 1 . . . 1 . . .
+a       : . . 1 . . 1 . .
+fail    : . . . . . . 1 .
+pass    : . . 1 . . . . .
+pending: 0
+
+== ieee_16_7_leading_range_0_to_3_first_hit
+# evidence: derived
+# §16.7 ##[0:3] a means (a) or (`true ##1 a) or (...): a at sample 1 only is a match of the ##1 alternative; passes at 1.
+property: go |-> ##[0:3] a
+signals: go a
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 ##[0:3] a example, re-expressed
+sample  : 0 1 2 3 4
+go      : 1 . . . .
+a       : . 1 . . .
+pass    : . 1 . . .
+pending: 0
+
+== ieee_16_7_leading_range_0_to_3_no_hit
+# evidence: derived
+# §16.7 ##[0:3] a (derived): a never true in the window of delays 0 to 3 leaves no alternative, so the attempt fails at the last
+# alternative, sample 3.
+property: go |-> ##[0:3] a
+signals: go a
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 ##[0:3] a example, re-expressed
+sample  : 0 1 2 3 4
+go      : 1 . . . .
+a       : . . . . 1
+fail    : . . . 1 .
+pending: 0
+
+== ieee_16_7_overlapped_concatenation_match
+# evidence: example
+# §16.7 overlapped concatenation: (a ##1 b ##1 c) ##0 (d ##1 e ##1 f) is the same as a ##1 b ##1 c&&d ##1 e ##1 f; c and d are
+# required at the same tick (sample 2). Here a b c&d e f at samples 0 to 4: match ends at 4.
+property: go |-> (a ##1 b ##1 c) ##0 (d ##1 e ##1 f)
+signals: go a b c d e f
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 overlapped concatenation example, re-expressed
+sample  : 0 1 2 3 4 5
+go      : 1 . . . . .
+a       : 1 . . . . .
+b       : . 1 . . . .
+c       : . . 1 . . .
+d       : . . 1 . . .
+e       : . . . 1 . .
+f       : . . . . 1 .
+pass    : . . . . 1 .
+pending: 0
+
+== ieee_16_7_overlapped_concatenation_d_one_tick_late
+# evidence: derived
+# §16.7 overlapped concatenation (derived): d one tick after c is not the overlap the ##0 asks for; c&&d is false at sample 2 and
+# the attempt fails there although the shifted sequence would otherwise be complete.
+property: go |-> (a ##1 b ##1 c) ##0 (d ##1 e ##1 f)
+signals: go a b c d e f
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 overlapped concatenation example, re-expressed
+sample  : 0 1 2 3 4 5 6
+go      : 1 . . . . . .
+a       : 1 . . . . . .
+b       : . 1 . . . . .
+c       : . . 1 . . . .
+d       : . . . 1 . . .
+e       : . . . . 1 . .
+f       : . . . . . 1 .
+fail    : . . 1 . . . .
+pending: 0
+
+== ieee_16_7_req_range_4_to_32_latest
+# evidence: example
+# §16.7 req ##[4:32] gnt: gnt may be true at any tick from the 4th to the 32nd after the current tick. gnt only at the 32nd
+# (sample 32) is the latest valid match and passes there.
+property: go |-> req ##[4:32] gnt
+signals: go req gnt
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 req ##[4:32] gnt example, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32
+go      : 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+req     : 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+gnt     : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+pass    : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+pending: 0
+
+== ieee_16_7_req_range_4_to_32_too_early_and_too_late
+# evidence: derived
+# §16.7 req ##[4:32] gnt (derived): gnt at sample 3 (too early) and 33 (too late) do not match; the window closes at sample 32 and
+# the attempt fails there.
+property: go |-> req ##[4:32] gnt
+signals: go req gnt
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 req ##[4:32] gnt example, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33
+go      : 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+req     : 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+gnt     : . . . 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1
+fail    : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 .
+pending: 0
+
+== ieee_16_7_req_range_4_to_dollar
+# evidence: example
+# §16.7 req ##[4:$] gnt: gnt some tick at or after the 4th. gnt at sample 6 passes at 6. ($ is never replaced by a finite bound.)
+property: go |-> req ##[4:$] gnt
+signals: go req gnt
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 req ##[4:$] gnt example, re-expressed
+scope: attempt
+sample  : 0 1 2 3 4 5 6 7
+go      : 1 . . . . . . .
+req     : 1 . . . . . . .
+gnt     : . . . . . . 1 .
+outcome : T t t t t t t t
+decided : 6 1 2 3 4 5 6 7
+pass    : . . . . . . 1 .
+pending: 0
+final-fail: 0
+
+== ieee_16_7_extension_with_true
+# evidence: example
+# §16.7 a ##1 b ##1 c ##3 `true: after c the match length is extended by three ticks. a b c at samples 0 to 2, the match ends at 5.
+property: go |-> a ##1 b ##1 c ##3 1'b1
+signals: go a b c
+clause: 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.7 a ##1 b ##1 c ##3 `true example, re-expressed
+sample  : 0 1 2 3 4 5 6 7
+go      : 1 . . . . . . .
+a       : 1 . . . . . . .
+b       : . 1 . . . . . .
+c       : . . 1 . . . . .
+pass    : . . . . . 1 . .
+pending: 0
+
+== ieee_16_9_2_consecutive_repetition_3_match
+# evidence: derived
+# §16.9.2 a ##1 b [*3] ##1 c is a ##1 b ##1 b ##1 b ##1 c: a at 0, b at 1 to 3, c at 4. Match ends at 4.
+property: go |-> a ##1 b [*3] ##1 c
+signals: go a b c
+clause: 16.9.2 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 b [*3] example, re-expressed
+sample  : 0 1 2 3 4 5
+go      : 1 . . . . .
+a       : 1 . . . . .
+b       : . 1 1 1 . .
+c       : . . . . 1 .
+pass    : . . . . 1 .
+pending: 0
+
+== ieee_16_9_2_consecutive_repetition_3_one_short
+# evidence: derived
+# §16.9.2 a ##1 b [*3] ##1 c (derived from the stated unrolling): only two b before c; the third b is required at sample 3 and
+# is missing, so the attempt fails at 3.
+property: go |-> a ##1 b [*3] ##1 c
+signals: go a b c
+clause: 16.9.2 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 b [*3] example, re-expressed
+sample  : 0 1 2 3 4 5
+go      : 1 . . . . .
+a       : 1 . . . . .
+b       : . 1 1 . . .
+c       : . . . 1 . .
+fail    : . . . 1 . .
+pending: 0
+
+== ieee_16_9_2_delay_then_repetition
+# evidence: derived
+# §16.9.2 a ##3 (b[*3]) means a ##1 `true ##1 `true ##1 (b ##1 b ##1 b): a at 0, b at 3 to 5, match ends at 5.
+property: go |-> a ##3 (b[*3])
+signals: go a b
+clause: 16.9.2 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 a ##3 (b[*3]) example, re-expressed
+sample  : 0 1 2 3 4 5 6
+go      : 1 . . . . . .
+a       : 1 . . . . . .
+b       : . . . 1 1 1 .
+pass    : . . . . . 1 .
+pending: 0
+
+== ieee_16_9_2_delay_then_repetition_third_b_missing
+# evidence: derived
+# §16.9.2 a ##3 (b[*3]) (derived): b at 3 and 4 only; the third b is due at 5 and fails there.
+property: go |-> a ##3 (b[*3])
+signals: go a b
+clause: 16.9.2 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 a ##3 (b[*3]) example, re-expressed
+sample  : 0 1 2 3 4 5 6
+go      : 1 . . . . . .
+a       : 1 . . . . . .
+b       : . . . 1 1 . .
+fail    : . . . . . 1 .
+pending: 0
+
+== ieee_16_9_2_repeated_sequence_with_delay_match
+# evidence: derived
+# §16.9.2 (a ##2 b)[*3] means (a ##2 b) ##1 (a ##2 b) ##1 (a ##2 b): a at 0, 3, 6 and b at 2, 5, 8. Match ends at 8.
+property: go |-> (a ##2 b)[*3]
+signals: go a b
+clause: 16.9.2 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 (a ##2 b)[*3] example, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8
+go      : 1 . . . . . . . .
+a       : 1 . . 1 . . 1 . .
+b       : . . 1 . . 1 . . 1
+pass    : . . . . . . . . 1
+pending: 0
+
+== ieee_16_9_2_repeated_sequence_with_delay_third_a_missing
+# evidence: derived
+# §16.9.2 (a ##2 b)[*3] (derived): the third iteration starts at sample 6 (one tick after the second ends at 5); a is low there,
+# so the attempt fails at 6.
+property: go |-> (a ##2 b)[*3]
+signals: go a b
+clause: 16.9.2 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 (a ##2 b)[*3] example, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8
+go      : 1 . . . . . . . .
+a       : 1 . . 1 . . . . .
+b       : . . 1 . . 1 . . 1
+fail    : . . . . . . 1 . .
+pending: 0
+
+== ieee_16_9_2_repetition_range_1_to_5_second_iteration
+# evidence: derived
+# §16.9.2 (a ##2 b)[*1:5] is the or of one to five iterations. Followed by ##1 c: iteration 1 ends at 2 but c is low at 3; iteration 2
+# (a at 3, b at 5) ends at 5 and c at 6 completes the match. The failed first alternative does not fail the attempt; passes at 6 (derived).
+property: go |-> (a ##2 b)[*1:5] ##1 c
+signals: go a b c
+clause: 16.9.2 16.9.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 (a ##2 b)[*1:5] example, re-expressed
+sample  : 0 1 2 3 4 5 6 7
+go      : 1 . . . . . . .
+a       : 1 . . 1 . . . .
+b       : . . 1 . . 1 . .
+c       : . . . . . . 1 .
+pass    : . . . . . . 1 .
+pending: 0
+
+== ieee_16_9_2_repetition_range_1_to_5_first_iteration
+# evidence: derived
+# §16.9.2 (a ##2 b)[*1:5] ##1 c: one iteration (a at 0, b at 2) with c at 3 matches the first alternative; passes at 3 (derived).
+property: go |-> (a ##2 b)[*1:5] ##1 c
+signals: go a b c
+clause: 16.9.2 16.9.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 (a ##2 b)[*1:5] example, re-expressed
+sample  : 0 1 2 3 4 5
+go      : 1 . . . . .
+a       : 1 . . . . .
+b       : . . 1 . . .
+c       : . . . 1 . .
+pass    : . . . 1 . .
+pending: 0
+
+== ieee_16_9_2_repetition_0_to_3_zero_iterations
+# evidence: derived
+# §16.9.2 a[*0:3] ##1 b ##1 c is (b ##1 c) or (a ##1 b ##1 c) or ...: with zero a, b is checked at the start. b at 0, c at 1: match at 1.
+property: go |-> a[*0:3] ##1 b ##1 c
+signals: go b c a
+clause: 16.9.2 16.9.2.1 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 a[*0:3] example, re-expressed
+sample  : 0 1 2 3 4
+go      : 1 . . . .
+b       : 1 . . . .
+c       : . 1 . . .
+pass    : . 1 . . .
+pending: 0
+
+== ieee_16_9_2_repetition_0_to_3_three_iterations
+# evidence: derived
+# §16.9.2 a[*0:3] ##1 b ##1 c: three a (0 to 2), b at 3, c at 4: match at 4.
+property: go |-> a[*0:3] ##1 b ##1 c
+signals: go a b c
+clause: 16.9.2 16.9.2.1 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 a[*0:3] example, re-expressed
+sample  : 0 1 2 3 4 5
+go      : 1 . . . . .
+a       : 1 1 1 . . .
+b       : . . . 1 . .
+c       : . . . . 1 .
+pass    : . . . . 1 .
+pending: 0
+
+== ieee_16_9_2_repetition_0_to_3_four_a_fails
+# evidence: derived
+# §16.9.2 a[*0:3] ##1 b ##1 c (derived): a stays high four ticks and b never rises. The alternative with k a requires b at sample k;
+# the last alternative (k = 3) fails at 3, so the attempt fails at 3.
+property: go |-> a[*0:3] ##1 b ##1 c
+signals: go a b c
+clause: 16.9.2 16.9.2.1 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 a[*0:3] example, re-expressed
+sample  : 0 1 2 3 4 5
+go      : 1 . . . . .
+a       : 1 1 1 1 . .
+fail    : . . . 1 . .
+pending: 0
+
+== ieee_16_9_2_unbounded_repetition_match
+# evidence: example
+# §16.9.2 a ##1 b [*1:$] ##1 c matches over three or more ticks with b at every tick strictly between a and c.
+# a at 0, b at 1 to 3, c at 4: match at 4.
+property: go |-> a ##1 b [*1:$] ##1 c
+signals: go a b c
+clause: 16.9.2 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 b [*1:$] example, re-expressed
+scope: attempt
+sample  : 0 1 2 3 4 5
+go      : 1 . . . . .
+a       : 1 . . . . .
+b       : . 1 1 1 . .
+c       : . . . . 1 .
+outcome : T t t t t t
+decided : 4 1 2 3 4 5
+pass    : . . . . 1 .
+pending: 0
+final-fail: 0
+
+== ieee_16_9_2_unbounded_repetition_gap_fails
+# evidence: derived
+# §16.9.2 a ##1 b [*1:$] ##1 c (derived): b at 1, then neither b nor c at 2; no continuation exists, fail at 2.
+property: go |-> a ##1 b [*1:$] ##1 c
+signals: go a b c
+clause: 16.9.2 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 b [*1:$] example, re-expressed
+scope: attempt
+sample  : 0 1 2 3 4
+go      : 1 . . . .
+a       : 1 . . . .
+b       : . 1 . . .
+c       : . . . . 1
+outcome : F t t t t
+decided : 2 1 2 3 4
+fail    : . . 1 . .
+pending: 0
+final-fail: 0
+
+== ieee_16_9_2_goto_repetition_ends_at_last_b
+# evidence: example
+# §16.9.2 a ##1 b [->2:10] ##1 c: c is on the tick right after the last b of the match, with 2 to 10 b strictly after a.
+# a at 0; b at 1 and 3; c at 2 (only one b so far: no match) and at 4 (right after the second b): match at 4 only.
+property: go |-> a ##1 b [->2:10] ##1 c
+signals: go a b c
+clause: 16.9.2 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 b [->2:10] example, re-expressed
+scope: attempt
+sample  : 0 1 2 3 4 5
+go      : 1 . . . . .
+a       : 1 . . . . .
+b       : . 1 . 1 . .
+c       : . . 1 . 1 .
+outcome : T t t t t t
+decided : 4 1 2 3 4 5
+pass    : . . . . 1 .
+pending: 0
+final-fail: 0
+
+== ieee_16_9_2_nonconsecutive_repetition_extends_match
+# evidence: example
+# §16.9.2 a ##1 b [=2:10] ##1 c: the match may be extended by ticks where b is false. a at 0; b at 1 and 3; c at 2 (too early, one b)
+# and at 5 after the false extra tick 4: match at 5.
+property: go |-> a ##1 b [=2:10] ##1 c
+signals: go a b c
+clause: 16.9.2 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 b [=2:10] example, re-expressed
+scope: attempt
+sample  : 0 1 2 3 4 5
+go      : 1 . . . . .
+a       : 1 . . . . .
+b       : . 1 . 1 . .
+c       : . . 1 . . 1
+outcome : T t t t t t
+decided : 5 1 2 3 4 5
+pass    : . . . . . 1
+pending: 0
+final-fail: 0
+
+== ieee_16_9_2_goto_repetition_does_not_extend_match
+# evidence: derived
+# §16.9.2 goto vs nonconsecutive (derived): the same trace as the previous case but with b [->2:10]: c at 5 is not right after a b
+# (b is false at 4), so nothing matches; the attempt is still open at the end of the trace (more b may come within the 10 allowed): pending 1.
+property: go |-> a ##1 b [->2:10] ##1 c
+signals: go a b c
+clause: 16.9.2 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2 b [->2:10] example, re-expressed
+scope: attempt
+sample  : 0 1 2 3 4 5
+go      : 1 . . . . .
+a       : 1 . . . . .
+b       : . 1 . 1 . .
+c       : . . 1 . . 1
+outcome : p t t t t t
+decided : . 1 2 3 4 5
+pending: 1
+final-fail: 0
+
+== ieee_16_9_2_1_empty_then_overlap_never_matches
+# evidence: example
+# §16.9.2.1 a[*0] ##0 b can never be matched (empty ##0 seq has no match), even when a and b are both true. The attempt fails at 0.
+property: go |-> a[*0] ##0 b
+signals: go a b
+clause: 16.9.2.1 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2.1 a[*0] ##0 b example, re-expressed
+sample  : 0 1 2
+go      : 1 . .
+a       : 1 . .
+b       : 1 . .
+fail    : 1 . .
+pending: 0
+
+== ieee_16_9_2_1_true_overlap_matches_when_b
+# evidence: derived
+# §16.9.2.1 `true ##0 b is the fusion of two length-1 sequences and matches whenever b is true: b at 0 passes at 0.
+property: go |-> 1'b1 ##0 b
+signals: go b
+clause: 16.9.2.1 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2.1 `true ##0 b example, re-expressed
+sample  : 0 1 2
+go      : 1 . .
+b       : 1 . .
+pass    : 1 . .
+pending: 0
+
+== ieee_16_9_2_1_empty_then_delay_n
+# evidence: derived
+# §16.9.2.1 (empty ##n seq) with n > 0 is (##(n-1) seq): a[*0] ##2 b is ##1 b. b at 1 passes at 1.
+property: go |-> a[*0] ##2 b
+signals: go b a
+clause: 16.9.2.1 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2.1 rule (empty ##n seq), re-expressed
+sample  : 0 1 2 3
+go      : 1 . . .
+b       : . 1 . .
+pass    : . 1 . .
+pending: 0
+
+== ieee_16_9_2_1_delay_n_then_empty
+# evidence: derived
+# §16.9.2.1 (seq ##n empty) with n > 0 is (seq ##(n-1) `true): a ##2 b[*0] is a ##1 `true; passes at 1 whatever b does.
+property: go |-> a ##2 b[*0]
+signals: go a b
+clause: 16.9.2.1 16.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2.1 rule (seq ##n empty), re-expressed
+sample  : 0 1 2 3
+go      : 1 . . .
+a       : 1 . . .
+pass    : . 1 . .
+pending: 0
+
+== ieee_16_9_2_1_optional_a_zero_case
+# evidence: derived
+# §16.9.2.1 b ##1 a[*0:1] ##2 c is (b ##2 c) or (b ##1 a ##2 c). b at 0, c at 2 with a low: the empty case matches at 2.
+property: go |-> b ##1 a[*0:1] ##2 c
+signals: go b c a
+clause: 16.9.2.1 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2.1 b ##1 a[*0:1] ##2 c example, re-expressed
+sample  : 0 1 2 3 4
+go      : 1 . . . .
+b       : 1 . . . .
+c       : . . 1 . .
+pass    : . . 1 . .
+pending: 0
+
+== ieee_16_9_2_1_optional_a_one_case
+# evidence: derived
+# §16.9.2.1 b ##1 a[*0:1] ##2 c: b at 0, a at 1, c at 3 (c low at 2): the nonempty case (one tick longer) matches at 3.
+property: go |-> b ##1 a[*0:1] ##2 c
+signals: go b a c
+clause: 16.9.2.1 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2.1 b ##1 a[*0:1] ##2 c example, re-expressed
+sample  : 0 1 2 3 4
+go      : 1 . . . .
+b       : 1 . . . .
+a       : . 1 . . .
+c       : . . . 1 .
+pass    : . . . 1 .
+pending: 0
+
+== ieee_16_9_2_1_optional_a_neither_case
+# evidence: derived
+# §16.9.2.1 b ##1 a[*0:1] ##2 c (derived): b at 0, a at 1, c neither at 2 nor 3: the empty alternative fails at 2, the nonempty one at 3; fail at 3.
+property: go |-> b ##1 a[*0:1] ##2 c
+signals: go b a c
+clause: 16.9.2.1 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.2.1 b ##1 a[*0:1] ##2 c example, re-expressed
+sample  : 0 1 2 3 4
+go      : 1 . . . .
+b       : 1 . . . .
+a       : . 1 . . .
+fail    : . . . 1 .
+pending: 0
+
+== ieee_16_9_3_fig16_3_rose_req
+# evidence: figure
+# §16.9.3 Figure 16-3 (ticks from 1; sample = tick - 1): e1 = $rose(req) occurs at tick 3, because req was low at tick 2 and high at 3,
+# and nowhere else (req falls at tick 9, which is no rise). !$rose(req) therefore fails at sample 2 only.
+property: !$rose(req)
+signals: req
+clause: 16.9.3 16.12.3
+class: normative
+origin: IEEE 1800-2017 §16.9.3 Figure 16-3 e1, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+req     : . . 1 1 1 1 1 1 . . . . . .
+fail    : . . 1 . . . . . . . . . . .
+pass    : 1 1 . 1 1 1 1 1 1 1 1 1 1 1
+pending: 0
+
+== ieee_16_9_3_fig16_3_fell_ack
+# evidence: figure
+# §16.9.3 Figure 16-3 (ticks from 1; sample = tick - 1): e2 = $fell(ack) occurs at tick 6, because ack was sampled high at tick 5 and
+# low at tick 6. !$fell(ack) therefore fails at sample 5 only.
+property: !$fell(ack)
+signals: ack
+clause: 16.9.3 16.12.3
+class: normative
+origin: IEEE 1800-2017 §16.9.3 Figure 16-3 e2, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+ack     : 1 1 1 1 1 . . . . . . . . .
+fail    : . . . . . 1 . . . . . . . .
+pass    : 1 1 1 1 1 . 1 1 1 1 1 1 1 1
+pending: 0
+
+== ieee_16_9_3_en_and_rose_req_then_gnt
+# evidence: derived
+# §16.9.3 assertion a1: whenever en is high and req rises, gnt must be asserted at the next cycle. req rises at 2 (en high): gnt at 3,
+# pass at 3. req rises at 5 with en low: vacuous. req rises at 8 (en high): gnt low at 9, fail at 9.
+property: en && $rose(req) |=> gnt
+signals: req en gnt
+clause: 16.9.3 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.3 assertion a1, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11
+req     : . . 1 1 . 1 . . 1 . . .
+en      : . . 1 . . . . . 1 . . .
+gnt     : . . . 1 . . . . . . . .
+fail    : . . . . . . . . . 1 . .
+pass    : . . . 1 . . . . . . . .
+pending: 0
+
+== ieee_16_9_5_fig16_5_and_ends_at_later_end
+# evidence: figure
+# §16.9.5 Figure 16-5 (ticks from 1; sample = tick - 1): inputs as drawn for ticks 1 to 14. te1 at ticks 1, 2, 8; te2 at 9 to 14; te3 at 2, 3, 8,
+# 9; te4 at 3 to 6 and 10 to 14; te5 at 4 to 6 and 12 to 14. The attempt starts at tick 8 (sample 7), marked by go (the figure's attempt line).
+# The operands (te1 ##2 te2) and (te3 ##2 te4 ##2 te5) match ending at ticks 10 and 12; the composite match ends at the later, tick 12.
+property: go |-> (te1 ##2 te2) and (te3 ##2 te4 ##2 te5)
+signals: go te1 te2 te3 te4 te5
+clause: 16.9.5 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.5 Figure 16-5, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . . . . . . 1 . . . . . .
+te1     : 1 1 . . . . . 1 . . . . . .
+te2     : . . . . . . . . 1 1 1 1 1 1
+te3     : . 1 1 . . . . 1 1 . . . . .
+te4     : . . 1 1 1 1 . . . 1 1 1 1 1
+te5     : . . . 1 1 1 . . . . . 1 1 1
+pass    : . . . . . . . . . . . 1 . .
+pending: 0
+
+== ieee_16_9_5_and_second_operand_fails
+# evidence: derived
+# §16.9.5 Figure 16-5 variant: the figure's inputs with te5 forced low at tick 12 (the only change); the second operand then cannot match; and
+# needs both operands to match, so the attempt fails at sample 11 (te5's tick) although the first operand matched at 9.
+property: go |-> (te1 ##2 te2) and (te3 ##2 te4 ##2 te5)
+signals: go te1 te2 te3 te4 te5
+clause: 16.9.5 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.5 Figure 16-5, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . . . . . . 1 . . . . . .
+te1     : 1 1 . . . . . 1 . . . . . .
+te2     : . . . . . . . . 1 1 1 1 1 1
+te3     : . 1 1 . . . . 1 1 . . . . .
+te4     : . . 1 1 1 1 . . . 1 1 1 1 1
+te5     : . . . 1 1 1 . . . . . . 1 1
+fail    : . . . . . . . . . . . 1 . .
+pending: 0
+
+== ieee_16_9_5_fig16_6_and_with_range_first_match
+# evidence: figure
+# §16.9.5 Figure 16-6 (ticks from 1; sample = tick - 1): inputs as drawn. te1 at ticks 1, 2, 8; te2 at 9 to 14; te3 at 2, 3, 8 (not 9, unlike
+# Figure 16-5); te4 at 3 to 6 and 10 to 14; te5 at 4 to 6 and 12 to 14. With te1 ##[1:5] te2 the first operand matches ending at ticks 9 to 13 and
+# the second at 12; the composite has matches ending at 12 (four of them) and 13. The first match, tick 12, is where the implication passes.
+property: go |-> (te1 ##[1:5] te2) and (te3 ##2 te4 ##2 te5)
+signals: go te1 te2 te3 te4 te5
+clause: 16.9.5 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.5 Figure 16-6, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . . . . . . 1 . . . . . .
+te1     : 1 1 . . . . . 1 . . . . . .
+te2     : . . . . . . . . 1 1 1 1 1 1
+te3     : . 1 1 . . . . 1 . . . . . .
+te4     : . . 1 1 1 1 . . . 1 1 1 1 1
+te5     : . . . 1 1 1 . . . . . 1 1 1
+pass    : . . . . . . . . . . . 1 . .
+pending: 0
+
+== ieee_16_9_5_fig16_6_and_fifth_match_ends_at_13
+# evidence: derived
+# §16.9.5 Figure 16-6 inputs plus an added signal z (ours, true only at tick 14): the fifth composite match ends at tick 13 (sample 12).
+# Followed by ##1 z with z true only at tick 14 (sample 13), only that match continues, and the attempt passes at 13; the matches ending
+# at 12 die at 12.
+property: go |-> ((te1 ##[1:5] te2) and (te3 ##2 te4 ##2 te5)) ##1 z
+signals: go te1 te2 te3 te4 te5 z
+clause: 16.9.5 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.5 Figure 16-6, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . . . . . . 1 . . . . . .
+te1     : 1 1 . . . . . 1 . . . . . .
+te2     : . . . . . . . . 1 1 1 1 1 1
+te3     : . 1 1 . . . . 1 . . . . . .
+te4     : . . 1 1 1 1 . . . 1 1 1 1 1
+te5     : . . . 1 1 1 . . . . . 1 1 1
+z       : . . . . . . . . . . . . . 1
+pass    : . . . . . . . . . . . . . 1
+pending: 0
+
+== ieee_16_9_5_fig16_7_and_of_booleans
+# evidence: figure
+# §16.9.5 Figure 16-7 (ticks from 1; sample = tick - 1): inputs as drawn. te1 at ticks 1, 3, 8, 13, 14; te2 at ticks 1 to 6, 8 to 12, 14
+# (low at 7 and 13). te1 and te2 matches at ticks 1, 3, 8 and 14 only, where both are true; it fails at every other tick (green and red
+# arrows of the figure).
+property: te1 and te2
+signals: te1 te2
+clause: 16.9.5 16.12.3
+class: normative
+origin: IEEE 1800-2017 §16.9.5 Figure 16-7, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+te1     : 1 . 1 . . . . 1 . . . . 1 1
+te2     : 1 1 1 1 1 1 . 1 1 1 1 1 . 1
+fail    : . 1 . 1 1 1 1 . 1 1 1 1 1 .
+pass    : 1 . 1 . . . . 1 . . . . . 1
+pending: 0
+
+== ieee_16_9_6_fig16_8_intersect_single_match
+# evidence: figure
+# §16.9.6 Figure 16-8 (ticks from 1; sample = tick - 1): inputs as drawn. te1 at ticks 1, 2, 8; te2 at 9 to 14; te3 at 2, 3, 8; te4 at 3 to 6
+# and 10 to 14; te5 at 4 to 6 and 12 to 14. (te1 ##[1:5] te2) intersect (te3 ##2 te4 ##2 te5) from tick 8. Unlike and, the operand matches
+# must have the same length, so the only match is the pair of length 5 ending at tick 12.
+property: go |-> (te1 ##[1:5] te2) intersect (te3 ##2 te4 ##2 te5)
+signals: go te1 te2 te3 te4 te5
+clause: 16.9.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.6 Figure 16-8, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . . . . . . 1 . . . . . .
+te1     : 1 1 . . . . . 1 . . . . . .
+te2     : . . . . . . . . 1 1 1 1 1 1
+te3     : . 1 1 . . . . 1 . . . . . .
+te4     : . . 1 1 1 1 . . . 1 1 1 1 1
+te5     : . . . 1 1 1 . . . . . 1 1 1
+pass    : . . . . . . . . . . . 1 . .
+pending: 0
+
+== ieee_16_9_6_intersect_rejects_longer_operand_match
+# evidence: derived
+# §16.9.6 Figure 16-8 variant: the figure's inputs with te2 changed to tick 13 only (the only change), so the first operand can only match with
+# length 6 while the second has length 5; no pair of equal length exists and the attempt fails at sample 11, when the length-5 alternative
+# is refuted.
+property: go |-> (te1 ##[1:5] te2) intersect (te3 ##2 te4 ##2 te5)
+signals: go te1 te2 te3 te4 te5
+clause: 16.9.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.6 Figure 16-8 variant, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . . . . . . 1 . . . . . .
+te1     : 1 1 . . . . . 1 . . . . . .
+te2     : . . . . . . . . . . . . 1 .
+te3     : . 1 1 . . . . 1 . . . . . .
+te4     : . . 1 1 1 1 . . . 1 1 1 1 1
+te5     : . . . 1 1 1 . . . . . 1 1 1
+fail    : . . . . . . . . . . . 1 . .
+pending: 0
+
+== ieee_16_9_6_and_accepts_longer_operand_match
+# evidence: derived
+# §16.9.5 against §16.9.6: the same inputs as the previous case (Figure 16-8 with te2 at tick 13 only) with and instead of intersect: the
+# operand ends 12 (second) and 13 (first) need not coincide, so there is one match, ending at the later, tick 13 (sample 12).
+property: go |-> (te1 ##[1:5] te2) and (te3 ##2 te4 ##2 te5)
+signals: go te1 te2 te3 te4 te5
+clause: 16.9.5 16.9.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.6 Figure 16-8 variant with and (§16.9.5), re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . . . . . . 1 . . . . . .
+te1     : 1 1 . . . . . 1 . . . . . .
+te2     : . . . . . . . . . . . . 1 .
+te3     : . 1 1 . . . . 1 . . . . . .
+te4     : . . 1 1 1 1 . . . 1 1 1 1 1
+te5     : . . . 1 1 1 . . . . . 1 1 1
+pass    : . . . . . . . . . . . . 1 .
+pending: 0
+
+== ieee_16_9_7_fig16_9_or_of_booleans
+# evidence: figure
+# §16.9.7 Figure 16-9 (ticks from 1; sample = tick - 1): inputs as drawn. te1 at ticks 1, 3, 8, 11, 12, 14; te2 at ticks 1 to 6, 8 to 10, 14.
+# te1 or te2 matches at every tick where either is true and fails only at ticks 7 and 13, where both are false (the figure's red arrows).
+property: te1 or te2
+signals: te1 te2
+clause: 16.9.7 16.12.3
+class: normative
+origin: IEEE 1800-2017 §16.9.7 Figure 16-9, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+te1     : 1 . 1 . . . . 1 . . 1 1 . 1
+te2     : 1 1 1 1 1 1 . 1 1 1 . . . 1
+fail    : . . . . . . 1 . . . . . 1 .
+pass    : 1 1 1 1 1 1 . 1 1 1 1 1 . 1
+pending: 0
+
+== ieee_16_9_7_fig16_10_or_first_match
+# evidence: figure
+# §16.9.7 Figure 16-10 (ticks from 1; sample = tick - 1): inputs as drawn (the same as Figure 16-5). te1 at ticks 1, 2, 8; te2 at 9 to 14; te3
+# at 2, 3, 8, 9; te4 at 3 to 6 and 10 to 14; te5 at 4 to 6 and 12 to 14. (te1 ##2 te2) or (te3 ##2 te4 ##2 te5) at tick 8 has two matches,
+# ending at ticks 10 and 12. The implication passes at the first, tick 10 (sample 9).
+property: go |-> (te1 ##2 te2) or (te3 ##2 te4 ##2 te5)
+signals: go te1 te2 te3 te4 te5
+clause: 16.9.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.7 Figure 16-10, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . . . . . . 1 . . . . . .
+te1     : 1 1 . . . . . 1 . . . . . .
+te2     : . . . . . . . . 1 1 1 1 1 1
+te3     : . 1 1 . . . . 1 1 . . . . .
+te4     : . . 1 1 1 1 . . . 1 1 1 1 1
+te5     : . . . 1 1 1 . . . . . 1 1 1
+pass    : . . . . . . . . . 1 . . . .
+pending: 0
+
+== ieee_16_9_7_fig16_10_or_second_match_alive
+# evidence: derived
+# §16.9.7 Figure 16-10 inputs plus an added signal z (ours, true only at sample 12): the match ending at tick 12 (sample 11) is a match of
+# the or as well. Followed by ##1 z with z only at sample 12, the first thread dies at 10 and the second passes at 12.
+property: go |-> ((te1 ##2 te2) or (te3 ##2 te4 ##2 te5)) ##1 z
+signals: go te1 te2 te3 te4 te5 z
+clause: 16.9.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.7 Figure 16-10, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . . . . . . 1 . . . . . .
+te1     : 1 1 . . . . . 1 . . . . . .
+te2     : . . . . . . . . 1 1 1 1 1 1
+te3     : . 1 1 . . . . 1 1 . . . . .
+te4     : . . 1 1 1 1 . . . 1 1 1 1 1
+te5     : . . . 1 1 1 . . . . . 1 1 1
+z       : . . . . . . . . . . . . 1 .
+pass    : . . . . . . . . . . . . 1 .
+pending: 0
+
+== ieee_16_9_7_fig16_11_or_with_range_first_match
+# evidence: figure
+# §16.9.7 Figure 16-11 (ticks from 1; sample = tick - 1): inputs as drawn. te1 at ticks 1, 2, 8; te2 at 9 to 14; te3 at 2, 3, 8 (not 9); te4 at
+# 3 to 6 and 10 to 14; te5 at 4 to 6 and 12 to 14. With ##[1:5] the or has a match at each of ticks 9, 10, 11 and 13 and two at 12.
+# The first, tick 9 (sample 8), passes the implication.
+property: go |-> (te1 ##[1:5] te2) or (te3 ##2 te4 ##2 te5)
+signals: go te1 te2 te3 te4 te5
+clause: 16.9.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.7 Figure 16-11, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . . . . . . 1 . . . . . .
+te1     : 1 1 . . . . . 1 . . . . . .
+te2     : . . . . . . . . 1 1 1 1 1 1
+te3     : . 1 1 . . . . 1 . . . . . .
+te4     : . . 1 1 1 1 . . . 1 1 1 1 1
+te5     : . . . 1 1 1 . . . . . 1 1 1
+pass    : . . . . . . . . 1 . . . . .
+pending: 0
+
+== ieee_16_9_7_fig16_11_or_latest_match_at_13
+# evidence: derived
+# §16.9.7 Figure 16-11 inputs plus an added signal z (ours, true only at sample 13): the latest match of the or ends at tick 13 (sample 12).
+# Followed by ##1 z with z only at sample 13, only that thread survives and the attempt passes at 13.
+property: go |-> ((te1 ##[1:5] te2) or (te3 ##2 te4 ##2 te5)) ##1 z
+signals: go te1 te2 te3 te4 te5 z
+clause: 16.9.7 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.7 Figure 16-11, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . . . . . . 1 . . . . . .
+te1     : 1 1 . . . . . 1 . . . . . .
+te2     : . . . . . . . . 1 1 1 1 1 1
+te3     : . 1 1 . . . . 1 . . . . . .
+te4     : . . 1 1 1 1 . . . 1 1 1 1 1
+te5     : . . . 1 1 1 . . . . . 1 1 1
+z       : . . . . . . . . . . . . . 1
+pass    : . . . . . . . . . . . . . 1
+pending: 0
+
+== ieee_16_9_9_fig16_12_throughout_fails_when_burst_mode_rises
+# evidence: figure
+# Inputs as drawn: burst_mode high at tick 1, low at 2 to 8, high from 9; irdy high at 1, 2, low at 3 to 11, high from 12; trdy high at 1 to 3,
+# low at 4 to 10, high from 11 (each edge of the drawing lies between two ticks, so the sampled value changes at the next tick).
+# §16.9.9 Figure 16-12 (ticks from 1; sample = tick - 1): the attempt starts at tick 2 (go there; $fell(burst_mode) holds). The subsequence
+# (trdy==0 && irdy==0) is true for ticks 4 to 10, but burst_mode rises at tick 9, so throughout fails: failure at tick 9 (sample 8).
+property: go |-> $fell(burst_mode) ##0 ((!burst_mode) throughout (##2 ((trdy==0)&&(irdy==0)) [*7]))
+signals: go burst_mode trdy irdy
+clause: 16.9.9 16.9.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.9 Figure 16-12, re-expressed
+sample     : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go         : . 1 . . . . . . . . . . . .
+burst_mode : 1 . . . . . . . 1 1 1 1 1 1
+trdy       : 1 1 1 . . . . . . . 1 1 1 1
+irdy       : 1 1 . . . . . . . . . 1 1 1
+fail       : . . . . . . . . 1 . . . . .
+pending: 0
+
+== ieee_16_9_9_fig16_13_throughout_succeeds
+# evidence: figure
+# Inputs as drawn: burst_mode high at tick 1, low at 2 to 11, high from 12; irdy and trdy as in Figure 16-12 (irdy high at 1, 2, low at 3 to 11,
+# high from 12; trdy high at 1 to 3, low at 4 to 10, high from 11).
+# §16.9.9 Figure 16-13 (ticks from 1; sample = tick - 1): burst_mode stays low through tick 11, so the match from tick 2 to tick 10 exists
+# (the standard states the match ends at tick 10, sample 9).
+property: go |-> $fell(burst_mode) ##0 ((!burst_mode) throughout (##2 ((trdy==0)&&(irdy==0)) [*7]))
+signals: go burst_mode trdy irdy
+clause: 16.9.9 16.9.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.9 Figure 16-13, re-expressed
+sample     : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go         : . 1 . . . . . . . . . . . .
+burst_mode : 1 . . . . . . . . . . 1 1 1
+trdy       : 1 1 1 . . . . . . . 1 1 1 1
+irdy       : 1 1 . . . . . . . . . 1 1 1
+pass       : . . . . . . . . . 1 . . . .
+pending: 0
+
+== ieee_16_9_10_within_fig16_13_match
+# evidence: figure
+# §16.9.10 trace of Figure 16-13 (ticks from 1; sample = tick - 1): !trdy[*7] within ($fell(irdy) ##1 !irdy[*8]) matches from tick 3 to tick 11.
+# go at tick 3 (sample 2). irdy falls at 3 and is low through 11; trdy is low at ticks 4 to 10. Match end tick 11 (sample 10).
+property: go |-> !trdy[*7] within ($fell(irdy) ##1 !irdy[*8])
+signals: go irdy trdy
+clause: 16.9.10 16.9.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.10 Figure 16-13 and the within example, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . 1 . . . . . . . . . . .
+irdy    : 1 1 . . . . . . . . . 1 1 1
+trdy    : 1 1 1 . . . . . . . 1 1 1 1
+pass    : . . . . . . . . . . 1 . . .
+pending: 0
+
+== ieee_16_9_10_within_inner_run_broken
+# evidence: derived
+# §16.9.10 within (derived): trdy high at tick 7 (sample 6) breaks every run of seven lows that fits inside ticks 3 to 11 (runs start at
+# 3, 4 or 5 and all contain tick 7); the outer length is fixed at nine ticks, so the attempt fails at sample 6.
+property: go |-> !trdy[*7] within ($fell(irdy) ##1 !irdy[*8])
+signals: go irdy trdy
+clause: 16.9.10 16.9.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.9.10 Figure 16-13 and the within example, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+go      : . . 1 . . . . . . . . . . .
+irdy    : 1 1 . . . . . . . . . 1 1 1
+trdy    : 1 1 1 . . . 1 . . . 1 1 1 1
+fail    : . . . . . . 1 . . . . . . .
+pending: 0

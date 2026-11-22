@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "b",
+      "wave": "010"
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "010"
+    }
+  ],
+  "head": {
+    "text": "liveness/cover_s_eventually",
+    "tock": 0
+  }
+}

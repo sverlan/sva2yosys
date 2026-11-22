@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "l"
+    },
+    {
+      "name": "x",
+      "wave": "1"
+    },
+    {
+      "name": "fail",
+      "wave": "0"
+    },
+    {
+      "name": "pass",
+      "wave": "0"
+    },
+    {
+      "name": "repeat",
+      "wave": "1"
+    },
+    {
+      "name": "outcome",
+      "wave": "=",
+      "data": [
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "lasso/repetition_longer_than_the_written_trace",
+    "tock": 0
+  }
+}

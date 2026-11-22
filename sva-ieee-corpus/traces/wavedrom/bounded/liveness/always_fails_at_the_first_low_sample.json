@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "b",
+      "wave": "1.01."
+    },
+    {
+      "name": "fail",
+      "wave": "0.10."
+    },
+    {
+      "name": "pass",
+      "wave": "0...."
+    }
+  ],
+  "head": {
+    "text": "liveness/always_fails_at_the_first_low_sample",
+    "tock": 0
+  }
+}

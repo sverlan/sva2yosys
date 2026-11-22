@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "010."
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0..."
+    },
+    {
+      "name": "repeat",
+      "wave": "0.1."
+    },
+    {
+      "name": "outcome",
+      "wave": "=...",
+      "data": [
+        "F"
+      ]
+    }
+  ],
+  "head": {
+    "text": "ieee_properties/ieee_16_12_13_always_s_eventually_finitely_often_p3",
+    "tock": 0
+  }
+}

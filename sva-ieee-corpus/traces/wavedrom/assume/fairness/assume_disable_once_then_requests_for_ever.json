@@ -1,0 +1,47 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "b",
+      "wave": "0."
+    },
+    {
+      "name": "a",
+      "wave": "1."
+    },
+    {
+      "name": "d",
+      "wave": "1."
+    },
+    {
+      "name": "fail",
+      "wave": "0."
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    },
+    {
+      "name": "repeat",
+      "wave": "01"
+    },
+    {
+      "name": "outcome",
+      "wave": "==",
+      "data": [
+        "D",
+        "F"
+      ]
+    }
+  ],
+  "head": {
+    "text": "fairness/assume_disable_once_then_requests_for_ever",
+    "tock": 0
+  },
+  "foot": {
+    "text": "d: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "l"
+    },
+    {
+      "name": "c",
+      "wave": "0"
+    },
+    {
+      "name": "a",
+      "wave": "1"
+    },
+    {
+      "name": "b",
+      "wave": "1"
+    },
+    {
+      "name": "fail",
+      "wave": "0"
+    },
+    {
+      "name": "pass",
+      "wave": "0"
+    },
+    {
+      "name": "repeat",
+      "wave": "1"
+    },
+    {
+      "name": "outcome",
+      "wave": "=",
+      "data": [
+        "F"
+      ]
+    }
+  ],
+  "head": {
+    "text": "not_liveness/always_implication_into_not_delay_pending_for_ever",
+    "tock": 0
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "e",
+      "wave": "1.0."
+    },
+    {
+      "name": "a",
+      "wave": "010."
+    },
+    {
+      "name": "b",
+      "wave": "010."
+    },
+    {
+      "name": "c",
+      "wave": "0..1"
+    },
+    {
+      "name": "d",
+      "wave": "0..1"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0101"
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_14_8_g_if_else_selected_branch",
+    "tock": 0
+  }
+}

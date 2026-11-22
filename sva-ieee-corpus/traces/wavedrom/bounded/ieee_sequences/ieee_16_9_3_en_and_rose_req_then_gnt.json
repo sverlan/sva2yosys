@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.........."
+    },
+    {
+      "name": "req",
+      "wave": "0.1.010.10.."
+    },
+    {
+      "name": "en",
+      "wave": "0.10....10.."
+    },
+    {
+      "name": "gnt",
+      "wave": "0..10......."
+    },
+    {
+      "name": "fail",
+      "wave": "0........10."
+    },
+    {
+      "name": "pass",
+      "wave": "0..10......."
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_9_3_en_and_rose_req_then_gnt",
+    "tock": 0
+  }
+}

@@ -1,0 +1,140 @@
+# Property not (IEEE 1800 §16.12.3), on bounded sequences: an obligation of "not s" fails
+# at the first match of s and passes where s can no longer match; not reverses strength.
+
+== not_fails_at_the_first_match
+# t0: a ##1 b matches at 1, so not fails there. t1: a is 0, s is dead: pass at 1.
+# t2: b is 0 at 3, dead: pass at 3. t3: a is 0: pass at 3.
+property: not (a ##1 b)
+clause: 16.7 16.12.3
+class: normative
+sample : 0 1 2 3
+a      : 1 . 1 .
+b      : . 1 . .
+fail   : . 1 . .
+pass   : . 1 . 1
+pending: 0
+
+== not_first_of_several_matches
+# t0 could match at 1 and at 2: the first match (1) decides, once.
+property: not (a ##[1:2] b)
+clause: 16.7 16.12.3
+class: normative
+sample : 0 1 2
+a      : 1 . .
+b      : . 1 1
+fail   : . 1 .
+pass   : . 1 1
+pending: 0
+
+== not_as_consequent
+# t0: b ##1 c matches at 1: fail at 1. t2: c is 0 at 3: pass at 3.
+property: a |-> not (b ##1 c)
+clause: 16.7 16.12.3 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : 1 . 1 .
+b      : 1 . 1 .
+c      : . 1 . .
+fail   : . 1 . .
+pass   : . . . 1
+pending: 0
+
+== not_after_nonoverlapping_implication
+# a |=> not b: b at 1 after a at 0 fails at 1.
+property: a |=> not b
+clause: 16.12.3 16.12.7
+class: normative
+sample : 0 1 2
+a      : 1 . .
+b      : . 1 .
+fail   : . 1 .
+pending: 0
+
+== not_after_nonoverlapping_implication_passes
+property: a |=> not b
+clause: 16.12.3 16.12.7
+class: normative
+sample : 0 1 2
+a      : 1 . .
+b      : . . .
+pass   : . 1 .
+pending: 0
+
+== not_of_weak_is_strong_at_the_end
+# In an assert, s is weak, so not s is strong: pending at the end, it fails then.
+property: not (a ##2 b)
+clause: 16.7 16.12.2 16.12.3 Annex F
+class: interpretation I8
+sample : 0 1
+a      : 1 .
+b      : . .
+pass   : . 1
+pending: 1
+final-fail: 1
+
+== not_of_strong_is_weak_at_the_end
+property: not strong(a ##2 b)
+clause: 16.7 16.12.2 16.12.3 Annex F
+class: normative
+sample : 0 1
+a      : 1 .
+b      : . .
+pass   : . 1
+pending: 1
+final-fail: 0
+
+== cover_of_not
+# A cover counts the samples where s becomes impossible (not s is nonvacuous).
+kind: cover
+property: not (a ##1 b)
+clause: 16.7 16.12.3 16.14.3
+class: normative
+sample : 0 1 2
+a      : 1 . .
+b      : . . .
+pass   : . 1 1
+pending: 0
+
+== not_disabled
+# t0 would fail at 1 and t1 would pass at 1, but r disables both; t2 passes at 2.
+disable: r
+property: not (a ##1 b)
+clause: 16.7 16.12 16.12.3
+class: normative
+sample : 0 1 2
+a      : 1 . .
+b      : . 1 .
+r      : . 1 .
+pass   : . . 1
+pending: 0
+
+== not_after_nonoverlapping_implication_starts_at_the_next_tick
+# a |=> not 1'b0: the consequent starts at 1, where 1'b0 cannot match: pass at 1.
+property: a |=> not 1'b0
+clause: 16.12.3 16.12.7
+class: normative
+sample : 0 1
+a      : 1 .
+pass   : . 1
+pending: 0
+
+== not_after_nonoverlapping_implication_disabled_at_the_next_tick
+disable: r
+property: a |=> not 1'b0
+clause: 16.12 16.12.3 16.12.7
+class: normative
+sample : 0 1
+a      : 1 .
+r      : . 1
+pending: 0
+
+== not_after_nonoverlapping_implication_trace_ends_before_the_start
+# The trace ends at the trigger: the consequent never starts, so nothing fails at the end.
+property: a |=> not b
+clause: 16.12.3 16.12.7 Annex F
+class: normative
+sample : 0
+a      : 1
+b      : .
+pending: 0
+final-fail: 0

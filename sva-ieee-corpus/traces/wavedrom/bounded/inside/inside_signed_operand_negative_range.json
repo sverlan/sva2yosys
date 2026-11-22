@@ -1,0 +1,38 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp......"
+    },
+    {
+      "name": "a",
+      "wave": "1......."
+    },
+    {
+      "name": "v",
+      "wave": "========",
+      "data": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "name": "fail",
+      "wave": "0.1...0."
+    },
+    {
+      "name": "pass",
+      "wave": "1.0...1."
+    }
+  ],
+  "head": {
+    "text": "inside/inside_signed_operand_negative_range",
+    "tock": 0
+  }
+}

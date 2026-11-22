@@ -1,0 +1,41 @@
+# Cover reports and obligations still open at the end of the trace.
+
+== cover_sequence_ends_once_per_sample
+# Attempts 0 and 1 both match, ending at 2: one report.
+property: a ##[1:2] b
+clause: 16.7 16.14.3
+class: normative
+kind: cover
+sample : 0 1 2 3
+a      : 1 1 . .
+b      : . . 1 .
+pass   : . . 1 .
+
+== cover_implication_counts_non_vacuous_successes_only
+property: a |-> b
+clause: 16.12.7 16.14.3
+class: normative
+kind: cover
+sample : 0 1 2
+a      : . 1 .
+b      : 1 1 .
+pass   : . 1 .
+
+== open_obligation_at_the_end
+property: a |-> ##[1:5] b
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : . . 1 .
+b      : . . . .
+pending: 1
+
+== antecedent_still_open_at_the_end
+property: a ##1 b |-> c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2
+a      : . . 1
+b      : . . .
+c      : . . .
+pending: 0

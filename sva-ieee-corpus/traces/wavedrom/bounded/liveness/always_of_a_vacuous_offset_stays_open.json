@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "l"
+    },
+    {
+      "name": "a",
+      "wave": "0"
+    },
+    {
+      "name": "b",
+      "wave": "0"
+    },
+    {
+      "name": "fail",
+      "wave": "0"
+    },
+    {
+      "name": "pass",
+      "wave": "0"
+    }
+  ],
+  "head": {
+    "text": "liveness/always_of_a_vacuous_offset_stays_open",
+    "tock": 0
+  }
+}

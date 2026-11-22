@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "10..."
+    },
+    {
+      "name": "b",
+      "wave": "0...."
+    },
+    {
+      "name": "c",
+      "wave": "0...."
+    },
+    {
+      "name": "fail",
+      "wave": "0..10"
+    },
+    {
+      "name": "pass",
+      "wave": "0...."
+    }
+  ],
+  "head": {
+    "text": "or/or_fails_when_both_branches_are_dead",
+    "tock": 0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp....."
+    },
+    {
+      "name": "b",
+      "wave": "101.01."
+    },
+    {
+      "name": "fail",
+      "wave": "010.10."
+    },
+    {
+      "name": "pass",
+      "wave": "0..10.1"
+    }
+  ],
+  "head": {
+    "text": "temporal/eventually_of_always",
+    "tock": 0
+  }
+}

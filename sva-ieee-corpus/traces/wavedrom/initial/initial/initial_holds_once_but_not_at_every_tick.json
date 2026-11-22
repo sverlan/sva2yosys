@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "v",
+      "wave": "======",
+      "data": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "name": "fail",
+      "wave": "0....."
+    },
+    {
+      "name": "pass",
+      "wave": "0..10."
+    }
+  ],
+  "head": {
+    "text": "initial/initial_holds_once_but_not_at_every_tick",
+    "tock": 0
+  }
+}

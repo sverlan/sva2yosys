@@ -1,0 +1,40 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "10."
+    },
+    {
+      "name": "b",
+      "wave": "10."
+    },
+    {
+      "name": "e",
+      "wave": "010"
+    },
+    {
+      "name": "c",
+      "wave": "10."
+    },
+    {
+      "name": "d",
+      "wave": "010"
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "010"
+    }
+  ],
+  "head": {
+    "text": "composition/within_with_the_same_start_and_end",
+    "tock": 0
+  }
+}

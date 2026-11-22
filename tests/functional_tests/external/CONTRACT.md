@@ -1,0 +1,11 @@
+# External areas: shared contract
+
+The areas below this folder check sva2yosys against material that is not part of this repository: third-party corpora with known answers, and external tools used as oracles. Each area has its own `CONTRACT.md` for what it checks; this file states the rules they all follow.
+
+1. **Opt-in.** An area needs its corpus checkout and its tools, each named by an environment variable (`.env.example`). Its tests run only when the run selects them (`--external-corpora`, `--external-tools`; `tests/support/selection.py`); a plain `uv run pytest` runs none of them.
+2. **Pinned inputs.** A corpus is fetched by `tests/support/corpora.py` at a pinned full commit hash, never a branch or a tag alone, and is never committed.
+3. **Expected results belong to one revision.** Every expectations table records the corpus commit, a SHA-256 digest of the files it classifies, and the versions of the tools it was classified with. Before comparing anything, the area checks the digest once per session, through a fixture that every test of the area using the corpus depends on (one test keeps the check itself as the representative): on another revision all those tests fail, never skip, with one message saying to fetch the pinned commit or reclassify, instead of reporting meaningless mismatches.
+4. **Updates are deliberate.** A newer revision is fetched with `corpora.py --latest --update`; every changed case is classified again by hand and reviewed like any expectation change, and the new commit, digest and tool versions are committed together.
+5. **Known answers are compared, never assumed.** A case whose source gives a known answer is compared with it; a mismatch is derived by hand from IEEE 1800 and either becomes a counterexample case (sva2yosys is wrong) or is classified with the reason the source's answer does not apply. A case without a known answer is classified as accepted, rejected (with a message fragment) or skipped (with the reason).
+
+6. **Own inputs.** An area whose inputs are this repository's own files (`ebmc_differential`: the hand-derived trace tables, compared with an external tool) has no corpus to fetch; rules 3 to 5 apply with the digest taken over those files, so that a changed trace file forces the area's table to be classified again.

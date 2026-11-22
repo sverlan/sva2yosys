@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "10."
+    },
+    {
+      "name": "b",
+      "wave": "10."
+    },
+    {
+      "name": "c",
+      "wave": "0.."
+    },
+    {
+      "name": "r",
+      "wave": "0.1"
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "strength/disabled_pending_does_not_fail",
+    "tock": 0
+  },
+  "foot": {
+    "text": "r: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

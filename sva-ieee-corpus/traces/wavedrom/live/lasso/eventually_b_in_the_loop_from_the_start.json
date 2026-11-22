@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "b",
+      "wave": "0..1"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0..1"
+    },
+    {
+      "name": "repeat",
+      "wave": "0.1."
+    },
+    {
+      "name": "outcome",
+      "wave": "=...",
+      "data": [
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "lasso/eventually_b_in_the_loop_from_the_start",
+    "tock": 0
+  }
+}

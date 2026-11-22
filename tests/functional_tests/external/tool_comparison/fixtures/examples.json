@@ -1,0 +1,46 @@
+{
+  "examples": [
+    {
+      "id": "boolean-pass",
+      "source": "tests/functional_tests/external/tool_comparison/fixtures/boolean-pass.sv",
+      "top": "top", "topics": ["native-context"],
+      "counts": {"accepted": 1, "skipped": 0, "rejected": 0},
+      "check_exit": 0, "generation_exit": 0
+    },
+    {
+      "id": "boolean-fail",
+      "source": "tests/functional_tests/external/tool_comparison/fixtures/boolean-fail.sv",
+      "top": "top", "topics": ["native-context"],
+      "counts": {"accepted": 1, "skipped": 0, "rejected": 0},
+      "check_exit": 0, "generation_exit": 0
+    },
+    {
+      "id": "explicit-clock",
+      "source": "tests/functional_tests/external/tool_comparison/fixtures/explicit-clock.sv",
+      "top": "top", "topics": ["native-context"],
+      "counts": {"accepted": 1, "skipped": 0, "rejected": 0},
+      "check_exit": 0, "generation_exit": 0
+    },
+    {
+      "id": "implication",
+      "source": "tests/functional_tests/external/tool_comparison/fixtures/implication.sv",
+      "top": "top", "topics": ["native-temporal"],
+      "counts": {"accepted": 1, "skipped": 0, "rejected": 0},
+      "check_exit": 0, "generation_exit": 0
+    },
+    {
+      "id": "delay",
+      "source": "tests/functional_tests/external/tool_comparison/fixtures/delay.sv",
+      "top": "top", "topics": ["native-temporal"],
+      "counts": {"accepted": 1, "skipped": 0, "rejected": 0},
+      "check_exit": 0, "generation_exit": 0
+    },
+    {
+      "id": "eventually",
+      "source": "tests/functional_tests/external/tool_comparison/fixtures/eventually.sv",
+      "top": "top", "topics": ["native-liveness"],
+      "counts": {"accepted": 1, "skipped": 0, "rejected": 0},
+      "check_exit": 0, "generation_exit": 0
+    }
+  ]
+}

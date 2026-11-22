@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "a",
+      "wave": "1."
+    },
+    {
+      "name": "b",
+      "wave": "10"
+    },
+    {
+      "name": "fail",
+      "wave": "0."
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    },
+    {
+      "name": "repeat",
+      "wave": "1."
+    },
+    {
+      "name": "outcome",
+      "wave": "=.",
+      "data": [
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "fairness/assume_always_request_answered",
+    "tock": 0
+  }
+}

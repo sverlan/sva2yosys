@@ -1,0 +1,406 @@
+{
+  "corpora": {
+    "ab": {
+      "bits_largest_directive": 4,
+      "bits_total": 378116,
+      "counts": {
+        "ok": 149157,
+        "rejected": 0,
+        "skipped": 0,
+        "tool-error": 76
+      },
+      "incomplete_jobs": 0,
+      "monitor_bytes_largest_module": 5506,
+      "monitor_bytes_total": 483178591,
+      "rejection_categories": [
+        [
+          "<path> error: design element does not have a time scale defined but others in the design do",
+          43
+        ],
+        [
+          "<path> error: 'timescale.v': no such file or directory",
+          7
+        ],
+        [
+          "<path> error: unknown module 'variableresetrandomwalkfilter'",
+          2
+        ],
+        [
+          "<path> error: duplicate connection for port 'fifo'",
+          1
+        ],
+        [
+          "<path> error: port 'oNoNoNoNoN' does not exist in 'i_PSGNoteOutMux'",
+          1
+        ],
+        [
+          "<path> error: unknown macro or compiler directive '`CAN_MBIST_CTRL_WIDTH'",
+          1
+        ],
+        [
+          "<path> error: unknown macro or compiler directive '`inputNumber'",
+          1
+        ],
+        [
+          "<path> error: unknown macro or compiler directive '`instOpCodeLen'",
+          1
+        ],
+        [
+          "<path> error: unknown module 'MAC_tx_Ctrl'",
+          1
+        ],
+        [
+          "<path> error: unknown module 'PSGEnvGen'",
+          1
+        ],
+        [
+          "<path> error: unknown module 'PSGFilter'",
+          1
+        ],
+        [
+          "<path> error: unknown module 'PSGNoteGen'",
+          1
+        ],
+        [
+          "<path> error: unknown module 'bit_reversal'",
+          1
+        ],
+        [
+          "<path> error: unknown module 'cavlc_fsm'",
+          1
+        ],
+        [
+          "<path> error: unknown module 'cavlc_top'",
+          1
+        ]
+      ],
+      "seconds": 750.9,
+      "size_failed_jobs": []
+    },
+    "axi": {
+      "bits_largest_directive": 1,
+      "bits_total": 147,
+      "counts": {
+        "ok": 681,
+        "rejected": 319,
+        "skipped": 158,
+        "tool-error": 0
+      },
+      "incomplete_jobs": 0,
+      "monitor_bytes_largest_module": 0,
+      "monitor_bytes_total": 1155,
+      "rejection_categories": [
+        [
+          "cfg is visible at this assertion but cannot be compared (a string, real or type parameter, an interface port, an escaped name); the monitor of each el",
+          260
+        ],
+        [
+          "X-check: $isunknown is evaluated as N (two-state model), so this assert can never fail",
+          99
+        ],
+        [
+          "X-check: $isunknown is evaluated as N (two-state model), so this assume constrains nothing",
+          59
+        ],
+        [
+          "disable iff is only supported at the top of a property",
+          26
+        ],
+        [
+          "unsupported 'inside': its operands are not all of one width and signedness (N-bit unsigned left operand, N-bit signed item): IEEE N-N N.N.N does not s",
+          16
+        ],
+        [
+          "negedge clocks are not supported yet",
+          14
+        ],
+        [
+          "unsupported 'inside': its operands are not all of one width and signedness (N-bit unsigned left operand, N-bit unsigned item): IEEE N-N N.N.N does not",
+          3
+        ]
+      ],
+      "seconds": 12.3,
+      "size_failed_jobs": [
+        "axi4_stream/amba_axi4_stream"
+      ]
+    },
+    "cc": {
+      "bits_largest_directive": 5,
+      "bits_total": 15,
+      "counts": {
+        "ok": 47,
+        "rejected": 20,
+        "skipped": 0,
+        "tool-error": 10
+      },
+      "incomplete_jobs": 0,
+      "monitor_bytes_largest_module": 2011,
+      "monitor_bytes_total": 19205,
+      "rejection_categories": [
+        [
+          "selects into multi-dimensional packed arrays or packed structs are not supported yet",
+          10
+        ],
+        [
+          "data_t is visible at this assertion but cannot be compared (a string, real or type parameter, an interface port, an escaped name); the monitor of each",
+          4
+        ],
+        [
+          "<path> error: unknown module 'cc_cdc_reset_ctrlr_half'",
+          3
+        ],
+        [
+          "<path> error: unknown module 'cc_cdc_Nphase_src'",
+          2
+        ],
+        [
+          "addr_t is visible at this assertion but cannot be compared (a string, real or type parameter, an interface port, an escaped name); the monitor of each",
+          2
+        ],
+        [
+          "credit_cnt_t is visible at this assertion but cannot be compared (a string, real or type parameter, an interface port, an escaped name); the monitor o",
+          2
+        ],
+        [
+          "<path> error: unknown module 'clk_rst_gen'",
+          1
+        ],
+        [
+          "<path> error: unknown module 'tc_sync'",
+          1
+        ],
+        [
+          "<path> error: use of undeclared identifier 'WIDTH'",
+          1
+        ],
+        [
+          "error: 'cc_cdc_reset_ctrlr_properties' is not a valid top-level module",
+          1
+        ],
+        [
+          "error: 'cc_fifo_inst_tb' is not a valid top-level module",
+          1
+        ],
+        [
+          "step_t is visible at this assertion but cannot be compared (a string, real or type parameter, an interface port, an escaped name); the monitor of each",
+          1
+        ],
+        [
+          "variable bit selects are not supported yet",
+          1
+        ]
+      ],
+      "seconds": 15.1,
+      "size_failed_jobs": [
+        "cc/formal/cc_fall_through_register_properties.sv",
+        "cc/src/cc_fifo.sv",
+        "cc/src/cc_isochronous_4phase_handshake.sv",
+        "cc/src/cc_isochronous_spill_register.sv",
+        "cc/src/cc_lfsr.sv",
+        "cc/src/cc_plru_tree.sv",
+        "cc/src/cc_ring_buffer.sv",
+        "cc/src/cc_rr_arb_tree.sv",
+        "cc/src/cc_spill_register_flushable.sv",
+        "cc/src/cc_stream_omega_net.sv",
+        "cc/src/cc_stream_to_mem.sv",
+        "cc/src/cc_stream_xbar.sv",
+        "cc/src/cc_trip_counter.sv"
+      ]
+    },
+    "ot": {
+      "bits_largest_directive": 3,
+      "bits_total": 105,
+      "counts": {
+        "ok": 319,
+        "rejected": 372,
+        "skipped": 182,
+        "tool-error": 43
+      },
+      "incomplete_jobs": 0,
+      "monitor_bytes_largest_module": 0,
+      "monitor_bytes_total": 990,
+      "rejection_categories": [
+        [
+          "indexed part selects are not supported yet",
+          256
+        ],
+        [
+          "X-check: $isunknown is evaluated as N (two-state model), so this assert can never fail",
+          182
+        ],
+        [
+          "the disable iff condition reads X, which may change at the clock edge (...)); IEEE evaluates disable iff after the edge's updates (§N.N), which genera",
+          41
+        ],
+        [
+          "unsupported construct 'MemberAccess'",
+          26
+        ],
+        [
+          "<path> error: unknown class or package 'top_pkg'",
+          15
+        ],
+        [
+          "variable bit selects are not supported yet",
+          14
+        ],
+        [
+          "<path> error: unknown class or package 'top_racl_pkg'",
+          11
+        ],
+        [
+          "hierarchical references are not supported yet",
+          10
+        ],
+        [
+          "unsupported construct 'Call'",
+          9
+        ],
+        [
+          "$countones of an operand using $past is not supported yet",
+          6
+        ],
+        [
+          "unsupported 'inside': its operands are not all of one width and signedness (N-bit unsigned left operand, N-bit unsigned item): IEEE N-N N.N.N does not",
+          6
+        ],
+        [
+          "selects into multi-dimensional packed arrays or packed structs are not supported yet",
+          4
+        ],
+        [
+          "<path> error: unknown package 'lc_ctrl_pkg'",
+          3
+        ],
+        [
+          "error: 'prim_ram_Np' is declared in several files: <path> <path>",
+          2
+        ],
+        [
+          "<path> error: invalid member access for type 'StateEnumT' (aka 'logic[N:N]')",
+          1
+        ]
+      ],
+      "seconds": 54.2,
+      "size_failed_jobs": [
+        "ot/hmac/hmac_core.sv",
+        "ot/i2c/i2c_controller_fsm.sv",
+        "ot/i2c/i2c_fifo_sync_sram_adapter.sv",
+        "ot/i2c/i2c_fifos.sv",
+        "ot/i2c/i2c_target_fsm.sv",
+        "ot/prim/prim_alert_receiver.sv",
+        "ot/prim/prim_alert_sender.sv",
+        "ot/prim/prim_arbiter_fixed.sv",
+        "ot/prim/prim_arbiter_ppc.sv",
+        "ot/prim/prim_arbiter_tree.sv",
+        "ot/prim/prim_clock_meas.sv",
+        "ot/prim/prim_diff_decode.sv",
+        "ot/prim/prim_dom_and_2share.sv",
+        "ot/prim/prim_esc_receiver.sv",
+        "ot/prim/prim_esc_sender.sv",
+        "ot/prim/prim_fifo_async_sram_adapter.sv",
+        "ot/prim/prim_fifo_sync.sv",
+        "ot/prim/prim_gate_gen.sv",
+        "ot/prim/prim_hpc2.sv",
+        "ot/prim/prim_lfsr.sv",
+        "ot/prim/prim_max_tree.sv",
+        "ot/prim/prim_mubi12_sync.sv",
+        "ot/prim/prim_mubi16_sync.sv",
+        "ot/prim/prim_mubi20_sync.sv",
+        "ot/prim/prim_mubi24_sync.sv",
+        "ot/prim/prim_mubi28_sync.sv",
+        "ot/prim/prim_mubi32_sync.sv",
+        "ot/prim/prim_mubi4_sync.sv",
+        "ot/prim/prim_mubi8_sync.sv",
+        "ot/prim/prim_onehot_check.sv",
+        "ot/prim/prim_onehot_mux.sv",
+        "ot/prim/prim_packer.sv",
+        "ot/prim/prim_packer_fifo.sv",
+        "ot/prim/prim_pulse_sync.sv",
+        "ot/prim/prim_ram_1p_adv.sv",
+        "ot/prim/prim_ram_2p_async_adv.sv",
+        "ot/prim/prim_reg_cdc.sv",
+        "ot/prim/prim_reg_cdc_arb.sv",
+        "ot/prim/prim_sha2.sv",
+        "ot/prim/prim_sha2_pad.sv",
+        "ot/prim/prim_sum_tree.sv",
+        "ot/prim/prim_sync_reqack.sv",
+        "ot/prim/prim_sync_reqack_data.sv",
+        "ot/prim/prim_trivium.sv",
+        "ot/prim_generic/prim_ram_2p.sv",
+        "ot/spi_host/spi_host_shift_register.sv"
+      ]
+    },
+    "sv-tests": {
+      "bits_largest_directive": 109,
+      "bits_total": 186,
+      "counts": {
+        "ok": 8,
+        "rejected": 9,
+        "skipped": 0,
+        "tool-error": 26
+      },
+      "incomplete_jobs": 0,
+      "monitor_bytes_largest_module": 1218407,
+      "monitor_bytes_total": 1633390,
+      "rejection_categories": [
+        [
+          "error: UVM dependency",
+          26
+        ],
+        [
+          "sequence match items (local variable assignments) are not supported yet",
+          4
+        ],
+        [
+          "the disable iff condition reads X, which may change at the clock edge (...)); IEEE evaluates disable iff after the edge's updates (§N.N), which genera",
+          3
+        ],
+        [
+          "expect is not supported yet",
+          1
+        ],
+        [
+          "property operator 'iff' is not supported yet",
+          1
+        ]
+      ],
+      "seconds": 15.8,
+      "size_failed_jobs": []
+    },
+    "wb2axip": {
+      "bits_largest_directive": 2,
+      "bits_total": 4,
+      "counts": {
+        "ok": 17,
+        "rejected": 0,
+        "skipped": 0,
+        "tool-error": 4
+      },
+      "incomplete_jobs": 0,
+      "monitor_bytes_largest_module": 3357,
+      "monitor_bytes_total": 31480,
+      "rejection_categories": [
+        [
+          "<path> error: mixing ordered and named port connections is not allowed",
+          1
+        ],
+        [
+          "<path> error: port 'i_axi_awcache' does not exist in 'faxil_slave'",
+          1
+        ],
+        [
+          "<path> error: unknown module 'faxi_valaddr'",
+          1
+        ],
+        [
+          "<path> error: use of undeclared identifier 'F_OPT_CLKNFFLOGIC'",
+          1
+        ]
+      ],
+      "seconds": 2.1,
+      "size_failed_jobs": []
+    }
+  },
+  "version": 1
+}

@@ -1,0 +1,43 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "a",
+      "wave": "1."
+    },
+    {
+      "name": "b",
+      "wave": "1."
+    },
+    {
+      "name": "c",
+      "wave": "1."
+    },
+    {
+      "name": "fail",
+      "wave": "0."
+    },
+    {
+      "name": "pass",
+      "wave": "1."
+    },
+    {
+      "name": "repeat",
+      "wave": "1."
+    },
+    {
+      "name": "outcome",
+      "wave": "=.",
+      "data": [
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "not_liveness/implication_into_not_of_an_empty_consequent",
+    "tock": 0
+  }
+}

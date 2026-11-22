@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "10.."
+    },
+    {
+      "name": "b",
+      "wave": "01.0"
+    },
+    {
+      "name": "c",
+      "wave": "010."
+    },
+    {
+      "name": "fail",
+      "wave": "0.10"
+    },
+    {
+      "name": "pass",
+      "wave": "010."
+    }
+  ],
+  "head": {
+    "text": "overlap/several_antecedent_endpoints_from_one_start",
+    "tock": 0
+  }
+}

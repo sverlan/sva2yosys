@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1..."
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0..."
+    }
+  ],
+  "head": {
+    "text": "ieee_properties/ieee_16_12_11_always_range_strong_p3_ticks_missing",
+    "tock": 0
+  }
+}

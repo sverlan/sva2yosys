@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1.0."
+    },
+    {
+      "name": "b",
+      "wave": "10.."
+    },
+    {
+      "name": "c",
+      "wave": "010."
+    },
+    {
+      "name": "fail",
+      "wave": "010."
+    },
+    {
+      "name": "pass",
+      "wave": "010."
+    }
+  ],
+  "head": {
+    "text": "strength/strong_same_online_verdicts",
+    "tock": 0
+  }
+}

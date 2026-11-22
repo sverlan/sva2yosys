@@ -1,0 +1,48 @@
+[tasks]
+live_pass           live plain
+live_fail           live plain
+live_fair_without   live plain
+live_fair_with      live plain
+live_fair_only      live plain
+live_mixed          live plain
+live_vacuous        live plain
+live_conc_control   live plain
+live_conc_vacuous   live plain
+live_fair_toggle    live plain
+live_guarded        live defined
+prove_unguarded     prove plain
+prove_unguarded_bad prove plain
+prove_guarded_ok    prove plain ok
+prove_guarded_bad   prove plain bad
+
+[options]
+live: mode live
+prove: mode prove
+
+[engines]
+live: aiger suprove
+prove: abc pdr
+
+[script]
+plain: read_verilog -formal -sv liveness_canary.sv
+defined: read_verilog -formal -sv -D SVA2YOSYS_LIVE liveness_canary.sv
+ok: chparam -set SAFE_OK 1 guarded
+bad: chparam -set SAFE_OK 0 guarded
+live_pass: prep -top live_true
+live_fail: prep -top live_false
+live_fair_without: prep -top fair_without
+live_fair_with: prep -top fair_with
+live_fair_only: prep -top fair_only
+live_mixed: prep -top mix_safety_false
+live_vacuous: prep -top mix_vacuous
+live_conc_control: prep -top conc_control
+live_conc_vacuous: prep -top conc_vacuous
+live_fair_toggle: prep -top fair_toggle
+prove_unguarded: prep -top unguarded
+prove_unguarded_bad: prep -top unguarded_bad
+prove_guarded_ok: prep -top guarded
+prove_guarded_bad: prep -top guarded
+live_guarded: prep -top guarded
+
+[files]
+liveness_canary.sv

@@ -1,0 +1,4 @@
+sample,b,fail,pass,repeat,outcome
+0,1,0,1,0,T
+1,0,0,0,1,F
+2,0,0,0,1,F

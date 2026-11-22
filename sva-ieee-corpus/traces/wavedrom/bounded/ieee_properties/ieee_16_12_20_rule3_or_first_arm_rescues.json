@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "a",
+      "wave": "1.0..."
+    },
+    {
+      "name": "d",
+      "wave": "010..."
+    },
+    {
+      "name": "c",
+      "wave": "0..10."
+    },
+    {
+      "name": "e",
+      "wave": "0....."
+    },
+    {
+      "name": "fail",
+      "wave": "0....."
+    },
+    {
+      "name": "pass",
+      "wave": "0..10."
+    }
+  ],
+  "head": {
+    "text": "ieee_properties/ieee_16_12_20_rule3_or_first_arm_rescues",
+    "tock": 0
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1010"
+    },
+    {
+      "name": "e",
+      "wave": "1..0"
+    },
+    {
+      "name": "b",
+      "wave": "0.10"
+    },
+    {
+      "name": "fail",
+      "wave": "0..1"
+    },
+    {
+      "name": "pass",
+      "wave": "0.10"
+    }
+  ],
+  "head": {
+    "text": "composition/throughout_holds_on_every_sample",
+    "tock": 0
+  }
+}

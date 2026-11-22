@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "101"
+    },
+    {
+      "name": "b",
+      "wave": "1.0"
+    },
+    {
+      "name": "c",
+      "wave": "1.."
+    },
+    {
+      "name": "fail",
+      "wave": "10."
+    },
+    {
+      "name": "pass",
+      "wave": "0.1"
+    }
+  ],
+  "head": {
+    "text": "isunknown/x_part_next_to_past_keeps_the_first_sample_rule",
+    "tock": 0
+  }
+}

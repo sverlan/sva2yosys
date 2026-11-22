@@ -1,0 +1,571 @@
+# Temporal property operators (docs/semantics.md 9.2, 9.3): nexttime, always, eventually and
+# their strong forms, per attempt (scope: attempt). Derived by hand from the written semantics.
+# Notation in the comments: X_k is the attempt of the operand at sample k; "(k)" is its decision
+# sample. A plain sequence is always nonvacuous, known at its start.
+
+== nexttime_weak
+# nexttime b: the attempt at s is b's attempt at s+1. b = . 1 . 1 1.
+# t0: b1=1: TRUE at 1. t1: b2=0: FALSE at 2. t2: b3=1: TRUE at 3. t3: b4=1: TRUE at 4.
+# t4: s+1=5 is beyond the trace: pending; weak, so it finalizes TRUE.
+property: nexttime b
+clause: 16.12.10 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+b       : . 1 . 1 1
+outcome : T F T T p
+decided : 1 2 3 4 .
+fail    : . . 1 . .
+pass    : . 1 . 1 1
+pending: 1
+final-fail: 0
+
+== s_nexttime_two_pending_finalize_false
+# s_nexttime [2] b: the attempt at s is b's attempt at s+2. b = 1 . . 1 .
+# t0: b2=0: FALSE at 2. t1: b3=1: TRUE at 3. t2: b4=0: FALSE at 4.
+# t3, t4: s+2 beyond the trace: pending; strong nexttime finalizes FALSE: final-fail 2.
+property: s_nexttime [2] b
+clause: 16.12.10 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4
+b       : 1 . . 1 .
+outcome : F T F p p
+decided : 2 3 4 . .
+fail    : . . 1 . 1
+pass    : . . . 1 .
+pending: 2
+final-fail: 2
+
+== nexttime_zero_is_the_operand
+# nexttime [0] b is exactly b: b = 1 . 1 .: TRUE, FALSE, TRUE, FALSE, each at its own sample.
+property: nexttime [0] b
+clause: 16.12.10 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3
+b       : 1 . 1 .
+outcome : T F T F
+decided : 0 1 2 3
+fail    : . 1 . 1
+pass    : 1 . 1 .
+pending: 0
+final-fail: 0
+
+== plain_sequence_same_trace_as_nexttime_zero
+# The same trace as nexttime_zero_is_the_operand with the bare sequence b: identical rows.
+property: b
+clause: 16.12.2 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3
+b       : 1 . 1 .
+outcome : T F T F
+decided : 0 1 2 3
+fail    : . 1 . 1
+pass    : 1 . 1 .
+pending: 0
+final-fail: 0
+
+== nexttime_of_implication
+# nexttime [1] (a |-> ##1 b): the attempt at s is the implication's attempt at s+1.
+# a = . 1 . 1 1 ., b = . . . . 1 . ; implication attempts I_k: I_1: a, b2 low: FALSE (2).
+# I_2: a low: vacuous TRUE (2). I_3: a, b4: TRUE (4). I_4: a, b5 low: FALSE (5). I_5: a low:
+# vacuous (5).
+# t0 = I_1: F at 2. t1 = I_2: t at 2. t2 = I_3: T at 4. t3 = I_4: F at 5. t4 = I_5: t at 5.
+# t5: s+1=6 beyond: pending; weak nexttime finalizes TRUE.
+property: nexttime [1] (a |-> ##1 b)
+clause: 16.7 16.12.7 16.12.10 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : . 1 . 1 1 .
+b       : . . . . 1 .
+outcome : F t T F t p
+decided : 2 2 4 5 5 .
+fail    : . . 1 . . 1
+pass    : . . . . 1 .
+pending: 1
+final-fail: 0
+
+== always_weak_window_one_two
+# always [1:2] b: offsets 1, 2. b = 1 1 . 1 1 1. FALSE at the first false offset in time, TRUE
+# when offset 2 is reached and both hold. Nonvacuous from offset 1 (a sequence).
+# t0: b1=1, b2=0: FALSE at 2. t1: b2=0 (offset 1): FALSE at 2. t2: b3, b4: TRUE at 4.
+# t3: b4, b5: TRUE at 5. t4: b5=1, offset 2 (6) beyond: pending. t5: pending. Weak: both finalize
+# TRUE (missing offsets count TRUE, started offsets are TRUE).
+property: always [1:2] b
+clause: 16.12.11 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : 1 1 . 1 1 1
+outcome : F F T T p p
+decided : 2 2 4 5 . .
+fail    : . . 1 . . .
+pass    : . . . . 1 1
+pending: 2
+final-fail: 0
+
+== always_strong_window_one_two
+# s_always [1:2] b, the trace of always_weak_window_one_two: same outcomes and decisions.
+# t4: offset 1 (b5) TRUE, offset 2 beyond: strong adds FALSE: finalizes FALSE. t5: all offsets
+# beyond: FALSE. final-fail 2.
+property: s_always [1:2] b
+clause: 16.12.11 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : 1 1 . 1 1 1
+outcome : F F T T p p
+decided : 2 2 4 5 . .
+fail    : . . 1 . . .
+pass    : . . . . 1 1
+pending: 2
+final-fail: 2
+
+== always_window_starting_later
+# always [2:3] b: offsets 2, 3. b = 1 1 1 . 1 1 . (b0..b6).
+# t0: b2=1, b3=0: FALSE at 3. t1: b3=0 (offset 2): FALSE at 3. t2: b4=1, b5=1: TRUE at 5.
+# t3: b5=1, b6=0: FALSE at 6. t4: b6=0 (offset 2): FALSE at 6. t5, t6: pending (weak: TRUE).
+property: always [2:3] b
+clause: 16.12.11 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5 6
+b       : 1 1 1 . 1 1 .
+outcome : F F T F F p p
+decided : 3 3 5 6 6 . .
+fail    : . . . 1 . . 1
+pass    : . . . . . 1 .
+pending: 2
+final-fail: 0
+
+== always_of_implication_vacuity
+# always [0:1] (a |-> b). a = . . 1 . 1 1, b = . . 1 . . 1. Implication attempts I_k:
+# I_0 t, I_1 t, I_2 T, I_3 t, I_4 F, I_5 T (each at its own sample).
+# t0: I_0, I_1 vacuous TRUE: TRUE at 1, vacuous (no offset nonvacuous). t1: I_1 t, I_2 T: TRUE
+# at 2; offset 1 is nonvacuous and offset 0 holds: T. t2: I_2 T, I_3 t: TRUE at 3; offset 0
+# nonvacuous: T. t3: I_3 t, I_4 F: FALSE at 4, nonvacuous through offset 1 (offset 0 holds): F.
+# t4: I_4 F: FALSE at 4: F. t5: I_5 T at 5, offset 1 beyond: pending; weak finalizes TRUE.
+property: always [0:1] (a |-> b)
+clause: 16.12.7 16.12.11 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : . . 1 . 1 1
+b       : . . 1 . . 1
+outcome : t T T F F p
+decided : 1 2 3 4 4 .
+fail    : . . . . 1 .
+pass    : . . 1 1 . .
+pending: 1
+final-fail: 0
+
+== always_of_not_implication_false_vacuously
+# always [0:1] (not (a |-> b)). a = . . 1 . 1 1 1, b = . . 1 . . . . ; inner attempts
+# n_k = not I_k: n_0 f (I_0 vacuous TRUE => FALSE vacuous), n_1 f, n_2 F (I_2 TRUE nonvacuous),
+# n_3 f, n_4 T (I_4 FALSE), n_5 T, n_6 T.
+# t0: n_0 FALSE at 0; vacuous (offset 0 vacuous, offset 1 blocked by the FALSE offset 0): f.
+# t1: n_1 f at 1: f. t2: n_2 F at 2: FALSE nonvacuous: F. t3: n_3 f at 3: f.
+# t4: n_4 T, n_5 T: TRUE at 5, nonvacuous through offset 0: T. t5: n_5 T, n_6 T: TRUE at 6: T.
+# t6: n_6 T, offset 1 beyond: pending; weak finalizes TRUE.
+property: always [0:1] (not (a |-> b))
+clause: 16.12.3 16.12.7 16.12.11 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4 5 6
+a       : . . 1 . 1 1 1
+b       : . . 1 . . . .
+outcome : f f F f T T p
+decided : 0 1 2 3 5 6 .
+fail    : 1 1 1 1 . . .
+pass    : . . . . . 1 1
+pending: 1
+final-fail: 0
+
+== eventually_weak_window_one_two
+# eventually [1:2] b: offsets 1, 2. b = . 1 . . 1 . TRUE at the first TRUE offset, FALSE when
+# both offsets have started and are FALSE. Nonvacuous from offset 1.
+# t0: b1=1: TRUE at 1. t1: b2=0, b3=0: FALSE at 3. t2: b3=0, b4=1: TRUE at 4. t3: b4=1: TRUE
+# at 4. t4: b5=0, offset 2 beyond: pending. t5: pending. Weak: missing offsets count TRUE.
+property: eventually [1:2] b
+clause: 16.12.13 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : . 1 . . 1 .
+outcome : T F T T p p
+decided : 1 3 4 4 . .
+fail    : . . . 1 . .
+pass    : . 1 . . 1 .
+pending: 2
+final-fail: 0
+
+== eventually_strong_window_one_two
+# s_eventually [1:2] b, the trace of eventually_weak_window_one_two: same outcomes.
+# t4: offset 1 FALSE, offset 2 beyond: strong adds FALSE: FALSE. t5: all beyond: FALSE.
+property: s_eventually [1:2] b
+clause: 16.12.13 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : . 1 . . 1 .
+outcome : T F T T p p
+decided : 1 3 4 4 . .
+fail    : . . . 1 . .
+pass    : . 1 . . 1 .
+pending: 2
+final-fail: 2
+
+== eventually_of_sequences_with_different_decision_times
+# eventually [0:2] (a ##1 b). a = 1 . 1 1 . 1 ., b = . 1 . 1 . . . ; q_k = (a ##1 b) at k:
+# q_0 T (1), q_1 F (1: a low), q_2 T (3), q_3 F (4: b4 low), q_4 F (4), q_5 F (6), q_6 F (6).
+# t0: q_0 T at 1: TRUE at 1. t1: q_1 F (1), q_2 T (3): TRUE at 3 (earliest TRUE in time).
+# t2: q_2 T at 3. t3: q_3, q_4, q_5 all FALSE, the last decided at 6: FALSE at 6.
+# t4: q_4, q_5, q_6 all FALSE, last at 6: FALSE at 6. t5: q_5 F, q_6 F, q_7 beyond: pending.
+# t6: pending. Weak: both finalize TRUE (missing offsets count TRUE).
+property: eventually [0:2] (a ##1 b)
+clause: 16.7 16.12.13 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5 6
+a       : 1 . 1 1 . 1 .
+b       : . 1 . 1 . . .
+outcome : T T T F F p p
+decided : 1 3 3 6 6 . .
+fail    : . . . . . . 1
+pass    : . 1 . 1 . . .
+pending: 2
+final-fail: 0
+
+== eventually_of_implication_vacuous_first_offset
+# eventually [0:1] (a |-> b). a = . 1 1 1 . 1, b = . 1 . . . 1; I_0 t, I_1 T, I_2 F, I_3 F,
+# I_4 t, I_5 T (each at its own sample).
+# t0: I_0 vacuous TRUE at 0: TRUE at 0; offset 0 vacuous and holds, so offset 1 does not count:
+# vacuous (t). t1: I_1 T at 1: T. t2: I_2 F (2), I_3 F (3): FALSE at 3 (F, offset 0 nonvacuous).
+# t3: I_3 F (3), I_4 t (4): TRUE at 4, nonvacuous through offset 0: T (pass at 4).
+# t4: I_4 t at 4: TRUE vacuous: t. t5: I_5 T at 5: T.
+property: eventually [0:1] (a |-> b)
+clause: 16.12.7 16.12.13 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : . 1 1 1 . 1
+b       : . 1 . . . 1
+outcome : t T F T t T
+decided : 0 1 3 4 4 5
+fail    : . . . 1 . .
+pass    : . 1 . . 1 1
+pending: 0
+final-fail: 0
+
+== eventually_counterexample_nonvacuity
+# eventually [0:1] (((a ##2 b) or d) |-> c). Samples 0..4: a0=1, d1=1, c1=1, a4=1, all else low.
+# Implication attempts I_k: I_0: a##2b needs b2 (low): dead at 2, d0 low: no match ever:
+# TRUE vacuous at 2. I_1: d1 matches at 1 with c1: TRUE nonvacuous at 1 (a1 low kills the other
+# branch). I_2: no match: t at 2. I_3: t at 3. I_4: a4 needs b6: beyond; d4 low: pending.
+# t0: offset 1 (I_1) is TRUE at 1, so the attempt is TRUE at 1; but offset 0 (I_0) holds
+# (vacuously, known at 2), so offset 1 does not count: vacuous (t), nonvacuity known at 2.
+# t1: I_1 T at 1: T (pass at 1). t2: I_2 t at 2: t. t3: I_3 t at 3: t.
+# t4: I_4 pending, I_5 beyond: pending; the implication finalizes TRUE (no started consequent),
+# weak eventually: final-fail 0.
+property: eventually [0:1] (((a ##2 b) or d) |-> c)
+clause: 16.7 16.9.7 16.12.7 16.12.13 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . . 1
+b       : . . . . .
+c       : . 1 . . .
+d       : . 1 . . .
+outcome : t T t t p
+decided : 1 1 2 3 .
+fail    : . . . . .
+pass    : . 1 . . .
+pending: 1
+final-fail: 0
+
+== cover_eventually_counterexample_rejected
+# The same property and trace as a cover: the nonvacuity of t0 (TRUE at 1) becomes known only
+# at 2, after the decision, so the cover rule rejects it (oracle only). Same results.
+property: eventually [0:1] (((a ##2 b) or d) |-> c)
+clause: 16.7 16.9.7 16.12.7 16.12.13 16.14.3 16.14.8 Annex F
+class: interpretation I5
+kind: cover
+support: oracle
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . . 1
+b       : . . . . .
+c       : . 1 . . .
+d       : . 1 . . .
+outcome : t T t t p
+decided : 1 1 2 3 .
+fail    : . . . . .
+pass    : . 1 . . .
+pending: 1
+final-fail: 0
+
+== not_always_not_counterexample
+# not always [0:1] not (((a ##2 b) or d) |-> c): the same truth and nonvacuity as the
+# eventually form. J_k = not I_k: J_0 f (2), J_1 F (1), J_2 f (2), J_3 f (3), J_4 pending.
+# always [0:1] J: t0: J_1 FALSE at 1: FALSE at 1, vacuous (J_0 vacuous; offset 1 blocked
+# because J_0 is FALSE): f. t1: J_1 F at 1: F. t2: f at 2. t3: f at 3. t4: pending.
+# The outer not swaps: t t... = t T t t p. t4 finalizes: J_4 = not TRUE = FALSE, always
+# (weak) ANDs it with TRUE for the missing offset: FALSE; the outer not: TRUE: final-fail 0.
+property: not always [0:1] not (((a ##2 b) or d) |-> c)
+clause: 16.7 16.12.3 16.9.7 16.12.7 16.12.11 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . . 1
+b       : . . . . .
+c       : . 1 . . .
+d       : . 1 . . .
+outcome : t T t t p
+decided : 1 1 2 3 .
+fail    : . . . . .
+pass    : . 1 . . .
+pending: 1
+final-fail: 0
+
+== cover_or_nexttime_beyond_trace_length_one
+# cover ((a |-> b) or nexttime [2] 1'b1), rejected (oracle only): the or is TRUE at the start
+# through the vacuous implication; the nexttime operand's attempt is at s+2, beyond the
+# trace, so its nonvacuity stays unknown: TRUE with unknown nonvacuity (U), no pass.
+property: (a |-> b) or nexttime [2] 1'b1
+clause: 16.12.4 16.12.7 16.12.10 16.14.3 16.14.8 Annex F
+class: interpretation I5
+kind: cover
+support: oracle
+scope: attempt
+sample  : 0
+a       : .
+b       : .
+outcome : U
+decided : 0
+fail    : .
+pass    : .
+pending: 0
+final-fail: 0
+
+== cover_or_nexttime_beyond_trace_length_three
+# The same cover on a trace of length 3 (a low everywhere). Every attempt is TRUE at its own
+# sample (vacuous implication). t0: the nexttime operand's attempt starts at 2 and is
+# nonvacuous: the attempt is TRUE nonvacuous (T), but known only at 2, after the decision at
+# 0: no pass at 0. t1: s+2=3 beyond: U. t2: s+2=4 beyond: U.
+property: (a |-> b) or nexttime [2] 1'b1
+clause: 16.12.4 16.12.7 16.12.10 16.14.3 16.14.8 Annex F
+class: interpretation I5
+kind: cover
+support: oracle
+scope: attempt
+sample  : 0 1 2
+a       : . . .
+b       : . . .
+outcome : T U U
+decided : 0 1 2
+fail    : . . .
+pass    : . . .
+pending: 0
+final-fail: 0
+
+== disable_in_always_window
+# always [0:2] b, disable iff r high at 5 only. b = 1 1 1 . 1 1 1 1.
+# t0: b0..b2: TRUE at 2, before r: T. t1: b3=0: FALSE at 3 (interval 1..3, no r). t2: FALSE
+# at 3. t3: FALSE at 3. t4: would be TRUE at 6, but r at 5 is inside 4..6: disabled at 5.
+# t5: starts with r: disabled at 5. t6, t7: offsets beyond the trace: pending, r not in
+# their interval to the last sample (6..7): pending (weak: no final failure).
+property: always [0:2] b
+clause: 16.12 16.12.11 Annex F
+class: normative
+disable: r
+scope: attempt
+sample  : 0 1 2 3 4 5 6 7
+r       : . . . . . 1 . .
+b       : 1 1 1 . 1 1 1 1
+outcome : T F F F d d p p
+decided : 2 3 3 3 5 5 . .
+fail    : . . . 1 . . . .
+pass    : . . 1 . . . . .
+pending: 2
+final-fail: 0
+
+== disable_while_s_nexttime_is_pending
+# s_nexttime [2] b, disable iff r high at 3. b = . . 1 . 1.
+# t0: b2=1: TRUE at 2 (interval 0..2 has no r): T. t1: b3 at 3, r at 3: disabled at 3.
+# t2: decision would be at 4; r at 3 lies in 2..4: disabled at 3. t3: starts with r: disabled
+# at 3. t4: s+2 beyond: pending, r low at 4: pending and strong: finalizes FALSE.
+property: s_nexttime [2] b
+clause: 16.12 16.12.10 Annex F
+class: interpretation I8
+disable: r
+scope: attempt
+sample  : 0 1 2 3 4
+r       : . . . 1 .
+b       : . . 1 . 1
+outcome : T d d d p
+decided : 2 3 3 3 .
+fail    : . . . . .
+pass    : . . 1 . .
+pending: 1
+final-fail: 1
+
+== cover_always_window
+# cover of always [1:2] b (accepted: the operand is a sequence). b = 1 1 . 1 1 0.
+# t0: b1=1, b2=0: FALSE at 2. t1: b2=0: FALSE at 2. t2: b3, b4: TRUE at 4 (pass).
+# t3: b4=1, b5=0: FALSE at 5. t4: b5=0: FALSE at 5. t5: offsets beyond: pending; always
+# (weak keyword) finalizes TRUE.
+property: always [1:2] b
+clause: 16.12.11 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : 1 1 . 1 1 .
+outcome : F F T F F p
+decided : 2 2 4 5 5 .
+fail    : . . . . . .
+pass    : . . . . 1 .
+pending: 1
+final-fail: 0
+
+== cover_eventually_window
+# cover of eventually [0:2] b. b = . . 1 . . .
+# t0: b2=1: TRUE at 2 (nonvacuous from offset 0). t1: b2 (offset 1): TRUE at 2. t2: TRUE at 2.
+# t3: b3, b4, b5 all low: FALSE at 5. t4: b4, b5 low, offset 2 beyond: pending. t5: pending.
+# The weak eventually adds TRUE for the missing offset: final-fail 0.
+property: eventually [0:2] b
+clause: 16.12.13 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : . . 1 . . .
+outcome : T T T F p p
+decided : 2 2 2 5 . .
+fail    : . . . . . .
+pass    : . . 1 . . .
+pending: 2
+final-fail: 0
+
+== cover_s_eventually_strong_sequence_operand
+# cover of s_eventually [1:2] (a ##1 b); the plain sequence operand is strong in a cover.
+# a = . 1 1 . 1 1 1, b = . . 1 . . 1 . ; q_k = (a ##1 b) at k: q_1 T (2), q_2 F (3), q_3 F (3),
+# q_4 T (5), q_5 F (6), q_6 pending (strong: finalizes FALSE).
+# t0: offsets q_1, q_2: q_1 T at 2: TRUE at 2 (pass). t1: q_2, q_3 both FALSE at 3: FALSE at 3.
+# t2: q_3 F, q_4 T (5): TRUE at 5 (pass). t3: q_4 T at 5: TRUE at 5. t4: q_5 F (6), q_6
+# pending: pending; finalizes FALSE. t5: q_6 pending, offset 2 beyond: FALSE (strong).
+# t6: both offsets beyond: FALSE (strong). final-fail 3.
+property: s_eventually [1:2] (a ##1 b)
+clause: 16.7 16.12.13 16.14.3 Annex F
+class: interpretation I8
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4 5 6
+a       : . 1 1 . 1 1 1
+b       : . . 1 . . 1 .
+outcome : T F T T p p p
+decided : 2 3 5 5 . . .
+fail    : . . . . . . .
+pass    : . . 1 . . 1 .
+pending: 3
+final-fail: 3
+
+== cover_nexttime_of_implication
+# cover of nexttime [1] (a |-> b) (accepted). a = . 1 . 1 1 ., b = . 1 . . 1 1 ; I_1 T, I_2 t,
+# I_3 F, I_4 T, I_5 t (each at its own sample).
+# t0 = I_1: T at 1 (pass). t1 = I_2: t at 2. t2 = I_3: F at 3. t3 = I_4: T at 4 (pass).
+# t4 = I_5: t at 5. t5: s+1 beyond: pending, weak nexttime: finalizes TRUE.
+property: nexttime [1] (a |-> b)
+clause: 16.12.7 16.12.10 16.14.3 16.14.8 Annex F
+class: interpretation I5
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : . 1 . 1 1 .
+b       : . 1 . . 1 1
+outcome : T t F T t p
+decided : 1 2 3 4 5 .
+fail    : . . . . . .
+pass    : . 1 . . 1 .
+pending: 1
+final-fail: 0
+
+== implication_into_s_eventually
+# a |-> s_eventually [1:3] b. a = 1 1 . . 1 1 . 1, b = . . . 1 . . . .
+# t0: E over b1..b3: b3=1: TRUE at 3 (nonvacuous from offset 1). t1: b2..b4: TRUE at 3.
+# t2, t3: a low: vacuous. t4: b5, b6, b7 all low: FALSE at 7. t5: b6, b7 low, offset 3 (8)
+# beyond: pending; the strong eventually finalizes FALSE. t6: a low: t at 6.
+# t7: a, all offsets beyond: pending, finalizes FALSE. final-fail 2.
+property: a |-> s_eventually [1:3] b
+clause: 16.12.7 16.12.13 16.14.8 Annex F
+class: interpretation I5, I8
+scope: attempt
+sample  : 0 1 2 3 4 5 6 7
+a       : 1 1 . . 1 1 . 1
+b       : . . . 1 . . . .
+outcome : T T t t F p t p
+decided : 3 3 2 3 7 . 6 .
+fail    : . . . . . . . 1
+pass    : . . . 1 . . . .
+pending: 2
+final-fail: 2
+
+== always_of_nexttime
+# always [0:1] nexttime [1] b. b = . 1 1 . 1 1; N_k = nexttime [1] b at k decides at k+1:
+# N_0 T (1), N_1 T (2), N_2 F (3), N_3 T (4), N_4 T (5), N_5 pending (weak: TRUE).
+# t0: N_0, N_1 TRUE: TRUE at 2. t1: N_1 T, N_2 F: FALSE at 3. t2: N_2 F: FALSE at 3.
+# t3: N_3, N_4 TRUE: TRUE at 5. t4: N_4 T, N_5 pending: pending; finalizes TRUE.
+# t5: N_5 pending, N_6 beyond: pending; TRUE.
+property: always [0:1] nexttime [1] b
+clause: 16.12.10 16.12.11 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : . 1 1 . 1 1
+outcome : T F F T p p
+decided : 2 3 3 5 . .
+fail    : . . . 1 . .
+pass    : . . 1 . . 1
+pending: 2
+final-fail: 0
+
+== eventually_of_always
+# eventually [0:1] always [0:1] b. b = 1 . 1 1 . 1 1; W_k = always [0:1] b at k:
+# W_0 F (1), W_1 F (1), W_2 T (3), W_3 F (4), W_4 F (4), W_5 T (6), W_6 pending (TRUE).
+# t0: W_0, W_1 both FALSE at 1: FALSE at 1. t1: W_1 F, W_2 T (3): TRUE at 3 (nonvacuous via
+# offset 0). t2: W_2 T at 3. t3: W_3, W_4 FALSE at 4: FALSE. t4: W_4 F, W_5 T (6): TRUE at 6.
+# t5: W_5 T at 6. t6: W_6 pending, W_7 beyond: pending, finalizes TRUE.
+property: eventually [0:1] always [0:1] b
+clause: 16.12.11 16.12.13 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5 6
+b       : 1 . 1 1 . 1 1
+outcome : F T T F T T p
+decided : 1 3 3 4 6 6 .
+fail    : . 1 . . 1 . .
+pass    : . . . 1 . . 1
+pending: 1
+final-fail: 0
+
+== always_of_past_condition_first_sample
+# always [0:1] $past(b): the condition does not hold at sample 0, and $past(b) at k>0 is
+# b(k-1). b = 1 1 . 1 1 gives the condition 0 1 1 . 1 (. = false at 3).
+# t0: offset 0 fails at 0: FALSE at 0. t1: conditions at 1, 2 hold: TRUE at 2. t2: condition at
+# 2 holds, at 3 does not: FALSE at 3. t3: FALSE at 3. t4: condition at 4 holds, offset 1
+# beyond: pending, weak: finalizes TRUE.
+property: always [0:1] $past(b)
+clause: 16.9.3 16.12.11 Annex F
+class: interpretation I3
+scope: attempt
+sample  : 0 1 2 3 4
+b       : 1 1 . 1 1
+outcome : F T F F p
+decided : 0 2 3 3 .
+fail    : 1 . . 1 .
+pass    : . . 1 . .
+pending: 1
+final-fail: 0

@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "b",
+      "wave": "0."
+    },
+    {
+      "name": "a",
+      "wave": "10"
+    },
+    {
+      "name": "fail",
+      "wave": "01"
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    },
+    {
+      "name": "repeat",
+      "wave": "01"
+    },
+    {
+      "name": "outcome",
+      "wave": "=.",
+      "data": [
+        "F"
+      ]
+    }
+  ],
+  "head": {
+    "text": "lasso/until_fails_when_a_drops",
+    "tock": 0
+  }
+}

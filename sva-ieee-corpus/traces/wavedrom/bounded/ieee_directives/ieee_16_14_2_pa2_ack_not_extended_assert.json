@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "ack",
+      "wave": "1.0"
+    },
+    {
+      "name": "fail",
+      "wave": "010"
+    },
+    {
+      "name": "pass",
+      "wave": "0.1"
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_14_2_pa2_ack_not_extended_assert",
+    "tock": 0
+  }
+}

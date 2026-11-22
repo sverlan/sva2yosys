@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "a",
+      "wave": "10.10."
+    },
+    {
+      "name": "b",
+      "wave": "010.1."
+    },
+    {
+      "name": "c",
+      "wave": "010..1"
+    },
+    {
+      "name": "fail",
+      "wave": "0...10"
+    },
+    {
+      "name": "pass",
+      "wave": "010..1"
+    }
+  ],
+  "head": {
+    "text": "unbounded_antecedents/delay_to_dollar_antecedent",
+    "tock": 0
+  }
+}

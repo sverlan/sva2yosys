@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "1.01."
+    },
+    {
+      "name": "b",
+      "wave": "0.10."
+    },
+    {
+      "name": "fail",
+      "wave": "0...."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10."
+    }
+  ],
+  "head": {
+    "text": "ieee_properties/ieee_16_12_12_until_weak_p1",
+    "tock": 0
+  }
+}

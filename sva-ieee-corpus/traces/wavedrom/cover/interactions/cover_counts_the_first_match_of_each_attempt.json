@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "10."
+    },
+    {
+      "name": "b",
+      "wave": "01."
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "010"
+    }
+  ],
+  "head": {
+    "text": "interactions/cover_counts_the_first_match_of_each_attempt",
+    "tock": 0
+  }
+}

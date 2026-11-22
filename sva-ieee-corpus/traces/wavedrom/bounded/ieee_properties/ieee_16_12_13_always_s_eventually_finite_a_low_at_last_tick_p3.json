@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "1.0"
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "ieee_properties/ieee_16_12_13_always_s_eventually_finite_a_low_at_last_tick_p3",
+    "tock": 0
+  }
+}

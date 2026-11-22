@@ -1,0 +1,94 @@
+[project]
+name = "sva2yosys"
+version = "0.1.0"
+description = "Lower concurrent SystemVerilog Assertions into plain SystemVerilog monitors for the open-source Yosys/SBY formal flow"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Sergey Verlan" }]
+keywords = ["systemverilog", "sva", "assertions", "yosys", "symbiyosys", "formal-verification"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pyslang==12.0.0",
+]
+
+[project.scripts]
+sva2yosys = "sva2yosys.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/sverlan/sva2yosys"
+Documentation = "https://github.com/sverlan/sva2yosys/blob/main/docs/usage.md"
+Repository = "https://github.com/sverlan/sva2yosys"
+Issues = "https://github.com/sverlan/sva2yosys/issues"
+Changelog = "https://github.com/sverlan/sva2yosys/blob/main/CHANGELOG.md"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "hypothesis>=6",
+    "ruff>=0.17.0",
+    "pytest-cov>=7.1.0",
+    "mypy>=2.4.0",
+    "pytest-xdist>=3.8.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.10,<0.11"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]  # test-support package `support` (tests/support)
+markers = [
+    "extended: broader checks, run with --extended or --slow",
+    "slow: full stress checks, run with --slow",
+]
+filterwarnings = [
+    # The recursive sequence strategies of tests/support/ir_strategies.py reuse their inner strategy
+    # many times, so Hypothesis' description of them is huge; it is only text and changes nothing.
+    "ignore:Generating overly large repr:hypothesis.errors.HypothesisWarning",
+]
+
+[tool.coverage.run]
+source = ["sva2yosys", "support"]  # the product, and the test oracles in tests/support
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["tests/**/fixtures"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "SIM", "RUF", "PTH", "N"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["sva2yosys", "support"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src", "tests"]
+mypy_path = "tests"
+exclude = ["tests/.*/fixtures/"]
+strict = true
+warn_unreachable = true
+enable_error_code = [
+    "exhaustive-match",
+    "possibly-undefined",
+    "redundant-expr",
+    "truthy-bool",
+    "ignore-without-code",
+    "deprecated",
+]

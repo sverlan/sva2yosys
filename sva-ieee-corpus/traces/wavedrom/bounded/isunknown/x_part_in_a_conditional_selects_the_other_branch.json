@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1.01"
+    },
+    {
+      "name": "b",
+      "wave": "1..."
+    },
+    {
+      "name": "c",
+      "wave": "1..."
+    },
+    {
+      "name": "d",
+      "wave": "010."
+    },
+    {
+      "name": "fail",
+      "wave": "10.1"
+    },
+    {
+      "name": "pass",
+      "wave": "010."
+    }
+  ],
+  "head": {
+    "text": "isunknown/x_part_in_a_conditional_selects_the_other_branch",
+    "tock": 0
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "b",
+      "wave": "0101.0"
+    },
+    {
+      "name": "c",
+      "wave": "0..10."
+    },
+    {
+      "name": "fail",
+      "wave": "0...10"
+    },
+    {
+      "name": "pass",
+      "wave": "0..10."
+    }
+  ],
+  "head": {
+    "text": "unbounded_antecedents/goto_antecedent",
+    "tock": 0
+  }
+}

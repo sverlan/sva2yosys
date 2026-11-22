@@ -1,0 +1,1144 @@
+# IEEE 1800-2017 clause 16.12 (declaring properties), PDF pages 421-456, re-expressed as trace cases.
+# Signal names are our own. All cases are per-attempt (scope: attempt): every sample starts an
+# attempt, and a vacuous attempt (rule h/g of 16.14.8) is "t". A failing attempt is reported at its
+# decision sample (the standard's figures mark the attempt's start tick instead; noted where it matters).
+# "derived" in a comment: the standard states the rule in words, the trace and rows are ours.
+
+# ---------------------------------------------------------------- 16.12 disable iff
+== ieee_16_12_disable_iff_during_attempt
+# evidence: derived
+# 16.12 (text before 16.12.1): a disable condition true between the start of an attempt and its end
+# (inclusive) makes the evaluation disabled: neither success nor failure. Derived trace.
+# Attempt 0 would fail at 2 (b low), but rst is high at 1. Attempt 1 has its own disable at 1.
+property: a |-> ##2 b
+disable: rst
+scope: attempt
+clause: 16.12
+class: normative
+origin: IEEE 1800-2017 §16.12 disable iff paragraph, re-expressed
+sample  : 0 1 2
+a       : 1 . .
+b       : . . .
+rst     : . 1 .
+outcome : d d t
+decided : 1 1 2
+pending: 0
+
+== ieee_16_12_disable_iff_at_end_tick_of_attempt
+# evidence: derived
+# 16.12: the disable condition is tested up to and including the end of the evaluation attempt.
+# Derived trace: the only failing moment (sample 2, b low) coincides with rst high, so no failure.
+property: a |-> ##2 b
+disable: rst
+scope: attempt
+clause: 16.12
+class: normative
+origin: IEEE 1800-2017 §16.12 disable iff paragraph, re-expressed
+sample  : 0 1 2
+a       : 1 . .
+b       : . . .
+rst     : . . 1
+outcome : d t d
+decided : 2 1 2
+pending: 0
+
+# ---------------------------------------------------------------- 16.12.2 sequence property
+== ieee_16_12_2_p3_weak_in_assert
+# evidence: example
+# 16.12.2 property p3 (b ##1 c) under assert a |-> p3: weak, so true iff a is false, or b is true
+# and, if a next tick exists, c is true there. Sample 4 has no next tick: weak, no failure.
+property: a |-> b ##1 c
+scope: attempt
+clause: 16.12.2
+class: normative
+origin: IEEE 1800-2017 §16.12.2 assert a1 with p3, re-expressed
+sample  : 0 1 2 3 4
+a       : 1 1 . 1 1
+b       : 1 1 . . 1
+c       : . 1 . . .
+outcome : T F t F p
+decided : 1 2 2 3 .
+fail    : . . 1 1 .
+pass    : . 1 . . .
+pending: 1
+final-fail: 0
+
+== ieee_16_12_2_p3_strong_in_cover
+# evidence: example
+# 16.12.2 cover c1 (a #-# p3): p3 is strong, so an attempt succeeds iff a, b hold at its tick and c
+# holds at a later tick. Written as the equivalent cover of a ##0 b ##1 c (16.12.9 equivalence).
+# Sample 4 (a, b, no next tick) is not a success: strong, pending at the end.
+property: a ##0 b ##1 c
+kind: cover
+clause: 16.12.2 16.12.9
+class: normative
+origin: IEEE 1800-2017 §16.12.2 cover c1 with p3, re-expressed
+sample  : 0 1 2 3 4
+a       : 1 1 . 1 1
+b       : 1 1 . . 1
+c       : . 1 . . .
+pass    : . 1 . . .
+pending: 1
+final-fail: 1
+
+# ---------------------------------------------------------------- 16.12.3 negation
+== ieee_16_12_3_not_weak_sequence_end_of_trace
+# evidence: example
+# 16.12.3 a1: not (a ##1 b) in an assert: the sequence is weak, so if the clock stops with a true at
+# the last tick the sequence still holds, hence the negation fails (the standard: the assertion fails).
+# Sample 0: a, then b at 1: sequence matches, not is false at 1. Samples 1, 2: sequence dead, not true.
+property: not (a ##1 b)
+scope: attempt
+clause: 16.12.3
+class: normative
+origin: IEEE 1800-2017 §16.12.3 assert a1, re-expressed
+sample  : 0 1 2 3
+a       : 1 1 . 1
+b       : . 1 . .
+outcome : F T T p
+decided : 1 2 2 .
+fail    : . 1 . .
+pass    : . . 1 .
+pending: 1
+final-fail: 1
+
+== ieee_16_12_3_not_strong_sequence_end_of_trace
+# evidence: derived
+# 16.12.3 a2: not strong(a ##1 b): strong, so at the end of the trace a pending attempt makes the
+# sequence false and the negation true: the sample-3 attempt does not fail (contrast with the
+# weak case above).
+property: not strong(a ##1 b)
+scope: attempt
+clause: 16.12.3 16.12.2
+class: normative
+origin: IEEE 1800-2017 §16.12.3 assert a2, re-expressed
+sample  : 0 1 2 3
+a       : 1 1 . 1
+b       : . 1 . .
+outcome : F T T p
+decided : 1 2 2 .
+fail    : . 1 . .
+pass    : . . 1 .
+pending: 1
+final-fail: 0
+
+# ---------------------------------------------------------------- 16.12.4 / 16.12.5
+== ieee_16_12_4_disjunction_either_operand
+# evidence: derived
+# 16.12.4: true iff at least one operand is true. Derived trace. Attempt 0: first operand matches at 1.
+# Attempt 1: both die at 1. Attempt 2: both fail at 3. Attempt 3: second operand still pending.
+property: (a ##1 b) or (c ##1 d)
+scope: attempt
+clause: 16.12.4
+class: normative
+origin: IEEE 1800-2017 §16.12.4, re-expressed
+sample  : 0 1 2 3
+a       : 1 . 1 .
+b       : . 1 . .
+c       : . . 1 1
+d       : . . . .
+outcome : T F F p
+decided : 1 1 3 .
+fail    : . 1 . 1
+pass    : . 1 . .
+pending: 1
+final-fail: 0
+
+== ieee_16_12_5_conjunction_both_operands
+# evidence: derived
+# 16.12.5: true iff both operands are true. Derived trace. Attempt 0: both match at 1. Attempt 1:
+# the second dies at 1 (false at once). Attempt 2: first matches, second fails at 3. Attempt 3: a low.
+property: (a ##1 b) and (c ##1 d)
+scope: attempt
+clause: 16.12.5
+class: normative
+origin: IEEE 1800-2017 §16.12.5, re-expressed
+sample  : 0 1 2 3
+a       : 1 1 1 .
+b       : . 1 . 1
+c       : 1 . 1 .
+d       : . 1 . .
+outcome : T F F F
+decided : 1 1 3 3
+fail    : . 1 . 1
+pass    : . 1 . .
+pending: 0
+
+# ---------------------------------------------------------------- 16.12.6 if-else
+== ieee_16_12_6_if_else_selects_branch
+# evidence: derived
+# 16.12.6 second form: true iff (c true and first branch true) or (c false and second branch true).
+# Derived trace, one attempt per combination.
+property: if (c) a else b
+scope: attempt
+clause: 16.12.6
+class: normative
+origin: IEEE 1800-2017 §16.12.6, re-expressed
+sample  : 0 1 2 3
+c       : 1 1 . .
+a       : 1 . . 1
+b       : . 1 1 .
+outcome : T F T F
+decided : 0 1 2 3
+fail    : . 1 . 1
+pass    : 1 . 1 .
+pending: 0
+
+== ieee_16_12_6_if_without_else_true_when_condition_false
+# evidence: derived
+# 16.12.6 first form: true iff the condition is false or the branch is true. A false condition is a
+# vacuous success (16.14.8 g). Derived trace: attempt 0 matches, attempt 1 fails at 2, attempt 2 vacuous.
+property: if (c) (a ##1 b)
+scope: attempt
+clause: 16.12.6 16.14.8
+class: normative
+origin: IEEE 1800-2017 §16.12.6, re-expressed
+sample  : 0 1 2
+c       : 1 1 .
+a       : 1 1 .
+b       : . 1 .
+outcome : T F t
+decided : 1 2 2
+fail    : . . 1
+pass    : . 1 .
+pending: 0
+
+# ---------------------------------------------------------------- 16.12.7 implication
+== ieee_16_12_7_data_end_fig_16_14
+# evidence: figure
+# 16.12.7, Figure 16-14: $rose(data_phase) |-> ##[1:5] ready_exp, with ready_exp = irdy low and
+# ($fell(trdy) or $fell(stop)). The standard: the match of $rose(data_phase) at tick 2 starts the
+# consequent, and at tick 6 the attempt is true ($fell(stop) and irdy == 0). Ticks are 1-based in the
+# figure: sample = tick - 1. Inputs as drawn: data_phase high at ticks 2 to 8; irdy low at ticks 4 to 6;
+# trdy stays high; stop low at ticks 6 to 8.
+property: $rose(data_phase) |-> ##[1:5] (!irdy && ($fell(trdy) || $fell(stop)))
+scope: attempt
+clause: 16.12.7 16.14.8
+class: normative
+origin: IEEE 1800-2017 §16.12.7 Figure 16-14, re-expressed
+sample     : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+data_phase : . 1 1 1 1 1 1 1 . . .  .  .  .
+irdy       : 1 1 1 . . . 1 1 1 1 1  1  1  1
+trdy       : 1 1 1 1 1 1 1 1 1 1 1  1  1  1
+stop       : 1 1 1 1 1 . . . 1 1 1  1  1  1
+outcome    : t T t t t t t t t t t  t  t  t
+decided    : 0 5 2 3 4 5 6 7 8 9 10 11 12 13
+pass       : . . . . . 1 . . . . .  .  .  .
+pending: 0
+
+== ieee_16_12_7_data_end_rule1_fig_16_15
+# evidence: figure
+# Inputs as drawn: data_phase high at ticks 2 to 8; irdy low at ticks 4 to 7; trdy high; stop low at ticks 6 to 8; frame high from tick 7.
+# 16.12.7, Figure 16-15 (data_end_rule1): data_end_exp |-> ##[1:2] $rose(frame) ##1 $rose(irdy), with
+# data_end_exp = data_phase and ready_exp. The standard: data_end_exp is acknowledged at tick 6,
+# frame rises at tick 7, irdy rises at tick 8, the attempt that began at tick 6 matches at tick 8.
+# sample = tick - 1, so the attempt starts at sample 5 and succeeds at sample 7. All other
+# attempts have a false antecedent (vacuous).
+property: (data_phase && !irdy && ($fell(trdy) || $fell(stop))) |-> ##[1:2] $rose(frame) ##1 $rose(irdy)
+scope: attempt
+clause: 16.12.7 16.14.8
+class: normative
+origin: IEEE 1800-2017 §16.12.7 Figure 16-15, re-expressed
+sample     : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+data_phase : . 1 1 1 1 1 1 1 . . .  .  .  .
+irdy       : 1 1 1 . . . . 1 1 1 1  1  1  1
+trdy       : 1 1 1 1 1 1 1 1 1 1 1  1  1  1
+stop       : 1 1 1 1 1 . . . 1 1 1  1  1  1
+frame      : . . . . . . 1 1 1 1 1  1  1  1
+outcome    : t t t t t T t t t t t  t  t  t
+decided    : 0 1 2 3 4 7 6 7 8 9 10 11 12 13
+pass       : . . . . . . . 1 . . .  .  .  .
+pending: 0
+
+== ieee_16_12_7_data_end_rule2_fig_16_16
+# evidence: figure
+# Inputs as drawn (the same waveforms as Figure 16-15): irdy low at ticks 4 to 7, frame high from tick 7.
+# 16.12.7, Figure 16-16 (data_end_rule2): the same sequence as a property without precondition,
+# evaluated at every tick. The standard: the attempts at ticks 1, 2, 3, 4 fail (no $rose(frame) at
+# the next two ticks), those at ticks 5 and 6 match at tick 8 ($rose(frame) at tick 7), and all later
+# attempts fail because $rose(frame) does not occur again. sample = tick - 1. The figure marks a
+# failing attempt at its start tick; here a failure is reported at the attempt's decision sample
+# (start + 2). The attempts at ticks 13 and 14 cannot be decided inside the trace: pending, weak.
+property: ##[1:2] $rose(frame) ##1 $rose(irdy)
+scope: attempt
+clause: 16.12.7 16.9.2
+class: normative
+origin: IEEE 1800-2017 §16.12.7 Figure 16-16, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+irdy    : 1 1 1 . . . . 1 1 1 1  1  1  1
+frame   : . . . . . . 1 1 1 1 1  1  1  1
+outcome : F F F F T T F F F F F  F  p  p
+decided : 2 3 4 5 7 7 8 9 10 11 12 13 . .
+fail    : . . 1 1 1 1 . . 1 1 1  1  1  1
+pass    : . . . . . . . 1 . . .  .  .  .
+pending: 2
+final-fail: 0
+
+== ieee_16_12_7_antecedent_sequence_match_or_vacuous
+# evidence: derived
+# 16.12.7: (a ##1 b ##1 c) |-> (d ##1 e): if the antecedent matches, the consequent sequence must also
+# match from the end point; if it does not match, the result is true (vacuous). Derived trace.
+# Attempt 0 matches at 2 and d ##1 e matches at 3. Attempt 4 matches at 6 but e is low at 7.
+property: (a ##1 b ##1 c) |-> (d ##1 e)
+scope: attempt
+clause: 16.12.7 16.14.8
+class: normative
+origin: IEEE 1800-2017 §16.12.7 antecedent example, re-expressed
+sample  : 0 1 2 3 4 5 6 7
+a       : 1 . . . 1 . . .
+b       : . 1 . . . 1 . .
+c       : . . 1 . . . 1 .
+d       : . . 1 . . . 1 .
+e       : . . . 1 . . . .
+outcome : T t t t F t t t
+decided : 3 1 2 3 7 5 6 7
+fail    : . . . . . . . 1
+pass    : . . . 1 . . . .
+pending: 0
+
+== ieee_16_12_7_write_to_addr_flat_passes
+# evidence: derived
+# 16.12.7 write_to_addr, with the address comparisons replaced by Boolean signals (wr write_en,
+# dv data_valid, rm retire match, wm write match). Derived trace: the antecedent
+# (wr & dv) ##0 (wr && rm)[*2] matches at samples 0-1 (ends at 1); the consequent window is samples
+# 4..9 (##[3:8] from 1), and its condition holds at sample 6.
+property: (wr & dv) ##0 (wr && rm)[*2] |-> ##[3:8] (wr && !dv && wm)
+scope: attempt
+clause: 16.12.7 16.9.2
+class: normative
+origin: IEEE 1800-2017 §16.12.7 write_to_addr, re-expressed
+sample  : 0 1 2 3 4 5 6 7
+wr      : 1 1 . . . . 1 .
+dv      : 1 . . . . . . .
+rm      : 1 1 . . . . . .
+wm      : . . . . . . 1 .
+outcome : T t t t t t t t
+decided : 6 1 2 3 4 5 6 7
+pass    : . . . . . . 1 .
+pending: 0
+
+== ieee_16_12_7_write_to_addr_flat_fails_at_window_end
+# evidence: derived
+# Same property; the condition never holds in the window 4..9 (at sample 6 data_valid is high), so the
+# attempt fails when the window closes, at sample 9. Attempt 6 has dv but no retire match: vacuous.
+property: (wr & dv) ##0 (wr && rm)[*2] |-> ##[3:8] (wr && !dv && wm)
+scope: attempt
+clause: 16.12.7 16.9.2
+class: normative
+origin: IEEE 1800-2017 §16.12.7 write_to_addr, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9
+wr      : 1 1 . . . . 1 . . .
+dv      : 1 . . . . . 1 . . .
+rm      : 1 1 . . . . . . . .
+wm      : . . . . . . 1 . . .
+outcome : F t t t t t t t t t
+decided : 9 1 2 3 4 5 6 7 8 9
+fail    : . . . . . . . . . 1
+pending: 0
+
+== ieee_16_12_7_write_to_addr_nested_fails_at_window_end
+# evidence: derived
+# 16.12.7 write_to_addr_nested: the same requirement as a nested implication (the standard presents it
+# as an alternative coding). Same trace and same verdicts as the flat form: attempt 0 fails at 9; a
+# vacuous inner implication makes the outer attempt vacuous (16.14.8 h).
+property: (wr & dv) |-> ((wr && rm)[*2] |-> ##[3:8] (wr && !dv && wm))
+scope: attempt
+clause: 16.12.7 16.14.8
+class: normative
+origin: IEEE 1800-2017 §16.12.7 write_to_addr_nested, re-expressed
+sample  : 0 1 2 3 4 5 6 7 8 9
+wr      : 1 1 . . . . 1 . . .
+dv      : 1 . . . . . 1 . . .
+rm      : 1 1 . . . . . . . .
+wm      : . . . . . . 1 . . .
+outcome : F t t t t t t t t t
+decided : 9 1 2 3 4 5 6 7 8 9
+fail    : . . . . . . . . . 1
+pending: 0
+
+# ---------------------------------------------------------------- 16.12.10 nexttime
+== ieee_16_12_10_nexttime_weak_p1
+# evidence: derived
+# 16.12.10 p1 (nexttime a): true iff a holds at the next tick, or there is no further tick.
+# Attempt 2 is at the last tick: no next tick, weak, no failure.
+property: nexttime a
+scope: attempt
+clause: 16.12.10
+class: normative
+origin: IEEE 1800-2017 §16.12.10 p1, re-expressed
+sample  : 0 1 2
+a       : . 1 .
+outcome : T F p
+decided : 1 2 .
+fail    : . . 1
+pass    : . 1 .
+pending: 1
+final-fail: 0
+
+== ieee_16_12_10_s_nexttime_strong_p2
+# evidence: derived
+# 16.12.10 p2 (s_nexttime a): the clock shall tick once more and a shall hold there. Same trace as
+# the weak case; the attempt at the last tick now fails at the end of the simulation.
+property: s_nexttime a
+scope: attempt
+clause: 16.12.10
+class: normative
+origin: IEEE 1800-2017 §16.12.10 p2, re-expressed
+sample  : 0 1 2
+a       : . 1 .
+outcome : T F p
+decided : 1 2 .
+fail    : . . 1
+pass    : . 1 .
+pending: 1
+final-fail: 1
+
+== ieee_16_12_10_nexttime_2_weak_p7
+# evidence: derived
+# 16.12.10 p7 (nexttime[2] a): true iff there are fewer than two more ticks, or a holds at the second
+# future tick. Attempts 3 and 4 have fewer than two more ticks: weak, true at the end.
+property: nexttime[2] a
+scope: attempt
+clause: 16.12.10
+class: normative
+origin: IEEE 1800-2017 §16.12.10 p7, re-expressed
+sample  : 0 1 2 3 4
+a       : . . 1 . .
+outcome : T F F p p
+decided : 2 3 4 . .
+fail    : . . . 1 1
+pass    : . . 1 . .
+pending: 2
+final-fail: 0
+
+== ieee_16_12_10_s_nexttime_2_strong_p8
+# evidence: derived
+# 16.12.10 p8 (s_nexttime[2] a): there shall be two more ticks and a shall hold at the second one.
+# Same trace as the weak case: attempts 3 and 4 fail at the end of the simulation.
+property: s_nexttime[2] a
+scope: attempt
+clause: 16.12.10
+class: normative
+origin: IEEE 1800-2017 §16.12.10 p8, re-expressed
+sample  : 0 1 2 3 4
+a       : . . 1 . .
+outcome : T F F p p
+decided : 2 3 4 . .
+fail    : . . . 1 1
+pass    : . . 1 . .
+pending: 2
+final-fail: 2
+
+== ieee_16_12_10_nexttime_always_weak_p3
+# evidence: derived
+# 16.12.10 p3 (nexttime always a): as long as the clock ticks, a holds at every future tick starting
+# from the next one. Attempt 0 fails at 1. Attempts 1, 2 are alive, attempt 3 has no next tick:
+# all weak, so none fails at the end.
+property: nexttime always a
+support: oracle
+rejected-by: unbounded 'always' (no upper bound) is not supported yet
+scope: attempt
+clause: 16.12.10 16.12.11
+class: normative
+origin: IEEE 1800-2017 §16.12.10 p3, re-expressed
+sample  : 0 1 2 3
+a       : 1 . 1 1
+outcome : F p p p
+decided : 1 . . .
+fail    : . 1 . .
+pending: 3
+final-fail: 0
+
+== ieee_16_12_10_s_nexttime_always_p4
+# evidence: derived
+# 16.12.10 p4 (s_nexttime always a): the clock shall tick at least once more, and while it ticks a
+# holds. Same trace: the attempt at the last tick has no next tick and fails at the end; the
+# always itself is weak, so the attempts 1 and 2 do not.
+property: s_nexttime always a
+support: oracle
+rejected-by: unbounded 'always' (no upper bound) is not supported yet
+scope: attempt
+clause: 16.12.10 16.12.11
+class: normative
+origin: IEEE 1800-2017 §16.12.10 p4, re-expressed
+sample  : 0 1 2 3
+a       : 1 . 1 1
+outcome : F p p p
+decided : 1 . . .
+fail    : . 1 . .
+pending: 3
+final-fail: 1
+
+== ieee_16_12_10_nexttime_s_eventually_satisfied_p5
+# evidence: derived
+# 16.12.10 p5 (nexttime s_eventually a): if the clock ticks again, a shall hold at some tick from
+# the next one on. a is first true at sample 2: attempts 0 and 1 succeed there; attempt 2 has no next
+# tick (weak nexttime: true at the end).
+property: nexttime s_eventually a
+scope: attempt
+clause: 16.12.10 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.10 p5, re-expressed
+sample  : 0 1 2
+a       : . . 1
+outcome : T T p
+decided : 2 2 .
+pass    : . . 1
+pending: 1
+final-fail: 0
+
+== ieee_16_12_10_nexttime_s_eventually_unsatisfied_p5
+# evidence: derived
+# 16.12.10 p5: a never holds after the starting tick, so attempts 0 and 1 (a next tick exists) fail
+# at the end of the simulation; attempt 2 has no next tick and is true (weak). Note a at sample 0
+# does not count: the eventuality starts at the next tick.
+property: nexttime s_eventually a
+scope: attempt
+clause: 16.12.10 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.10 p5, re-expressed
+sample  : 0 1 2
+a       : 1 . .
+outcome : p p p
+decided : . . .
+pending: 3
+final-fail: 2
+
+== ieee_16_12_10_s_nexttime_s_eventually_strict_future_p6
+# evidence: derived
+# 16.12.10 p6 (s_nexttime s_eventually a): a shall hold sometime in the strict future. Same trace as
+# the unsatisfied p5 case: now the attempt at the last tick also fails (no next tick).
+property: s_nexttime s_eventually a
+scope: attempt
+clause: 16.12.10 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.10 p6, re-expressed
+sample  : 0 1 2
+a       : 1 . .
+outcome : p p p
+decided : . . .
+pending: 3
+final-fail: 3
+
+# ---------------------------------------------------------------- 16.12.11 always
+== ieee_16_12_11_always_after_implication_fails_p1
+# evidence: derived
+# 16.12.11 p1 (a ##1 b |=> always c): if a holds at the first tick and b at the second, c shall hold
+# at every tick that follows the second. Derived trace: c is not required at samples 0 and 1 and
+# holds at 2 and 3, but not at 4: attempt 0 fails at 4.
+property: a ##1 b |=> always c
+scope: attempt
+clause: 16.12.11 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.12.11 p1, re-expressed
+sample  : 0 1 2 3 4
+a       : 1 . . . .
+b       : . 1 . . .
+c       : . . 1 1 .
+outcome : F t t t t
+decided : 4 1 2 3 4
+fail    : . . . . 1
+pending: 0
+
+== ieee_16_12_11_always_after_implication_holds_p1
+# evidence: derived
+# 16.12.11 p1: c holds at every tick after the second: the always is weak, so the attempt is still
+# alive at the end of the trace and is true (no failure).
+property: a ##1 b |=> always c
+scope: attempt
+clause: 16.12.11 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.12.11 p1, re-expressed
+sample  : 0 1 2 3 4
+a       : 1 . . . .
+b       : . 1 . . .
+c       : . . 1 1 1
+outcome : p t t t t
+decided : . 1 2 3 4
+pending: 1
+final-fail: 0
+
+== ieee_16_12_11_always_range_weak_p2_ticks_missing
+# evidence: derived
+# 16.12.11 p2 (always [2:5] a, weak): a shall hold at the second through fifth ticks after the
+# start, but those ticks need not exist. Four samples, a always true: nothing fails at the end.
+property: always [2:5] a
+scope: attempt
+clause: 16.12.11
+class: normative
+origin: IEEE 1800-2017 §16.12.11 p2, re-expressed
+sample  : 0 1 2 3
+a       : 1 1 1 1
+outcome : p p p p
+decided : . . . .
+pending: 4
+final-fail: 0
+
+== ieee_16_12_11_always_range_strong_p3_ticks_missing
+# evidence: derived
+# 16.12.11 p3 (s_always [2:5] a, strong): the same trace; the ticks shall exist, so every attempt
+# fails at the end of the simulation (the first attempt's window is samples 2..5, only 2, 3 exist).
+property: s_always [2:5] a
+scope: attempt
+clause: 16.12.11
+class: normative
+origin: IEEE 1800-2017 §16.12.11 p3, re-expressed
+sample  : 0 1 2 3
+a       : 1 1 1 1
+outcome : p p p p
+decided : . . . .
+pending: 4
+final-fail: 4
+
+== ieee_16_12_11_always_range_fails_inside_window_p2
+# evidence: derived
+# 16.12.11 p2: a is low at sample 3, which is inside the windows of attempts 0 (samples 2..5) and 1
+# (samples 3..6): both fail at 3. Attempts 2 and 3 have windows beyond the trace: weak, alive.
+property: always [2:5] a
+scope: attempt
+clause: 16.12.11
+class: normative
+origin: IEEE 1800-2017 §16.12.11 p2, re-expressed
+sample  : 0 1 2 3
+a       : 1 1 1 .
+outcome : F F p p
+decided : 3 3 . .
+fail    : . . . 1
+pending: 2
+final-fail: 0
+
+== ieee_16_12_11_always_range_strong_fails_inside_window_p3
+# evidence: derived
+# 16.12.11 p3 (s_always [2:5] a): same trace as the weak case; the two attempts whose window lies
+# beyond the trace fail at the end of the simulation as well.
+property: s_always [2:5] a
+scope: attempt
+clause: 16.12.11
+class: normative
+origin: IEEE 1800-2017 §16.12.11 p3, re-expressed
+sample  : 0 1 2 3
+a       : 1 1 1 .
+outcome : F F p p
+decided : 3 3 . .
+fail    : . . . 1
+pending: 2
+final-fail: 2
+
+== ieee_16_12_11_always_range_complete_window_p2
+# evidence: derived
+# 16.12.11 p2: a holds at the second through fifth ticks after attempt 0 (samples 2..5), whatever
+# its value at samples 0 and 1: attempt 0 is true at 5. The later windows are cut by the end of the
+# trace: weak, alive.
+property: always [2:5] a
+scope: attempt
+clause: 16.12.11
+class: normative
+origin: IEEE 1800-2017 §16.12.11 p2, re-expressed
+sample  : 0 1 2 3 4 5
+a       : . . 1 1 1 1
+outcome : T p p p p p
+decided : 5 . . . . .
+pass    : . . . . . 1
+pending: 5
+final-fail: 0
+
+== ieee_16_12_11_always_range_strong_complete_window_p3
+# evidence: derived
+# 16.12.11 p3 (s_always [2:5] a): same trace; attempt 0 is true at 5, each of the five later
+# attempts has a window that is not fully inside the trace and fails at the end.
+property: s_always [2:5] a
+scope: attempt
+clause: 16.12.11
+class: normative
+origin: IEEE 1800-2017 §16.12.11 p3, re-expressed
+sample  : 0 1 2 3 4 5
+a       : . . 1 1 1 1
+outcome : T p p p p p
+decided : 5 . . . . .
+pass    : . . . . . 1
+pending: 5
+final-fail: 5
+
+== ieee_16_12_11_always_unbounded_range_p4
+# evidence: derived
+# 16.12.11 p4 (always [2:$] a): a holds at every tick from the second after the start on; the ticks
+# need not exist. Attempts 0 and 1 fail at 3 (a low); attempts 2..4 are alive (weak).
+property: always [2:$] a
+scope: attempt
+clause: 16.12.11
+class: normative
+origin: IEEE 1800-2017 §16.12.11 p4, re-expressed
+sample  : 0 1 2 3 4
+a       : . . 1 . 1
+outcome : F F p p p
+decided : 3 3 . . .
+fail    : . . . 1 .
+pending: 3
+final-fail: 0
+
+== ieee_16_12_11_always_explicit_form_of_implicit_always
+# evidence: derived
+# 16.12.11: an assertion over p has one attempt per tick, equal to one evaluation of p at each tick of
+# an attempt of always p. Derived trace for p = a |-> ##1 b: p is true at sample 0, fails at 2 (from
+# sample 1) and at 4 (from sample 3). The always attempts starting at or before a failing offset
+# fail at that offset's failure sample.
+property: always (a |-> ##1 b)
+scope: attempt
+clause: 16.12.11 16.5
+class: normative
+origin: IEEE 1800-2017 §16.12.11 implicit_always / explicit_always, re-expressed
+sample  : 0 1 2 3 4
+a       : 1 1 . 1 .
+b       : . 1 . . .
+outcome : F F F F p
+decided : 2 2 4 4 .
+fail    : . . 1 . 1
+pending: 1
+final-fail: 0
+
+# ---------------------------------------------------------------- 16.12.12 until
+== ieee_16_12_12_until_weak_p1
+# evidence: derived
+# 16.12.12 p1 (a until b): a holds at every tick from the start up to, not necessarily including, the
+# first tick where b holds; if b holds at the starting tick, a need not hold. Attempts 0, 1, 2 meet b
+# at sample 2 (a is low there: allowed). Attempts 3, 4: b never seen, a holds: weak, alive.
+property: a until b
+scope: attempt
+clause: 16.12.12
+class: normative
+origin: IEEE 1800-2017 §16.12.12 p1, re-expressed
+sample  : 0 1 2 3 4
+a       : 1 1 . 1 1
+b       : . . 1 . .
+outcome : T T T p p
+decided : 2 2 2 . .
+pass    : . . 1 . .
+pending: 2
+final-fail: 0
+
+== ieee_16_12_12_until_strong_p2
+# evidence: derived
+# 16.12.12 p2 (a s_until b): as p1, and some current or future tick shall have b. Same trace: the two
+# attempts that never saw b fail at the end of the simulation.
+property: a s_until b
+scope: attempt
+clause: 16.12.12
+class: normative
+origin: IEEE 1800-2017 §16.12.12 p2, re-expressed
+sample  : 0 1 2 3 4
+a       : 1 1 . 1 1
+b       : . . 1 . .
+outcome : T T T p p
+decided : 2 2 2 . .
+pass    : . . 1 . .
+pending: 2
+final-fail: 2
+
+== ieee_16_12_12_until_with_weak_p3
+# evidence: derived
+# 16.12.12 p3 (a until_with b): a holds at every tick from the start up to and including the first
+# tick with b. At sample 2 b holds and a does not: attempts 0, 1, 2 fail there (contrast with p1).
+# Attempts 3, 4 never see b: weak, alive.
+property: a until_with b
+scope: attempt
+clause: 16.12.12
+class: normative
+origin: IEEE 1800-2017 §16.12.12 p3, re-expressed
+sample  : 0 1 2 3 4
+a       : 1 1 . 1 1
+b       : . . 1 . .
+outcome : F F F p p
+decided : 2 2 2 . .
+fail    : . . 1 . .
+pending: 2
+final-fail: 0
+
+== ieee_16_12_12_until_with_strong_p4
+# evidence: derived
+# 16.12.12 p4 (a s_until_with b): as p3, and b shall occur. Same trace: attempts 3 and 4 also fail at
+# the end of the simulation.
+property: a s_until_with b
+scope: attempt
+clause: 16.12.12
+class: normative
+origin: IEEE 1800-2017 §16.12.12 p4, re-expressed
+sample  : 0 1 2 3 4
+a       : 1 1 . 1 1
+b       : . . 1 . .
+outcome : F F F p p
+decided : 2 2 2 . .
+fail    : . . 1 . .
+pending: 2
+final-fail: 2
+
+== ieee_16_12_12_until_left_drops_before_right
+# evidence: derived
+# 16.12.12 p1: a shall hold until b; b never holds. Attempts 0 and 1 fail at 1 (a low, b low),
+# attempt 2 fails at 2; attempt 3 is alive. Derived trace.
+property: a until b
+scope: attempt
+clause: 16.12.12
+class: normative
+origin: IEEE 1800-2017 §16.12.12 p1, re-expressed
+sample  : 0 1 2 3
+a       : 1 . . 1
+b       : . . . .
+outcome : F F F p
+decided : 1 1 2 .
+fail    : . 1 1 .
+pending: 1
+final-fail: 0
+
+# ---------------------------------------------------------------- 16.12.13 eventually
+== ieee_16_12_13_s_eventually_p1
+# evidence: derived
+# 16.12.13 p1 (s_eventually a): true iff a holds at a current or future tick. a first holds at
+# sample 2: attempts 0..2 succeed there; attempt 3 is pending and, being strong, fails at the end.
+property: s_eventually a
+scope: attempt
+clause: 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.13 p1, re-expressed
+sample  : 0 1 2 3
+a       : . . 1 .
+outcome : T T T p
+decided : 2 2 2 .
+pass    : . . 1 .
+pending: 1
+final-fail: 1
+
+== ieee_16_12_13_always_s_eventually_finite_a_at_last_tick_p3
+# evidence: derived
+# 16.12.13 p3 (always s_eventually a): on a finite trace it is true provided that, if there is a
+# tick at all, a holds at the last tick. a is high at the last tick: no attempt fails at the end.
+property: always s_eventually a
+scope: attempt
+clause: 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.13 p3 (finite computation), re-expressed
+sample  : 0 1 2
+a       : . . 1
+outcome : p p p
+decided : . . .
+pending: 3
+final-fail: 0
+
+== ieee_16_12_13_always_s_eventually_finite_a_low_at_last_tick_p3
+# evidence: derived
+# 16.12.13 p3 on a finite trace: a is low at the last tick, so every attempt fails at the end
+# although a was high earlier.
+property: always s_eventually a
+scope: attempt
+clause: 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.13 p3 (finite computation), re-expressed
+sample  : 0 1 2
+a       : 1 1 .
+outcome : p p p
+decided : . . .
+pending: 3
+final-fail: 3
+
+== ieee_16_12_13_always_s_eventually_infinitely_often_p3
+# evidence: derived
+# 16.12.13 p3 on an infinite computation: true iff a holds at infinitely many ticks. The infinite
+# trace is a = 0, then (1, 0) repeated for ever: true for every attempt. No finite prefix decides it.
+property: always s_eventually a
+scope: attempt
+loop: 1
+clause: 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.13 p3 (infinite computation), re-expressed
+sample      : 0 1 2
+a           : . 1 .
+outcome     : p p p
+decided     : . . .
+pending: 3
+final-fail: 3
+inf-outcome : T T T
+inf-decided : . . .
+
+== ieee_16_12_13_always_s_eventually_finitely_often_p3
+# evidence: derived
+# 16.12.13 p3 on an infinite computation: a holds only at sample 1 and never again (0, 1, then 0 for
+# ever): false for every attempt, not decided by any finite prefix.
+property: always s_eventually a
+scope: attempt
+loop: 2
+clause: 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.13 p3 (infinite computation), re-expressed
+sample      : 0 1 2 3
+a           : . 1 . .
+outcome     : p p p p
+decided     : . . . .
+pending: 4
+final-fail: 4
+inf-outcome : F F F F
+inf-decided : . . . .
+
+== ieee_16_12_13_s_eventually_always_stays_high_p2
+# evidence: derived
+# 16.12.13 p2 (s_eventually always a): on an infinite computation, true iff a holds from some tick on
+# for ever. The infinite trace is a = 0, then 1 for ever: true for every attempt.
+property: s_eventually always a
+support: oracle
+rejected-by: unbounded 's_eventually' (no upper bound) is not supported yet
+scope: attempt
+loop: 1
+clause: 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.13 p2 (infinite computation), re-expressed
+sample      : 0 1
+a           : . 1
+outcome     : p p
+decided     : . .
+pending: 2
+final-fail: 0
+inf-outcome : T T
+inf-decided : . .
+
+== ieee_16_12_13_s_eventually_always_alternating_p2
+# evidence: derived
+# 16.12.13 p2 on an infinite computation: a alternates 1, 0 for ever, so a never holds from some tick
+# on for ever: false for every attempt.
+property: s_eventually always a
+support: oracle
+rejected-by: unbounded 's_eventually' (no upper bound) is not supported yet
+scope: attempt
+loop: 0
+clause: 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.13 p2 (infinite computation), re-expressed
+sample      : 0 1
+a           : 1 .
+outcome     : p p
+decided     : . .
+pending: 2
+final-fail: 2
+inf-outcome : F F
+inf-decided : . .
+
+== ieee_16_12_13_eventually_range_weak_p4
+# evidence: derived
+# 16.12.13 p4 (eventually [2:5] a): true iff a holds at one of the second..fifth ticks after the
+# start, or not all of those ticks exist. a is high at sample 3: attempts 0 and 1 (offsets 3 and 2)
+# succeed there; attempts 2..5 have incomplete windows without a: weak, alive.
+property: eventually [2:5] a
+scope: attempt
+clause: 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.13 p4, re-expressed
+sample  : 0 1 2 3 4 5
+a       : . . . 1 . .
+outcome : T T p p p p
+decided : 3 3 . . . .
+pass    : . . . 1 . .
+pending: 4
+final-fail: 0
+
+== ieee_16_12_13_eventually_range_strong_p5
+# evidence: derived
+# 16.12.13 p5 (s_eventually [2:5] a): a shall hold at one of the second..fifth ticks. Same trace as
+# the weak case: the four incomplete attempts fail at the end of the simulation.
+property: s_eventually [2:5] a
+scope: attempt
+clause: 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.13 p5, re-expressed
+sample  : 0 1 2 3 4 5
+a       : . . . 1 . .
+outcome : T T p p p p
+decided : 3 3 . . . .
+pass    : . . . 1 . .
+pending: 4
+final-fail: 4
+
+== ieee_16_12_13_eventually_range_weak_all_ticks_exist_p4
+# evidence: derived
+# 16.12.13 p4: a never holds; attempt 0 has all of its ticks (samples 2..5) and fails at 5.
+# The other attempts have incomplete windows: weak, true at the end.
+property: eventually [2:5] a
+scope: attempt
+clause: 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.13 p4, re-expressed
+sample  : 0 1 2 3 4 5
+a       : . . . . . .
+outcome : F p p p p p
+decided : 5 . . . . .
+fail    : . . . . . 1
+pending: 5
+final-fail: 0
+
+== ieee_16_12_13_s_eventually_from_second_tick_p7
+# evidence: derived
+# 16.12.13 p7 (s_eventually [2:$] a): a holds at a tick no earlier than the second after the start.
+# a at the start tick does not count: attempt 0 succeeds at sample 2; the others are pending and
+# fail at the end of the simulation.
+property: s_eventually [2:$] a
+scope: attempt
+clause: 16.12.13
+class: normative
+origin: IEEE 1800-2017 §16.12.13 p7, re-expressed
+sample  : 0 1 2 3
+a       : 1 . 1 .
+outcome : T p p p
+decided : 2 . . .
+pass    : . . 1 .
+pending: 3
+final-fail: 3
+
+# ---------------------------------------------------------------- 16.12.20 property examples
+== ieee_16_12_20_rule2_negated_sequence_in_consequent
+# evidence: derived
+# 16.12.20 rule2: a |-> not (b ##1 c ##1 d) negates the consequent sequence. Derived trace: attempt 0
+# sees the sequence match at 2 (the property fails there); attempt 3 sees it break at 4 (true).
+property: a |-> not (b ##1 c ##1 d)
+scope: attempt
+clause: 16.12.20 16.12.3
+class: normative
+origin: IEEE 1800-2017 §16.12.20 rule2, re-expressed
+sample  : 0 1 2 3 4 5
+a       : 1 . . 1 . .
+b       : 1 . . 1 . .
+c       : . 1 . . . .
+d       : . . 1 . . .
+outcome : F t t T t t
+decided : 2 1 2 4 4 5
+fail    : . . 1 . . .
+pass    : . . . . 1 .
+pending: 0
+
+== ieee_16_12_20_rule3_or_fails_when_both_arms_fail
+# evidence: derived
+# 16.12.20 rule3: a[*2] |-> ((##[1:3] c) or (d |=> e)): after two consecutive a, either c within one to
+# three cycles or, if d holds now, e one cycle later. Derived trace: the antecedent of attempt 0 ends
+# at 1 where d holds; e is low at 2 (second arm fails at 2) and c is low at 2, 3, 4 (first arm fails
+# at 4), so the attempt fails at 4. Attempt 1 has only one a then a low: no match, vacuous.
+property: a[*2] |-> ((##[1:3] c) or (d |=> e))
+scope: attempt
+clause: 16.12.20 16.12.4
+class: normative
+origin: IEEE 1800-2017 §16.12.20 rule3, re-expressed
+sample  : 0 1 2 3 4 5
+a       : 1 1 . . . .
+d       : . 1 . . . .
+c       : . . . . . .
+e       : . . . . . .
+outcome : F t t t t t
+decided : 4 2 2 3 4 5
+fail    : . . . . 1 .
+pending: 0
+
+== ieee_16_12_20_rule3_or_first_arm_rescues
+# evidence: derived
+# 16.12.20 rule3: as above, but c holds at sample 3 (the second cycle after the match end at 1, inside
+# the window of cycles 1 to 3): the or is true at 3 although the second arm failed at 2.
+property: a[*2] |-> ((##[1:3] c) or (d |=> e))
+scope: attempt
+clause: 16.12.20 16.12.4
+class: normative
+origin: IEEE 1800-2017 §16.12.20 rule3, re-expressed
+sample  : 0 1 2 3 4 5
+a       : 1 1 . . . .
+d       : . 1 . . . .
+c       : . . . 1 . .
+e       : . . . . . .
+outcome : T t t t t t
+decided : 3 2 2 3 4 5
+pass    : . . . 1 . .
+pending: 0
+
+== ieee_16_12_20_rule5_then_branch_fails
+# evidence: derived
+# 16.12.20 rule5: a ##1 (b || c)[->1] |-> if (b) (##1 d |-> e) else f. The antecedent is a, then the
+# next occurrence of b or c. Derived trace: a at 0, b is the first at 2 (c never): the then-branch
+# applies: d follows at 3 and e is low at 3, so the attempt fails at 3.
+property: a ##1 (b || c)[->1] |-> if (b) (##1 d |-> e) else f
+support: oracle
+rejected-by: goto repetition [->] is not supported yet
+scope: attempt
+clause: 16.12.20 16.12.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.12.20 rule5, re-expressed
+sample  : 0 1 2 3
+a       : 1 . . .
+b       : . . 1 .
+c       : . . . .
+d       : . . . 1
+e       : . . . .
+f       : . . . .
+outcome : F t t t
+decided : 3 1 2 3
+fail    : . . . 1
+pending: 0
+
+== ieee_16_12_20_rule5_else_branch_f_low_fails
+# evidence: derived
+# 16.12.20 rule5: c is the first of b or c at sample 2 (b low): the else-branch applies and f is low
+# there, so the attempt fails at 2.
+property: a ##1 (b || c)[->1] |-> if (b) (##1 d |-> e) else f
+support: oracle
+rejected-by: goto repetition [->] is not supported yet
+scope: attempt
+clause: 16.12.20 16.12.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.12.20 rule5, re-expressed
+sample  : 0 1 2 3
+a       : 1 . . .
+b       : . . . .
+c       : . . 1 .
+d       : . . . .
+e       : . . . .
+f       : . . . .
+outcome : F t t t
+decided : 2 1 2 3
+fail    : . . 1 .
+pending: 0
+
+== ieee_16_12_20_rule5_else_branch_f_high_passes
+# evidence: derived
+# 16.12.20 rule5: same, with f high at 2: the else-branch holds, the attempt is true at 2.
+property: a ##1 (b || c)[->1] |-> if (b) (##1 d |-> e) else f
+support: oracle
+rejected-by: goto repetition [->] is not supported yet
+scope: attempt
+clause: 16.12.20 16.12.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.12.20 rule5, re-expressed
+sample  : 0 1 2 3
+a       : 1 . . .
+b       : . . . .
+c       : . . 1 .
+d       : . . . .
+e       : . . . .
+f       : . . 1 .
+outcome : T t t t
+decided : 2 1 2 3
+pass    : . . 1 .
+pending: 0
+
+== ieee_16_12_20_rule5_both_b_and_c_take_then_branch
+# evidence: derived
+# 16.12.20 rule5: b and c both hold at sample 2. The condition of the if is b, and b is true at the
+# sample where the goto match ends, so the then-branch is the one selected (the if tests b, not c).
+# d at 3 and e at 3: the inner implication holds; f is low, so the else-branch would have failed.
+property: a ##1 (b || c)[->1] |-> if (b) (##1 d |-> e) else f
+support: oracle
+rejected-by: goto repetition [->] is not supported yet
+scope: attempt
+clause: 16.12.20 16.12.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.12.20 rule5, re-expressed
+sample  : 0 1 2 3
+a       : 1 . . .
+b       : . . 1 .
+c       : . . 1 .
+d       : . . . 1
+e       : . . . 1
+f       : . . . .
+outcome : T t t t
+decided : 3 1 2 3
+pass    : . . . 1
+pending: 0

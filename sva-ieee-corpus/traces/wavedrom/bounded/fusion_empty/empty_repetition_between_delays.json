@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "a",
+      "wave": "10.10."
+    },
+    {
+      "name": "b",
+      "wave": "10.10."
+    },
+    {
+      "name": "c",
+      "wave": "0...10"
+    },
+    {
+      "name": "d",
+      "wave": "010..1"
+    },
+    {
+      "name": "fail",
+      "wave": "0....."
+    },
+    {
+      "name": "pass",
+      "wave": "010..1"
+    }
+  ],
+  "head": {
+    "text": "fusion_empty/empty_repetition_between_delays",
+    "tock": 0
+  }
+}

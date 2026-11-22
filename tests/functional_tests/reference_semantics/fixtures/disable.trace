@@ -1,0 +1,98 @@
+# disable iff (specification p11; docs/semantics.md section 7).
+
+== p11_disable_during_progress
+property: a |-> ##3 b
+clause: 16.7 16.12 16.12.7
+class: normative
+disable: !rst_n
+sample : 0 1 2 3 4
+rst_n  : 1 1 . 1 1
+a      : 1 . . . .
+b      : . . . . .
+
+== p11_disable_at_launch
+property: a |-> ##3 b
+clause: 16.7 16.12 16.12.7
+class: normative
+disable: !rst_n
+sample : 0 1 2 3 4
+rst_n  : . 1 1 1 1
+a      : 1 . . . .
+b      : . . . . .
+
+== p11_disable_at_the_would_be_failure
+property: a |-> ##3 b
+clause: 16.7 16.12 16.12.7
+class: normative
+disable: !rst_n
+sample : 0 1 2 3 4
+rst_n  : 1 1 1 . 1
+a      : 1 . . . .
+b      : . . . . .
+
+== p11_disable_after_the_failure
+property: a |-> ##3 b
+clause: 16.7 16.12 16.12.7
+class: normative
+disable: !rst_n
+sample : 0 1 2 3 4
+rst_n  : 1 1 1 1 .
+a      : 1 . . . .
+b      : . . . . .
+fail   : . . . 1 .
+
+== p11_attempts_after_a_disable
+property: a |-> ##3 b
+clause: 16.7 16.12 16.12.7
+class: normative
+disable: !rst_n
+sample : 0 1 2 3 4 5 6
+rst_n  : 1 . 1 1 1 1 1
+a      : 1 . 1 . . . .
+b      : . . . . . 1 .
+pass   : . . . . . 1 .
+
+== p11_success_before_disable_is_reported
+property: a |-> ##1 b
+clause: 16.7 16.12 16.12.7
+class: normative
+disable: !rst_n
+sample : 0 1 2 3
+rst_n  : 1 1 . 1
+a      : 1 1 . .
+b      : . 1 . .
+pass   : . 1 . .
+
+== disable_masks_an_immediate_failure
+# The attempt launched in a disabled sample would fail in that same sample.
+property: a |-> b
+clause: 16.12 16.12.7
+class: normative
+disable: !rst_n
+sample : 0 1
+rst_n  : . 1
+a      : 1 1
+b      : . .
+fail   : . 1
+
+== disable_masks_an_immediate_success
+property: a |-> b
+clause: 16.12 16.12.7
+class: normative
+disable: !rst_n
+sample : 0 1
+rst_n  : . 1
+a      : 1 1
+b      : 1 1
+pass   : . 1
+
+== disable_masks_a_cover_match
+property: a
+clause: 16.12 16.14.3
+class: normative
+kind: cover
+disable: !rst_n
+sample : 0 1
+rst_n  : . 1
+a      : 1 1
+pass   : . 1

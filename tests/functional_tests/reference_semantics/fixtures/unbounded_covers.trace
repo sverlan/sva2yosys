@@ -1,0 +1,320 @@
+# Covers of unbounded sequences (docs/semantics.md 6, 9.6), hand-derived, per attempt
+# (scope: attempt). Accepted by the configuration-set machine: a strong unbounded sequence (the
+# cover default), or an implication with a single-length antecedent into one. "attempt s" starts at
+# sample s. A sequence used as a property is TRUE at the first sample a non-empty match ends and
+# FALSE when no match is possible any more; in a cover it is strong: a pending attempt finalizes
+# FALSE. A cover reports the TRUE attempts that are nonvacuous, at their decision sample, once per
+# sample (attempts first-matching at the same sample give one pass sample). An implication attempt
+# with no antecedent match is TRUE and vacuous (t): never covered.
+
+== cover_delay_attempts_matching_at_the_same_sample
+# cover property (a ##[1:$] b). a = 1 1 . . ., b = . . . 1 .
+# attempt 0: a0, the first b after sample 0 is b3: TRUE at 3. attempt 1: a1, b3: TRUE at 3. One
+# pass sample for the two attempts. Attempts 2, 3, 4: a low, FALSE at their own sample.
+property: a ##[1:$] b
+clause: 16.7 16.12.2 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 1 . . .
+b       : . . . 1 .
+outcome : T T F F F
+decided : 3 3 2 3 4
+pass    : . . . 1 .
+pending: 0
+final-fail: 0
+
+== cover_delay_counts_the_first_match_only
+# cover property (a ##[1:$] b). a = 1 . . . ., b = . 1 . 1 .
+# attempt 0: the first b after sample 0 is b1: TRUE at 1. The later b3 is another match of the same
+# attempt and is not counted. Attempts 1-4: a low, FALSE at their own sample.
+property: a ##[1:$] b
+clause: 16.7 16.12.2 16.14.3 Annex F
+class: interpretation I6
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . . .
+b       : . 1 . 1 .
+outcome : T F F F F
+decided : 1 1 2 3 4
+pass    : . 1 . . .
+pending: 0
+final-fail: 0
+
+== cover_repetition_with_a_tail_frontier_dies
+# cover property (a[*2:$] ##1 b). a = 1 1 . 1 ., b = . . 1 . .
+# attempt 0: a0 a1, then b2: the match ends at 2: TRUE at 2. attempt 1: a1, and a2 is low: a run of
+# two cannot be completed, FALSE at 2 although b2 holds: no cover. attempt 2: a low, FALSE at 2.
+# attempt 3: a3, a4 low: FALSE at 4. attempt 4: a low, FALSE at 4.
+property: a[*2:$] ##1 b
+clause: 16.7 16.9.2 16.12.2 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 1 . 1 .
+b       : . . 1 . .
+outcome : T F F F F
+decided : 2 2 2 4 4
+pass    : . . 1 . .
+pending: 0
+final-fail: 0
+
+== cover_goto_two
+# cover property (b[->2]). b = . 1 . 1 1 .
+# the match of an attempt ends at the second b at or after its start. attempts 0, 1: b1 b3: TRUE
+# at 3. attempts 2, 3: b3 b4: TRUE at 4. attempt 4: one b so far: pending. attempt 5: pending.
+# The pending attempts finalize FALSE (strong).
+property: b[->2]
+clause: 16.9.2 16.12.2 16.14.3 Annex F
+class: interpretation I8
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : . 1 . 1 1 .
+outcome : T T T T p p
+decided : 3 3 4 4 . .
+pass    : . . . 1 1 .
+pending: 2
+final-fail: 2
+
+== cover_nonconsecutive_two_then_c
+# cover property (b[=2] ##1 c). b = 1 1 1 . ., c = . . . . 1
+# b[=2] ends at the second b or at any later sample before a third b. attempt 0: b0 b1 are the two,
+# b2 is a third: the match can only end at 1, so c must hold at 2: it does not, FALSE at 2.
+# attempt 1: b1 b2, ends at 2 (c3 low: that path dies) or at 3 (no b at 3), then c4: TRUE at 4.
+# attempt 2: one b so far, pending. attempts 3, 4: no b, pending (strong: finalize FALSE).
+property: b[=2] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.14.3 Annex F
+class: interpretation I8
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4
+b       : 1 1 1 . .
+c       : . . . . 1
+outcome : F T p p p
+decided : 2 4 . . .
+pass    : . . . . 1
+pending: 3
+final-fail: 3
+
+== cover_implication_into_unbounded_delay
+# cover property (a |-> ##[1:$] b). a = 1 . 1 . ., b = . . . 1 .
+# attempt 0: trigger 0, b3: TRUE at 3. attempt 2: trigger 2, b3: TRUE at 3 (one pass sample).
+# attempts 1, 3, 4: a low, vacuously TRUE (t) at their own sample: not covered.
+property: a |-> ##[1:$] b
+clause: 16.7 16.12.2 16.12.7 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . 1 . .
+b       : . . . 1 .
+outcome : T t T t t
+decided : 3 1 3 3 4
+pass    : . . . 1 .
+pending: 0
+final-fail: 0
+
+== cover_implication_into_unbounded_delay_pending
+# cover property (a |-> ##[1:$] b) with b never high: the consequent of a cover is strong. attempts
+# 0 and 3 have a trigger and stay pending (finalize FALSE); the others are vacuous. No pass.
+property: a |-> ##[1:$] b
+clause: 16.7 16.12.2 16.12.7 16.14.3 Annex F
+class: interpretation I8
+signals: a b
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . 1 .
+outcome : p t t p t
+decided : . 1 2 . 4
+pending: 2
+final-fail: 2
+
+== cover_nonoverlapping_into_repetition_merged_configurations
+# cover property (a |=> b[*1:$] ##1 c). a = 1 . 1 . . ., b = . 1 1 1 . ., c = . . . . 1 .
+# attempt 0: the consequent starts at 1: b1 b2 b3, c4: TRUE at 4. attempt 2: the consequent starts
+# at 3: b3, c4: TRUE at 4. At sample 3 the two obligations are in different configurations ({b, c}
+# and {b}), at sample 4 both match: one pass sample. Attempts 1, 3, 4, 5: a low, vacuous.
+property: a |=> b[*1:$] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 . 1 . . .
+b       : . 1 1 1 . .
+c       : . . . . 1 .
+outcome : T t T t t t
+decided : 4 1 4 3 4 5
+pass    : . . . . 1 .
+pending: 0
+final-fail: 0
+
+== cover_nonoverlapping_into_repetition_a_dying_attempt
+# cover property (a |=> b[*1:$] ##1 c). a = 1 1 . ., b = . 1 0 ., c = . . 1 .
+# attempt 0: the consequent starts at 1: b1, c2: TRUE at 2. attempt 1: the consequent starts at 2: b2
+# is low, no match is possible: FALSE at 2 (nothing is covered for it). attempts 2, 3: a low.
+property: a |=> b[*1:$] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 1 . .
+b       : . 1 . .
+c       : . . 1 .
+outcome : T F t t
+decided : 2 2 2 3
+pass    : . . 1 .
+pending: 0
+final-fail: 0
+
+== cover_identical_configurations_of_two_attempts
+# cover property (a ##1 b[*1:$] ##1 c). a = 1 1 . . ., b = . 1 1 1 ., c = . . . . 1
+# attempt 0: a0, b1 b2 b3, c4: TRUE at 4. attempt 1: a1, b2 b3, c4: TRUE at 4. At sample 3 the two
+# attempts are in the same configuration ({b, c}) and merge; both match at 4: one pass sample.
+# attempts 2, 3, 4: a low, FALSE at their own sample.
+property: a ##1 b[*1:$] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 1 . . .
+b       : . 1 1 1 .
+c       : . . . . 1
+outcome : T T F F F
+decided : 4 4 2 3 4
+pass    : . . . . 1
+pending: 0
+final-fail: 0
+
+== cover_antecedent_with_one_length_into_unbounded_repetition
+# cover property (a ##1 b |-> c[*2:$]). a = 1 . 1 . . ., b = . 1 . 1 . ., c = . 1 1 . . 1
+# The antecedent has one length (2). attempt 0: a0 b1 matches at 1; the consequent c[*2:$] from 1:
+# c1 c2, a match at 2: TRUE at 2. attempt 2: a2 b3 matches at 3; c3 is low: FALSE at 3. attempts 1,
+# 3, 4, 5: the antecedent cannot match: vacuous.
+property: a ##1 b |-> c[*2:$]
+clause: 16.7 16.9.2 16.12.2 16.12.7 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 . 1 . . .
+b       : . 1 . 1 . .
+c       : . 1 1 . . 1
+outcome : T t F t t t
+decided : 2 1 3 3 4 5
+pass    : . . 1 . . .
+pending: 0
+final-fail: 0
+
+== cover_repetition_first_match_is_at_the_start
+# cover property (a[*1:$]). a = 1 1 . : each attempt matches at its own start (a longer match of the
+# same attempt is not counted): attempts 0, 1 are TRUE at 0, 1; attempt 2 is FALSE at 2.
+property: a[*1:$]
+clause: 16.9.2 16.12.2 16.14.3 Annex F
+class: interpretation I6
+kind: cover
+scope: attempt
+sample  : 0 1 2
+a       : 1 1 .
+outcome : T T F
+decided : 0 1 2
+pass    : 1 1 .
+pending: 0
+final-fail: 0
+
+== cover_disable_during_a_pending_attempt
+# cover property (disable iff (d) a ##[1:$] b). a = 1 . 1 . . ., b = . 1 . . . 1, d = . . . 1 . .
+# attempt 0: a0, b1: TRUE at 1, before d. attempt 1: a low, FALSE at 1. attempt 2: a2 is pending
+# when d3 is high: disabled at 3; the later b5 does not count. attempt 3: d3 is high at its start:
+# disabled at 3. attempts 4, 5: a low, FALSE.
+property: a ##[1:$] b
+clause: 16.7 16.12 16.12.2 16.14.3 Annex F
+class: normative
+disable: d
+kind: cover
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 . 1 . . .
+b       : . 1 . . . 1
+d       : . . . 1 . .
+outcome : T F d d F F
+decided : 1 1 3 3 4 5
+pass    : . 1 . . . .
+pending: 0
+final-fail: 0
+
+== cover_past_condition_at_the_first_sample
+# cover property ($past(a) ##[1:$] b). a = 1 1 . ., b = . . . 1
+# $past(a) does not hold at the first sample (docs/semantics.md 8): attempt 0 is FALSE at 0.
+# attempt 1: $past(a) = a0 = 1, then b3: TRUE at 3. attempt 2: $past(a) = a1 = 1, b3: TRUE at 3.
+# attempt 3: $past(a) = a2 = 0: FALSE at 3.
+property: $past(a) ##[1:$] b
+clause: 16.7 16.9.3 16.12.2 16.14.3 Annex F
+class: interpretation I3
+kind: cover
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 1 . .
+b       : . . . 1
+outcome : F T T F
+decided : 0 3 3 3
+pass    : . . . 1
+pending: 0
+final-fail: 0
+
+== cover_past_inside_the_unbounded_part
+# cover property (a ##[1:$] $past(b)). a = 1 . . ., b = . 1 . .
+# attempt 0: a0; $past(b) holds at sample t when b held at t - 1: b0 = 0 (t = 1), b1 = 1 (t = 2):
+# TRUE at 2. attempts 1-3: a low, FALSE at their own sample.
+property: a ##[1:$] $past(b)
+clause: 16.7 16.9.3 16.12.2 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . . .
+b       : . 1 . .
+outcome : T F F F
+decided : 2 1 2 3
+pass    : . . 1 .
+pending: 0
+final-fail: 0
+
+== cover_unbounded_delay_to_constant_false_is_never_covered
+# cover property (a ##[1:$] 1'b0). a = 1 . 1 .
+# a constant-false condition holds at no sample: attempts 0 and 2 stay pending (finalize FALSE),
+# attempts 1 and 3 are FALSE (a low). No pass at any sample.
+property: a ##[1:$] 1'b0
+clause: 16.7 16.12.2 16.14.3 Annex F
+class: interpretation I1, I8
+kind: cover
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . 1 .
+outcome : p F p F
+decided : . 1 . 3
+pending: 2
+final-fail: 2
+
+== cover_unbounded_delay_to_constant_true_matches_at_the_next_sample
+# cover property (a ##[1:$] 1'b1). a = 1 . 1 .
+# attempt 0: the first sample after 0 matches: TRUE at 1. attempt 2: TRUE at 3. Attempts 1, 3: a low.
+property: a ##[1:$] 1'b1
+clause: 16.7 16.12.2 16.14.3 Annex F
+class: normative
+kind: cover
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . 1 .
+outcome : T F T F
+decided : 1 1 3 3
+pass    : . 1 . 1
+pending: 0
+final-fail: 0

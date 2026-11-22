@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "a",
+      "wave": "10"
+    },
+    {
+      "name": "b",
+      "wave": "1."
+    },
+    {
+      "name": "fail",
+      "wave": "10"
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    }
+  ],
+  "head": {
+    "text": "constants/constant_false_first_letter_fails_at_the_trigger_sample",
+    "tock": 0
+  }
+}

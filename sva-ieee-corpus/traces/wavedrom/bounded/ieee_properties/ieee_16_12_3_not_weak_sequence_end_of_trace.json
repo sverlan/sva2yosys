@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1.01"
+    },
+    {
+      "name": "b",
+      "wave": "010."
+    },
+    {
+      "name": "fail",
+      "wave": "010."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10"
+    }
+  ],
+  "head": {
+    "text": "ieee_properties/ieee_16_12_3_not_weak_sequence_end_of_trace",
+    "tock": 0
+  }
+}

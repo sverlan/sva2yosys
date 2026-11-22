@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "b",
+      "wave": "1.01"
+    },
+    {
+      "name": "c",
+      "wave": "010."
+    },
+    {
+      "name": "fail",
+      "wave": "0.10"
+    },
+    {
+      "name": "pass",
+      "wave": "010."
+    }
+  ],
+  "head": {
+    "text": "unbounded_consequents/unbounded_sequence_property_decides_each_attempt",
+    "tock": 0
+  }
+}

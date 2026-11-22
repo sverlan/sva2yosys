@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "b",
+      "wave": "1.0.1."
+    },
+    {
+      "name": "c",
+      "wave": "0.10.."
+    },
+    {
+      "name": "fail",
+      "wave": "0..10."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10.."
+    }
+  ],
+  "head": {
+    "text": "until_machine/top_level_until_overlapping",
+    "tock": 0
+  }
+}

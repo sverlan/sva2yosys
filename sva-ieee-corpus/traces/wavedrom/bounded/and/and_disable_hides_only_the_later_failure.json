@@ -1,0 +1,43 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "10..."
+    },
+    {
+      "name": "b",
+      "wave": "0...."
+    },
+    {
+      "name": "c",
+      "wave": "010.."
+    },
+    {
+      "name": "d",
+      "wave": "0...."
+    },
+    {
+      "name": "rst_n",
+      "wave": "1...0"
+    },
+    {
+      "name": "fail",
+      "wave": "0.10."
+    },
+    {
+      "name": "pass",
+      "wave": "0...."
+    }
+  ],
+  "head": {
+    "text": "and/and_disable_hides_only_the_later_failure",
+    "tock": 0
+  },
+  "foot": {
+    "text": "rst_n: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

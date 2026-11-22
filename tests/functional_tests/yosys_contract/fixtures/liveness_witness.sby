@@ -1,0 +1,34 @@
+[tasks]
+prove_anyseq_safety       prove plain
+live_anyseq               live plain
+prove_anyseq_guarded      prove plain
+live_anyseq_guarded       live defined
+live_wit_answered         live defined
+live_wit_unanswered       live defined
+live_wit_same_sample      live defined
+live_wit_next_sample      live defined
+live_wit_repick_mutant    live defined
+
+[options]
+live: mode live
+prove: mode prove
+
+[engines]
+live: aiger suprove
+prove: abc pdr
+
+[script]
+plain: read_verilog -formal -sv liveness_witness.sv
+defined: read_verilog -formal -sv -D SVA2YOSYS_LIVE liveness_witness.sv
+prove_anyseq_safety: prep -top anyseq_safety
+live_anyseq: prep -top anyseq_live
+prove_anyseq_guarded: prep -top guarded_anyseq
+live_anyseq_guarded: prep -top guarded_anyseq
+live_wit_answered: prep -top tb_answered
+live_wit_unanswered: prep -top tb_unanswered
+live_wit_same_sample: prep -top tb_same_sample
+live_wit_next_sample: prep -top tb_next_sample
+live_wit_repick_mutant: prep -top tb_next_sample_mutant
+
+[files]
+liveness_witness.sv

@@ -1,0 +1,36 @@
+# Sequence or (IEEE 1800 §16.9.7): the matches of either operand.
+
+== or_consequent
+property: a |-> (b ##1 c) or d
+clause: 16.7 16.9.7 16.12.7
+class: normative
+sample : 0 1 2 3 4
+a      : 1 1 . 1 .
+b      : . 1 . . .
+c      : . . 1 . .
+d      : 1 . . . .
+fail   : . . . 1 .
+pass   : 1 . 1 . .
+
+== or_antecedent
+property: (a ##1 b) or c |-> d
+clause: 16.7 16.9.7 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : . 1 . .
+b      : . . 1 .
+c      : 1 . . 1
+d      : . . 1 1
+fail   : 1 . . .
+pass   : . . 1 1
+
+== or_fails_when_both_branches_are_dead
+# ##[1:2] b is dead after sample 2, ##3 c only at sample 3: the failure is at 3.
+property: a |-> (##[1:2] b) or (##3 c)
+clause: 16.7 16.9.7 16.12.7
+class: normative
+sample : 0 1 2 3 4
+a      : 1 . . . .
+b      : . . . . .
+c      : . . . . .
+fail   : . . . 1 .

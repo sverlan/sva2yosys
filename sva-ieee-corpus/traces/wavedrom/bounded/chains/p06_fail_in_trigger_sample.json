@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "10..."
+    },
+    {
+      "name": "b",
+      "wave": "0...."
+    },
+    {
+      "name": "c",
+      "wave": "0...."
+    },
+    {
+      "name": "fail",
+      "wave": "10..."
+    },
+    {
+      "name": "pass",
+      "wave": "0...."
+    }
+  ],
+  "head": {
+    "text": "chains/p06_fail_in_trigger_sample",
+    "tock": 0
+  }
+}

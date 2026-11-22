@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "req",
+      "wave": "1.01."
+    },
+    {
+      "name": "ack",
+      "wave": "0...1"
+    },
+    {
+      "name": "fail",
+      "wave": "0.10."
+    },
+    {
+      "name": "pass",
+      "wave": "0...1"
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_14_2_pr3_hold_req_until_ack_assume",
+    "tock": 0
+  }
+}

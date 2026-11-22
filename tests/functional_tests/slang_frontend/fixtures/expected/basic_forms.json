@@ -1,0 +1,3256 @@
+{
+ "format": "sva2yosys-slang-ast",
+ "formatVersion": 2,
+ "slangVersion": "12.0.0",
+ "assertions": [
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_overlap",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 7,
+   "source_line_end": 7,
+   "source_column_start": 5,
+   "source_column_end": 61,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 7,
+    "source_line_end": 7,
+    "source_column_start": 37,
+    "source_column_end": 59,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 7,
+     "source_line_end": 7,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 7,
+      "source_line_end": 7,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Binary",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 7,
+     "source_line_end": 7,
+     "source_column_start": 52,
+     "source_column_end": 59,
+     "op": "OverlappedImplication",
+     "left": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 7,
+      "source_line_end": 7,
+      "source_column_start": 52,
+      "source_column_end": 53,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 7,
+       "source_line_end": 7,
+       "source_column_start": 52,
+       "source_column_end": 53,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "a",
+       "sva2yosys_path": "basic_forms.a",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      }
+     },
+     "right": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 7,
+      "source_line_end": 7,
+      "source_column_start": 58,
+      "source_column_end": 59,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 7,
+       "source_line_end": 7,
+       "source_column_start": 58,
+       "source_column_end": 59,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "b",
+       "sva2yosys_path": "basic_forms.b",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      }
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 7,
+    "source_line_end": 7,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 7,
+     "source_line_end": 7,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_nonoverlap",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 8,
+   "source_line_end": 8,
+   "source_column_start": 5,
+   "source_column_end": 61,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 8,
+    "source_line_end": 8,
+    "source_column_start": 37,
+    "source_column_end": 59,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 8,
+     "source_line_end": 8,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 8,
+      "source_line_end": 8,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Binary",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 8,
+     "source_line_end": 8,
+     "source_column_start": 52,
+     "source_column_end": 59,
+     "op": "NonOverlappedImplication",
+     "left": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 8,
+      "source_line_end": 8,
+      "source_column_start": 52,
+      "source_column_end": 53,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 8,
+       "source_line_end": 8,
+       "source_column_start": 52,
+       "source_column_end": 53,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "a",
+       "sva2yosys_path": "basic_forms.a",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      }
+     },
+     "right": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 8,
+      "source_line_end": 8,
+      "source_column_start": 58,
+      "source_column_end": 59,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 8,
+       "source_line_end": 8,
+       "source_column_start": 58,
+       "source_column_end": 59,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "b",
+       "sva2yosys_path": "basic_forms.b",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      }
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 8,
+    "source_line_end": 8,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 8,
+     "source_line_end": 8,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_delay1",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 9,
+   "source_line_end": 9,
+   "source_column_start": 5,
+   "source_column_end": 65,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 9,
+    "source_line_end": 9,
+    "source_column_start": 37,
+    "source_column_end": 63,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 9,
+     "source_line_end": 9,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 9,
+      "source_line_end": 9,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Binary",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 9,
+     "source_line_end": 9,
+     "source_column_start": 52,
+     "source_column_end": 63,
+     "op": "OverlappedImplication",
+     "left": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 9,
+      "source_line_end": 9,
+      "source_column_start": 52,
+      "source_column_end": 53,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 9,
+       "source_line_end": 9,
+       "source_column_start": 52,
+       "source_column_end": 53,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "a",
+       "sva2yosys_path": "basic_forms.a",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      }
+     },
+     "right": {
+      "kind": "SequenceConcat",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 9,
+      "source_line_end": 9,
+      "source_column_start": 58,
+      "source_column_end": 63,
+      "elements": [
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 9,
+         "source_line_end": 9,
+         "source_column_start": 62,
+         "source_column_end": 63,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 9,
+          "source_line_end": 9,
+          "source_column_start": 62,
+          "source_column_end": 63,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "b",
+          "sva2yosys_path": "basic_forms.b",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        },
+        "min": 1,
+        "max": 1
+       }
+      ]
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 9,
+    "source_line_end": 9,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 9,
+     "source_line_end": 9,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_delay5",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 10,
+   "source_line_end": 10,
+   "source_column_start": 5,
+   "source_column_end": 65,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 10,
+    "source_line_end": 10,
+    "source_column_start": 37,
+    "source_column_end": 63,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 10,
+     "source_line_end": 10,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 10,
+      "source_line_end": 10,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Binary",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 10,
+     "source_line_end": 10,
+     "source_column_start": 52,
+     "source_column_end": 63,
+     "op": "OverlappedImplication",
+     "left": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 10,
+      "source_line_end": 10,
+      "source_column_start": 52,
+      "source_column_end": 53,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 10,
+       "source_line_end": 10,
+       "source_column_start": 52,
+       "source_column_end": 53,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "a",
+       "sva2yosys_path": "basic_forms.a",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      }
+     },
+     "right": {
+      "kind": "SequenceConcat",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 10,
+      "source_line_end": 10,
+      "source_column_start": 58,
+      "source_column_end": 63,
+      "elements": [
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 10,
+         "source_line_end": 10,
+         "source_column_start": 62,
+         "source_column_end": 63,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 10,
+          "source_line_end": 10,
+          "source_column_start": 62,
+          "source_column_end": 63,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "b",
+          "sva2yosys_path": "basic_forms.b",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        },
+        "min": 5,
+        "max": 5
+       }
+      ]
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 10,
+    "source_line_end": 10,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 10,
+     "source_line_end": 10,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_window",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 11,
+   "source_line_end": 11,
+   "source_column_start": 5,
+   "source_column_end": 69,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 11,
+    "source_line_end": 11,
+    "source_column_start": 37,
+    "source_column_end": 67,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 11,
+     "source_line_end": 11,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 11,
+      "source_line_end": 11,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Binary",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 11,
+     "source_line_end": 11,
+     "source_column_start": 52,
+     "source_column_end": 67,
+     "op": "OverlappedImplication",
+     "left": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 11,
+      "source_line_end": 11,
+      "source_column_start": 52,
+      "source_column_end": 53,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 11,
+       "source_line_end": 11,
+       "source_column_start": 52,
+       "source_column_end": 53,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "a",
+       "sva2yosys_path": "basic_forms.a",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      }
+     },
+     "right": {
+      "kind": "SequenceConcat",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 11,
+      "source_line_end": 11,
+      "source_column_start": 58,
+      "source_column_end": 67,
+      "elements": [
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 11,
+         "source_line_end": 11,
+         "source_column_start": 66,
+         "source_column_end": 67,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 11,
+          "source_line_end": 11,
+          "source_column_start": 66,
+          "source_column_end": 67,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "b",
+          "sva2yosys_path": "basic_forms.b",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        },
+        "min": 1,
+        "max": 5
+       }
+      ]
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 11,
+    "source_line_end": 11,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 11,
+     "source_line_end": 11,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_chain",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 12,
+   "source_line_end": 12,
+   "source_column_start": 5,
+   "source_column_end": 71,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 12,
+    "source_line_end": 12,
+    "source_column_start": 37,
+    "source_column_end": 69,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 12,
+     "source_line_end": 12,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 12,
+      "source_line_end": 12,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Binary",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 12,
+     "source_line_end": 12,
+     "source_column_start": 52,
+     "source_column_end": 69,
+     "op": "OverlappedImplication",
+     "left": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 12,
+      "source_line_end": 12,
+      "source_column_start": 52,
+      "source_column_end": 53,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 12,
+       "source_line_end": 12,
+       "source_column_start": 52,
+       "source_column_end": 53,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "a",
+       "sva2yosys_path": "basic_forms.a",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      }
+     },
+     "right": {
+      "kind": "SequenceConcat",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 12,
+      "source_line_end": 12,
+      "source_column_start": 58,
+      "source_column_end": 69,
+      "elements": [
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 12,
+         "source_line_end": 12,
+         "source_column_start": 58,
+         "source_column_end": 59,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 12,
+          "source_line_end": 12,
+          "source_column_start": 58,
+          "source_column_end": 59,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "b",
+          "sva2yosys_path": "basic_forms.b",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        },
+        "min": 0,
+        "max": 0
+       },
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 12,
+         "source_line_end": 12,
+         "source_column_start": 68,
+         "source_column_end": 69,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 12,
+          "source_line_end": 12,
+          "source_column_start": 68,
+          "source_column_end": 69,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "c",
+          "sva2yosys_path": "basic_forms.c",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        },
+        "min": 1,
+        "max": 3
+       }
+      ]
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 12,
+    "source_line_end": 12,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 12,
+     "source_line_end": 12,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_chain2",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 13,
+   "source_line_end": 13,
+   "source_column_start": 5,
+   "source_column_end": 77,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 13,
+    "source_line_end": 13,
+    "source_column_start": 37,
+    "source_column_end": 75,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 13,
+     "source_line_end": 13,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 13,
+      "source_line_end": 13,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Binary",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 13,
+     "source_line_end": 13,
+     "source_column_start": 52,
+     "source_column_end": 75,
+     "op": "OverlappedImplication",
+     "left": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 13,
+      "source_line_end": 13,
+      "source_column_start": 52,
+      "source_column_end": 53,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 13,
+       "source_line_end": 13,
+       "source_column_start": 52,
+       "source_column_end": 53,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "a",
+       "sva2yosys_path": "basic_forms.a",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      }
+     },
+     "right": {
+      "kind": "SequenceConcat",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 13,
+      "source_line_end": 13,
+      "source_column_start": 58,
+      "source_column_end": 75,
+      "elements": [
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 13,
+         "source_line_end": 13,
+         "source_column_start": 58,
+         "source_column_end": 59,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 13,
+          "source_line_end": 13,
+          "source_column_start": 58,
+          "source_column_end": 59,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "b",
+          "sva2yosys_path": "basic_forms.b",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        },
+        "min": 0,
+        "max": 0
+       },
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 13,
+         "source_line_end": 13,
+         "source_column_start": 68,
+         "source_column_end": 69,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 13,
+          "source_line_end": 13,
+          "source_column_start": 68,
+          "source_column_end": 69,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "c",
+          "sva2yosys_path": "basic_forms.c",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        },
+        "min": 1,
+        "max": 3
+       },
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 13,
+         "source_line_end": 13,
+         "source_column_start": 74,
+         "source_column_end": 75,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 13,
+          "source_line_end": 13,
+          "source_column_start": 74,
+          "source_column_end": 75,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "d",
+          "sva2yosys_path": "basic_forms.d",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        },
+        "min": 1,
+        "max": 1
+       }
+      ]
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 13,
+    "source_line_end": 13,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 13,
+     "source_line_end": 13,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_rep3",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 14,
+   "source_line_end": 14,
+   "source_column_start": 5,
+   "source_column_end": 65,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 14,
+    "source_line_end": 14,
+    "source_column_start": 37,
+    "source_column_end": 63,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 14,
+     "source_line_end": 14,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 14,
+      "source_line_end": 14,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Binary",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 14,
+     "source_line_end": 14,
+     "source_column_start": 52,
+     "source_column_end": 63,
+     "op": "OverlappedImplication",
+     "left": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 14,
+      "source_line_end": 14,
+      "source_column_start": 52,
+      "source_column_end": 53,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 14,
+       "source_line_end": 14,
+       "source_column_start": 52,
+       "source_column_end": 53,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "a",
+       "sva2yosys_path": "basic_forms.a",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      }
+     },
+     "right": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 14,
+      "source_line_end": 14,
+      "source_column_start": 58,
+      "source_column_end": 63,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 14,
+       "source_line_end": 14,
+       "source_column_start": 58,
+       "source_column_end": 59,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "b",
+       "sva2yosys_path": "basic_forms.b",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      },
+      "repetition": {
+       "kind": "Consecutive",
+       "min": 3,
+       "max": 3
+      }
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 14,
+    "source_line_end": 14,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 14,
+     "source_line_end": 14,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_rep25",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 15,
+   "source_line_end": 15,
+   "source_column_start": 5,
+   "source_column_end": 67,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 15,
+    "source_line_end": 15,
+    "source_column_start": 37,
+    "source_column_end": 65,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 15,
+     "source_line_end": 15,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 15,
+      "source_line_end": 15,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Binary",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 15,
+     "source_line_end": 15,
+     "source_column_start": 52,
+     "source_column_end": 65,
+     "op": "OverlappedImplication",
+     "left": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 15,
+      "source_line_end": 15,
+      "source_column_start": 52,
+      "source_column_end": 53,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 15,
+       "source_line_end": 15,
+       "source_column_start": 52,
+       "source_column_end": 53,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "a",
+       "sva2yosys_path": "basic_forms.a",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      }
+     },
+     "right": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 15,
+      "source_line_end": 15,
+      "source_column_start": 58,
+      "source_column_end": 65,
+      "expr": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 15,
+       "source_line_end": 15,
+       "source_column_start": 58,
+       "source_column_end": 59,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "b",
+       "sva2yosys_path": "basic_forms.b",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      },
+      "repetition": {
+       "kind": "Consecutive",
+       "min": 2,
+       "max": 5
+      }
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 15,
+    "source_line_end": 15,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 15,
+     "source_line_end": 15,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_rose",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 16,
+   "source_line_end": 16,
+   "source_column_start": 5,
+   "source_column_end": 76,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 16,
+    "source_line_end": 16,
+    "source_column_start": 37,
+    "source_column_end": 74,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 16,
+     "source_line_end": 16,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 16,
+      "source_line_end": 16,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Binary",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 16,
+     "source_line_end": 16,
+     "source_column_start": 52,
+     "source_column_end": 74,
+     "op": "OverlappedImplication",
+     "left": {
+      "kind": "Simple",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 16,
+      "source_line_end": 16,
+      "source_column_start": 52,
+      "source_column_end": 60,
+      "expr": {
+       "kind": "Call",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 16,
+       "source_line_end": 16,
+       "source_column_start": 52,
+       "source_column_end": 60,
+       "type": "bit",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "subroutine": "$rose",
+       "arguments": [
+        {
+         "kind": "NamedValue",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 16,
+         "source_line_end": 16,
+         "source_column_start": 58,
+         "source_column_end": 59,
+         "type": "logic",
+         "sva2yosys_integral": {
+          "width": 1,
+          "signed": false,
+          "msb": 0,
+          "lsb": 0,
+          "dims": 0
+         },
+         "symbol": "a",
+         "sva2yosys_path": "basic_forms.a",
+         "sva2yosys_sampledDefault": "x",
+         "sva2yosys_visibleAtSite": true
+        }
+       ]
+      }
+     },
+     "right": {
+      "kind": "SequenceConcat",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 16,
+      "source_line_end": 16,
+      "source_column_start": 65,
+      "source_column_end": 74,
+      "elements": [
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 16,
+         "source_line_end": 16,
+         "source_column_start": 73,
+         "source_column_end": 74,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 16,
+          "source_line_end": 16,
+          "source_column_start": 73,
+          "source_column_end": 74,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "b",
+          "sva2yosys_path": "basic_forms.b",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        },
+        "min": 1,
+        "max": 3
+       }
+      ]
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 16,
+    "source_line_end": 16,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 16,
+     "source_line_end": 16,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_disable",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 17,
+   "source_line_end": 17,
+   "source_column_start": 5,
+   "source_column_end": 86,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 17,
+    "source_line_end": 17,
+    "source_column_start": 37,
+    "source_column_end": 84,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 17,
+     "source_line_end": 17,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 17,
+      "source_line_end": 17,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "DisableIff",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 17,
+     "source_line_end": 17,
+     "source_column_start": 52,
+     "source_column_end": 72,
+     "condition": {
+      "kind": "UnaryOp",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 17,
+      "source_line_end": 17,
+      "source_column_start": 65,
+      "source_column_end": 71,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "op": "LogicalNot",
+      "operand": {
+       "kind": "NamedValue",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 17,
+       "source_line_end": 17,
+       "source_column_start": 66,
+       "source_column_end": 71,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "symbol": "rst_n",
+       "sva2yosys_path": "basic_forms.rst_n",
+       "sva2yosys_sampledDefault": "x",
+       "sva2yosys_visibleAtSite": true
+      }
+     },
+     "expr": {
+      "kind": "Binary",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 17,
+      "source_line_end": 17,
+      "source_column_start": 73,
+      "source_column_end": 84,
+      "op": "OverlappedImplication",
+      "left": {
+       "kind": "Simple",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 17,
+       "source_line_end": 17,
+       "source_column_start": 73,
+       "source_column_end": 74,
+       "expr": {
+        "kind": "NamedValue",
+        "source_file_start": "basic_forms.sv",
+        "source_file_end": "basic_forms.sv",
+        "source_line_start": 17,
+        "source_line_end": 17,
+        "source_column_start": 73,
+        "source_column_end": 74,
+        "type": "logic",
+        "sva2yosys_integral": {
+         "width": 1,
+         "signed": false,
+         "msb": 0,
+         "lsb": 0,
+         "dims": 0
+        },
+        "symbol": "a",
+        "sva2yosys_path": "basic_forms.a",
+        "sva2yosys_sampledDefault": "x",
+        "sva2yosys_visibleAtSite": true
+       }
+      },
+      "right": {
+       "kind": "SequenceConcat",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 17,
+       "source_line_end": 17,
+       "source_column_start": 79,
+       "source_column_end": 84,
+       "elements": [
+        {
+         "sequence": {
+          "kind": "Simple",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 17,
+          "source_line_end": 17,
+          "source_column_start": 83,
+          "source_column_end": 84,
+          "expr": {
+           "kind": "NamedValue",
+           "source_file_start": "basic_forms.sv",
+           "source_file_end": "basic_forms.sv",
+           "source_line_start": 17,
+           "source_line_end": 17,
+           "source_column_start": 83,
+           "source_column_end": 84,
+           "type": "logic",
+           "sva2yosys_integral": {
+            "width": 1,
+            "signed": false,
+            "msb": 0,
+            "lsb": 0,
+            "dims": 0
+           },
+           "symbol": "b",
+           "sva2yosys_path": "basic_forms.b",
+           "sva2yosys_sampledDefault": "x",
+           "sva2yosys_visibleAtSite": true
+          }
+         },
+         "min": 3,
+         "max": 3
+        }
+       ]
+      }
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 17,
+    "source_line_end": 17,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 17,
+     "source_line_end": 17,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_sampled",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 18,
+   "source_line_end": 18,
+   "source_column_start": 5,
+   "source_column_end": 103,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 18,
+    "source_line_end": 18,
+    "source_column_start": 37,
+    "source_column_end": 101,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 18,
+     "source_line_end": 18,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 18,
+      "source_line_end": 18,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Simple",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 18,
+     "source_line_end": 18,
+     "source_column_start": 52,
+     "source_column_end": 101,
+     "expr": {
+      "kind": "BinaryOp",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 18,
+      "source_line_end": 18,
+      "source_column_start": 52,
+      "source_column_end": 101,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "op": "LogicalOr",
+      "left": {
+       "kind": "BinaryOp",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 18,
+       "source_line_end": 18,
+       "source_column_start": 52,
+       "source_column_end": 89,
+       "type": "bit",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "op": "LogicalOr",
+       "left": {
+        "kind": "BinaryOp",
+        "source_file_start": "basic_forms.sv",
+        "source_file_end": "basic_forms.sv",
+        "source_line_start": 18,
+        "source_line_end": 18,
+        "source_column_start": 52,
+        "source_column_end": 77,
+        "type": "bit",
+        "sva2yosys_integral": {
+         "width": 1,
+         "signed": false,
+         "msb": 0,
+         "lsb": 0,
+         "dims": 0
+        },
+        "op": "LogicalOr",
+        "left": {
+         "kind": "Call",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 18,
+         "source_line_end": 18,
+         "source_column_start": 52,
+         "source_column_end": 62,
+         "type": "bit",
+         "sva2yosys_integral": {
+          "width": 1,
+          "signed": false,
+          "msb": 0,
+          "lsb": 0,
+          "dims": 0
+         },
+         "subroutine": "$stable",
+         "arguments": [
+          {
+           "kind": "NamedValue",
+           "source_file_start": "basic_forms.sv",
+           "source_file_end": "basic_forms.sv",
+           "source_line_start": 18,
+           "source_line_end": 18,
+           "source_column_start": 60,
+           "source_column_end": 61,
+           "type": "logic",
+           "sva2yosys_integral": {
+            "width": 1,
+            "signed": false,
+            "msb": 0,
+            "lsb": 0,
+            "dims": 0
+           },
+           "symbol": "a",
+           "sva2yosys_path": "basic_forms.a",
+           "sva2yosys_sampledDefault": "x",
+           "sva2yosys_visibleAtSite": true
+          }
+         ]
+        },
+        "right": {
+         "kind": "Call",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 18,
+         "source_line_end": 18,
+         "source_column_start": 66,
+         "source_column_end": 77,
+         "type": "bit",
+         "sva2yosys_integral": {
+          "width": 1,
+          "signed": false,
+          "msb": 0,
+          "lsb": 0,
+          "dims": 0
+         },
+         "subroutine": "$changed",
+         "arguments": [
+          {
+           "kind": "NamedValue",
+           "source_file_start": "basic_forms.sv",
+           "source_file_end": "basic_forms.sv",
+           "source_line_start": 18,
+           "source_line_end": 18,
+           "source_column_start": 75,
+           "source_column_end": 76,
+           "type": "logic",
+           "sva2yosys_integral": {
+            "width": 1,
+            "signed": false,
+            "msb": 0,
+            "lsb": 0,
+            "dims": 0
+           },
+           "symbol": "b",
+           "sva2yosys_path": "basic_forms.b",
+           "sva2yosys_sampledDefault": "x",
+           "sva2yosys_visibleAtSite": true
+          }
+         ]
+        }
+       },
+       "right": {
+        "kind": "Call",
+        "source_file_start": "basic_forms.sv",
+        "source_file_end": "basic_forms.sv",
+        "source_line_start": 18,
+        "source_line_end": 18,
+        "source_column_start": 81,
+        "source_column_end": 89,
+        "type": "bit",
+        "sva2yosys_integral": {
+         "width": 1,
+         "signed": false,
+         "msb": 0,
+         "lsb": 0,
+         "dims": 0
+        },
+        "subroutine": "$fell",
+        "arguments": [
+         {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 18,
+          "source_line_end": 18,
+          "source_column_start": 87,
+          "source_column_end": 88,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "c",
+          "sva2yosys_path": "basic_forms.c",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        ]
+       }
+      },
+      "right": {
+       "kind": "Call",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 18,
+       "source_line_end": 18,
+       "source_column_start": 93,
+       "source_column_end": 101,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "subroutine": "$past",
+       "arguments": [
+        {
+         "kind": "NamedValue",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 18,
+         "source_line_end": 18,
+         "source_column_start": 99,
+         "source_column_end": 100,
+         "type": "logic",
+         "sva2yosys_integral": {
+          "width": 1,
+          "signed": false,
+          "msb": 0,
+          "lsb": 0,
+          "dims": 0
+         },
+         "symbol": "d",
+         "sva2yosys_path": "basic_forms.d",
+         "sva2yosys_sampledDefault": "x",
+         "sva2yosys_visibleAtSite": true
+        }
+       ]
+      }
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 18,
+    "source_line_end": 18,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 18,
+     "source_line_end": 18,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_fusion",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 19,
+   "source_line_end": 19,
+   "source_column_start": 5,
+   "source_column_end": 87,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 19,
+    "source_line_end": 19,
+    "source_column_start": 37,
+    "source_column_end": 85,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 19,
+     "source_line_end": 19,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 19,
+      "source_line_end": 19,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Binary",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 19,
+     "source_line_end": 19,
+     "source_column_start": 52,
+     "source_column_end": 85,
+     "op": "OverlappedImplication",
+     "left": {
+      "kind": "SequenceConcat",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 19,
+      "source_line_end": 19,
+      "source_column_start": 52,
+      "source_column_end": 59,
+      "elements": [
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 19,
+         "source_line_end": 19,
+         "source_column_start": 52,
+         "source_column_end": 53,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 19,
+          "source_line_end": 19,
+          "source_column_start": 52,
+          "source_column_end": 53,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "a",
+          "sva2yosys_path": "basic_forms.a",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        },
+        "min": 0,
+        "max": 0
+       },
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 19,
+         "source_line_end": 19,
+         "source_column_start": 58,
+         "source_column_end": 59,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 19,
+          "source_line_end": 19,
+          "source_column_start": 58,
+          "source_column_end": 59,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "b",
+          "sva2yosys_path": "basic_forms.b",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        },
+        "min": 0,
+        "max": 0
+       }
+      ]
+     },
+     "right": {
+      "kind": "SequenceConcat",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 19,
+      "source_line_end": 19,
+      "source_column_start": 64,
+      "source_column_end": 85,
+      "elements": [
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 19,
+         "source_line_end": 19,
+         "source_column_start": 72,
+         "source_column_end": 79,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 19,
+          "source_line_end": 19,
+          "source_column_start": 72,
+          "source_column_end": 73,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "c",
+          "sva2yosys_path": "basic_forms.c",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         },
+         "repetition": {
+          "kind": "Consecutive",
+          "min": 0,
+          "max": 2
+         }
+        },
+        "min": 0,
+        "max": 2
+       },
+       {
+        "sequence": {
+         "kind": "Simple",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 19,
+         "source_line_end": 19,
+         "source_column_start": 84,
+         "source_column_end": 85,
+         "expr": {
+          "kind": "NamedValue",
+          "source_file_start": "basic_forms.sv",
+          "source_file_end": "basic_forms.sv",
+          "source_line_start": 19,
+          "source_line_end": 19,
+          "source_column_start": 84,
+          "source_column_end": 85,
+          "type": "logic",
+          "sva2yosys_integral": {
+           "width": 1,
+           "signed": false,
+           "msb": 0,
+           "lsb": 0,
+           "dims": 0
+          },
+          "symbol": "d",
+          "sva2yosys_path": "basic_forms.d",
+          "sva2yosys_sampledDefault": "x",
+          "sva2yosys_visibleAtSite": true
+         }
+        },
+        "min": 1,
+        "max": 1
+       }
+      ]
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 19,
+    "source_line_end": 19,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 19,
+     "source_line_end": 19,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assume",
+   "name": "a_assume",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 20,
+   "source_line_end": 20,
+   "source_column_start": 5,
+   "source_column_end": 63,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 20,
+    "source_line_end": 20,
+    "source_column_start": 37,
+    "source_column_end": 61,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 20,
+     "source_line_end": 20,
+     "source_column_start": 39,
+     "source_column_end": 50,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 20,
+      "source_line_end": 20,
+      "source_column_start": 47,
+      "source_column_end": 50,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "Simple",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 20,
+     "source_line_end": 20,
+     "source_column_start": 52,
+     "source_column_end": 61,
+     "expr": {
+      "kind": "UnaryOp",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 20,
+      "source_line_end": 20,
+      "source_column_start": 52,
+      "source_column_end": 61,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "op": "LogicalNot",
+      "operand": {
+       "kind": "BinaryOp",
+       "source_file_start": "basic_forms.sv",
+       "source_file_end": "basic_forms.sv",
+       "source_line_start": 20,
+       "source_line_end": 20,
+       "source_column_start": 54,
+       "source_column_end": 60,
+       "type": "logic",
+       "sva2yosys_integral": {
+        "width": 1,
+        "signed": false,
+        "msb": 0,
+        "lsb": 0,
+        "dims": 0
+       },
+       "op": "LogicalAnd",
+       "left": {
+        "kind": "NamedValue",
+        "source_file_start": "basic_forms.sv",
+        "source_file_end": "basic_forms.sv",
+        "source_line_start": 20,
+        "source_line_end": 20,
+        "source_column_start": 54,
+        "source_column_end": 55,
+        "type": "logic",
+        "sva2yosys_integral": {
+         "width": 1,
+         "signed": false,
+         "msb": 0,
+         "lsb": 0,
+         "dims": 0
+        },
+        "symbol": "a",
+        "sva2yosys_path": "basic_forms.a",
+        "sva2yosys_sampledDefault": "x",
+        "sva2yosys_visibleAtSite": true
+       },
+       "right": {
+        "kind": "NamedValue",
+        "source_file_start": "basic_forms.sv",
+        "source_file_end": "basic_forms.sv",
+        "source_line_start": 20,
+        "source_line_end": 20,
+        "source_column_start": 59,
+        "source_column_end": 60,
+        "type": "logic",
+        "sva2yosys_integral": {
+         "width": 1,
+         "signed": false,
+         "msb": 0,
+         "lsb": 0,
+         "dims": 0
+        },
+        "symbol": "b",
+        "sva2yosys_path": "basic_forms.b",
+        "sva2yosys_sampledDefault": "x",
+        "sva2yosys_visibleAtSite": true
+       }
+      }
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 20,
+    "source_line_end": 20,
+    "source_column_start": 39,
+    "source_column_end": 50,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 20,
+     "source_line_end": 20,
+     "source_column_start": 47,
+     "source_column_end": 50,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "CoverProperty",
+   "name": "c_cover",
+   "scope": "basic_forms",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 21,
+   "source_line_end": 21,
+   "source_column_start": 5,
+   "source_column_end": 64,
+   "propertySpec": {
+    "kind": "Clocking",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 21,
+    "source_line_end": 21,
+    "source_column_start": 36,
+    "source_column_end": 62,
+    "clocking": {
+     "kind": "SignalEvent",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 21,
+     "source_line_end": 21,
+     "source_column_start": 38,
+     "source_column_end": 49,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "basic_forms.sv",
+      "source_file_end": "basic_forms.sv",
+      "source_line_start": 21,
+      "source_line_end": 21,
+      "source_column_start": 46,
+      "source_column_end": 49,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "clk",
+      "sva2yosys_path": "basic_forms.clk",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     },
+     "edge": "PosEdge"
+    },
+    "expr": {
+     "kind": "SequenceConcat",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 21,
+     "source_line_end": 21,
+     "source_column_start": 51,
+     "source_column_end": 62,
+     "elements": [
+      {
+       "sequence": {
+        "kind": "Simple",
+        "source_file_start": "basic_forms.sv",
+        "source_file_end": "basic_forms.sv",
+        "source_line_start": 21,
+        "source_line_end": 21,
+        "source_column_start": 51,
+        "source_column_end": 52,
+        "expr": {
+         "kind": "NamedValue",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 21,
+         "source_line_end": 21,
+         "source_column_start": 51,
+         "source_column_end": 52,
+         "type": "logic",
+         "sva2yosys_integral": {
+          "width": 1,
+          "signed": false,
+          "msb": 0,
+          "lsb": 0,
+          "dims": 0
+         },
+         "symbol": "a",
+         "sva2yosys_path": "basic_forms.a",
+         "sva2yosys_sampledDefault": "x",
+         "sva2yosys_visibleAtSite": true
+        }
+       },
+       "min": 0,
+       "max": 0
+      },
+      {
+       "sequence": {
+        "kind": "Simple",
+        "source_file_start": "basic_forms.sv",
+        "source_file_end": "basic_forms.sv",
+        "source_line_start": 21,
+        "source_line_end": 21,
+        "source_column_start": 61,
+        "source_column_end": 62,
+        "expr": {
+         "kind": "NamedValue",
+         "source_file_start": "basic_forms.sv",
+         "source_file_end": "basic_forms.sv",
+         "source_line_start": 21,
+         "source_line_end": 21,
+         "source_column_start": 61,
+         "source_column_end": 62,
+         "type": "logic",
+         "sva2yosys_integral": {
+          "width": 1,
+          "signed": false,
+          "msb": 0,
+          "lsb": 0,
+          "dims": 0
+         },
+         "symbol": "b",
+         "sva2yosys_path": "basic_forms.b",
+         "sva2yosys_sampledDefault": "x",
+         "sva2yosys_visibleAtSite": true
+        }
+       },
+       "min": 1,
+       "max": 2
+      }
+     ]
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "basic_forms.sv",
+    "source_file_end": "basic_forms.sv",
+    "source_line_start": 21,
+    "source_line_end": 21,
+    "source_column_start": 38,
+    "source_column_end": 49,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "basic_forms.sv",
+     "source_file_end": "basic_forms.sv",
+     "source_line_start": 21,
+     "source_line_end": 21,
+     "source_column_start": 46,
+     "source_column_end": 49,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "basic_forms.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": null,
+   "sva2yosys_parameters": [],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  }
+ ],
+ "sva2yosys_syntax": [
+  {
+   "kind": "ModuleDeclaration",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 2,
+   "source_line_end": 22,
+   "source_column_start": 1,
+   "source_column_end": 10,
+   "sva2yosys_start": 41,
+   "sva2yosys_end": 1225,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "none",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "basic_forms",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 1216,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 7,
+   "source_line_end": 7,
+   "source_column_start": 5,
+   "source_column_end": 61,
+   "sva2yosys_start": 140,
+   "sva2yosys_end": 196,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 8,
+   "source_line_end": 8,
+   "source_column_start": 5,
+   "source_column_end": 61,
+   "sva2yosys_start": 201,
+   "sva2yosys_end": 257,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 9,
+   "source_line_end": 9,
+   "source_column_start": 5,
+   "source_column_end": 65,
+   "sva2yosys_start": 262,
+   "sva2yosys_end": 322,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 10,
+   "source_line_end": 10,
+   "source_column_start": 5,
+   "source_column_end": 65,
+   "sva2yosys_start": 327,
+   "sva2yosys_end": 387,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 11,
+   "source_line_end": 11,
+   "source_column_start": 5,
+   "source_column_end": 69,
+   "sva2yosys_start": 392,
+   "sva2yosys_end": 456,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 12,
+   "source_line_end": 12,
+   "source_column_start": 5,
+   "source_column_end": 71,
+   "sva2yosys_start": 461,
+   "sva2yosys_end": 527,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 13,
+   "source_line_end": 13,
+   "source_column_start": 5,
+   "source_column_end": 77,
+   "sva2yosys_start": 532,
+   "sva2yosys_end": 604,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 14,
+   "source_line_end": 14,
+   "source_column_start": 5,
+   "source_column_end": 65,
+   "sva2yosys_start": 609,
+   "sva2yosys_end": 669,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 15,
+   "source_line_end": 15,
+   "source_column_start": 5,
+   "source_column_end": 67,
+   "sva2yosys_start": 674,
+   "sva2yosys_end": 736,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 16,
+   "source_line_end": 16,
+   "source_column_start": 5,
+   "source_column_end": 76,
+   "sva2yosys_start": 741,
+   "sva2yosys_end": 812,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 17,
+   "source_line_end": 17,
+   "source_column_start": 5,
+   "source_column_end": 86,
+   "sva2yosys_start": 817,
+   "sva2yosys_end": 898,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 18,
+   "source_line_end": 18,
+   "source_column_start": 5,
+   "source_column_end": 103,
+   "sva2yosys_start": 903,
+   "sva2yosys_end": 1001,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 19,
+   "source_line_end": 19,
+   "source_column_start": 5,
+   "source_column_end": 87,
+   "sva2yosys_start": 1006,
+   "sva2yosys_end": 1088,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 20,
+   "source_line_end": 20,
+   "source_column_start": 5,
+   "source_column_end": 63,
+   "sva2yosys_start": 1093,
+   "sva2yosys_end": 1151,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "basic_forms.sv",
+   "source_file_end": "basic_forms.sv",
+   "source_line_start": 21,
+   "source_line_end": 21,
+   "source_column_start": 5,
+   "source_column_end": 64,
+   "sva2yosys_start": 1156,
+   "sva2yosys_end": 1215,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "basic_forms.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  }
+ ],
+ "sva2yosys_includes": [],
+ "sva2yosys_packages": [],
+ "sva2yosys_packageUses": []
+}

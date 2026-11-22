@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "10.."
+    },
+    {
+      "name": "b",
+      "wave": "1..0"
+    },
+    {
+      "name": "c",
+      "wave": "0.10"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10"
+    }
+  ],
+  "head": {
+    "text": "composition/intersect_needs_the_same_end",
+    "tock": 0
+  }
+}

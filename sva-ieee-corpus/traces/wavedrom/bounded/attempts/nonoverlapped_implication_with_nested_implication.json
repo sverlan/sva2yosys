@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "1.01."
+    },
+    {
+      "name": "b",
+      "wave": "01.0."
+    },
+    {
+      "name": "c",
+      "wave": "0.10."
+    },
+    {
+      "name": "fail",
+      "wave": "010.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10."
+    }
+  ],
+  "head": {
+    "text": "attempts/nonoverlapped_implication_with_nested_implication",
+    "tock": 0
+  }
+}

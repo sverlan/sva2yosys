@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "b",
+      "wave": "0."
+    },
+    {
+      "name": "a",
+      "wave": "10"
+    },
+    {
+      "name": "fail",
+      "wave": "0."
+    },
+    {
+      "name": "pass",
+      "wave": "01"
+    },
+    {
+      "name": "repeat",
+      "wave": "1."
+    },
+    {
+      "name": "outcome",
+      "wave": "=.",
+      "data": [
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "not_liveness/not_strong_delay_pending_for_ever_is_true_in_the_limit",
+    "tock": 0
+  }
+}

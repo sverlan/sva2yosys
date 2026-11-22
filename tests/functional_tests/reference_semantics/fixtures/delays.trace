@@ -1,0 +1,54 @@
+# Fixed delays and bounded windows (specification p03, p04, p05).
+
+== p03_delay1
+property: a |-> ##1 b
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : 1 1 . .
+b      : . 1 . .
+fail   : . . 1 .
+pass   : . 1 . .
+
+== p04_delay5_earliest_failure_and_pending
+# Attempt 0 fails at 5 (its only chance); attempt 2 passes at 7; attempt 4 needs sample 9.
+property: a |-> ##5 b
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4 5 6 7
+a      : 1 . 1 . 1 . . .
+b      : . . . . . . . 1
+fail   : . . . . . 1 . .
+pass   : . . . . . . . 1
+pending: 1
+
+== p05_latest_valid_match
+property: a |-> ##[1:5] b
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4 5 6 7 8
+a      : 1 . . . . . . . .
+b      : . . . . . 1 . . .
+pass   : . . . . . 1 . . .
+pending: 0
+
+== p05_fail_at_last_chance
+property: a |-> ##[1:5] b
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4 5 6
+a      : 1 . . . . . .
+b      : . . . . . . 1
+fail   : . . . . . 1 .
+
+== p05_overlapping_attempts_of_different_ages
+# The oldest obligation fails at 5 although younger ones are alive; they pass at 6.
+property: a |-> ##[1:5] b
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4 5 6 7 8 9
+a      : 1 1 1 . . . . . . .
+b      : . . . . . . 1 . . .
+fail   : . . . . . 1 . . . .
+pass   : . . . . . . 1 . . .
+pending: 0

@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "01."
+    },
+    {
+      "name": "b",
+      "wave": "010"
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "010"
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_14_3_cover_property_counts_nonvacuous_success_only",
+    "tock": 0
+  }
+}

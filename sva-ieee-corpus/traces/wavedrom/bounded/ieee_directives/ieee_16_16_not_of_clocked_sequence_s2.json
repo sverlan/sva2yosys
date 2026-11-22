@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "1010."
+    },
+    {
+      "name": "b",
+      "wave": "0...1"
+    },
+    {
+      "name": "fail",
+      "wave": "0...1"
+    },
+    {
+      "name": "pass",
+      "wave": "01..."
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_16_not_of_clocked_sequence_s2",
+    "tock": 0
+  }
+}

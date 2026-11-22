@@ -1,0 +1,274 @@
+{
+  "verilator-version": "Verilator 5.053 devel rev v5.052-651-g92ac4051b (mod)",
+  "inputs-sha256": "b51eb9a9cbbab13573047f78c8214283cce0cc571541f413975a2498b723d6e0",
+  "observations": [
+    {
+      "key": "control",
+      "status": "finished",
+      "events": [
+        {
+          "label": "inverse",
+          "value": 0
+        },
+        {
+          "label": "inverse",
+          "value": 1
+        },
+        {
+          "label": "fail",
+          "value": 2
+        },
+        {
+          "label": "inverse",
+          "value": 3
+        },
+        {
+          "label": "inverse",
+          "value": 4
+        },
+        {
+          "label": "inverse",
+          "value": 5
+        }
+      ],
+      "detail": ""
+    },
+    {
+      "key": "constant-next",
+      "status": "finished",
+      "events": [
+        {
+          "label": "fail",
+          "value": 1
+        }
+      ],
+      "detail": ""
+    },
+    {
+      "key": "constant-delay",
+      "status": "finished",
+      "events": [
+        {
+          "label": "fail",
+          "value": 1
+        }
+      ],
+      "detail": ""
+    },
+    {
+      "key": "disable-edges",
+      "status": "finished",
+      "events": [
+        {
+          "label": "rise",
+          "value": 1
+        },
+        {
+          "label": "rise",
+          "value": 2
+        },
+        {
+          "label": "fall",
+          "value": 3
+        }
+      ],
+      "detail": ""
+    },
+    {
+      "key": "first-past",
+      "status": "finished",
+      "events": [
+        {
+          "label": "first_past",
+          "value": 0
+        },
+        {
+          "label": "history_present",
+          "value": 1
+        }
+      ],
+      "detail": ""
+    },
+    {
+      "key": "history-disable",
+      "status": "finished",
+      "events": [
+        {
+          "label": "history_present",
+          "value": 2
+        }
+      ],
+      "detail": ""
+    },
+    {
+      "key": "cover-vacuity",
+      "status": "finished",
+      "events": [
+        {
+          "label": "implication_match",
+          "value": 2
+        },
+        {
+          "label": "boolean_match",
+          "value": 2
+        },
+        {
+          "label": "implication_match",
+          "value": 3
+        },
+        {
+          "label": "boolean_match",
+          "value": 3
+        },
+        {
+          "label": "implication_match",
+          "value": 4
+        },
+        {
+          "label": "boolean_match",
+          "value": 4
+        },
+        {
+          "label": "implication_match",
+          "value": 5
+        },
+        {
+          "label": "boolean_match",
+          "value": 5
+        }
+      ],
+      "detail": ""
+    },
+    {
+      "key": "cover-matches",
+      "status": "finished",
+      "events": [
+        {
+          "label": "match",
+          "value": 1
+        }
+      ],
+      "detail": ""
+    },
+    {
+      "key": "not-strength",
+      "status": "finished",
+      "events": [],
+      "detail": ""
+    },
+    {
+      "key": "finite-end",
+      "status": "unsupported",
+      "events": [],
+      "detail": "Unsupported: strong property in assert"
+    },
+    {
+      "key": "procedural-enable",
+      "status": "finished",
+      "events": [
+        {
+          "label": "blocking_enable",
+          "value": 0
+        },
+        {
+          "label": "blocking_enable",
+          "value": 1
+        },
+        {
+          "label": "stable_enable",
+          "value": 2
+        },
+        {
+          "label": "blocking_enable",
+          "value": 2
+        },
+        {
+          "label": "stable_enable",
+          "value": 3
+        },
+        {
+          "label": "blocking_enable",
+          "value": 3
+        },
+        {
+          "label": "blocking_enable",
+          "value": 4
+        },
+        {
+          "label": "blocking_enable",
+          "value": 5
+        }
+      ],
+      "detail": ""
+    },
+    {
+      "key": "unknown-if",
+      "status": "finished",
+      "events": [
+        {
+          "label": "branch_failure",
+          "value": 0
+        },
+        {
+          "label": "branch_failure",
+          "value": 1
+        },
+        {
+          "label": "branch_failure",
+          "value": 2
+        },
+        {
+          "label": "branch_failure",
+          "value": 3
+        },
+        {
+          "label": "branch_failure",
+          "value": 4
+        },
+        {
+          "label": "branch_failure",
+          "value": 5
+        }
+      ],
+      "detail": ""
+    },
+    {
+      "key": "inside-sizing",
+      "status": "finished",
+      "events": [
+        {
+          "label": "fill",
+          "value": 0
+        },
+        {
+          "label": "arith",
+          "value": 0
+        },
+        {
+          "label": "sign",
+          "value": 1
+        },
+        {
+          "label": "uniform_hit",
+          "value": 1
+        },
+        {
+          "label": "uniform_miss",
+          "value": 0
+        }
+      ],
+      "detail": ""
+    },
+    {
+      "key": "defaults",
+      "status": "finished",
+      "events": [
+        {
+          "label": "stable_zero",
+          "value": 0
+        }
+      ],
+      "detail": ""
+    }
+  ]
+}

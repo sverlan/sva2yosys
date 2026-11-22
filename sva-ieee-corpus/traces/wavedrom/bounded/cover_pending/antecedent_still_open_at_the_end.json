@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "0.1"
+    },
+    {
+      "name": "b",
+      "wave": "0.."
+    },
+    {
+      "name": "c",
+      "wave": "0.."
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "cover_pending/antecedent_still_open_at_the_end",
+    "tock": 0
+  }
+}

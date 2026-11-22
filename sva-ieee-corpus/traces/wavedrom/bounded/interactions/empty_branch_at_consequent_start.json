@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1010"
+    },
+    {
+      "name": "b",
+      "wave": "0.10"
+    },
+    {
+      "name": "c",
+      "wave": "10.1"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "10.1"
+    }
+  ],
+  "head": {
+    "text": "interactions/empty_branch_at_consequent_start",
+    "tock": 0
+  }
+}

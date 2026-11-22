@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "0.."
+    },
+    {
+      "name": "b",
+      "wave": "0.."
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "temporal/cover_or_nexttime_beyond_trace_length_three",
+    "tock": 0
+  }
+}

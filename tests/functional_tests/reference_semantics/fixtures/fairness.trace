@@ -1,0 +1,313 @@
+# Strong `assume`: lassos for the properties whose strong part is a
+# fairness assumption (the one-configuration class: s_eventually, s_until, not of a weak until),
+# hand-derived from IEEE 1800 and run by every layer (the reference evaluator, the machine through
+# the liveness simulator). Every case is an `assume`: the assumption admits a trace exactly when no
+# attempt of the property is FALSE on it, at a finite sample or in the limit (16.14.2: an assumption
+# restricts the traces to those on which the property holds; the verdicts of an attempt do not depend
+# on the directive kind except for the default strength, weak in assert and assume, 16.12.2).
+# Clauses: 16.12.2 (a strong sequence with no match is false), 16.12.3 (not reverses the strength),
+# 16.12.7 (an implication is vacuously TRUE without an antecedent match), 16.12.12 (until,
+# s_until), 16.12.13 (s_eventually), 16.15 (disable iff), 16.9.3 ($past is not known at the first
+# sample: the condition does not hold there).
+# Every case has "loop: k": the written samples k ... last repeat for ever. The rows outcome /
+# decided / fail / pass / pending / final-fail describe the written samples as a FINITE trace;
+# inf-outcome / inf-decided give the result of the attempt started at each written sample on the
+# INFINITE trace (T / F / D, and the decision sample, "." when no finite prefix decides it).
+# A position q >= the number of written samples shows written sample k + (q - k) mod (n - k).
+# The fairness part is exactly the F attempts that are not decided ("." in inf-decided): they
+# stay pending for ever, and the assumption rules the trace out.
+
+== assume_s_eventually_b_recurring
+# assume s_eventually b, b = 1 . with loop 0: b at positions 0, 2, 4, ... Attempt 0: b at 0, TRUE at 0.
+# Attempt 1: the next b is at 2 (beyond the written samples): TRUE at 2. Every attempt is TRUE: the
+# trace is admitted.
+kind: assume
+property: s_eventually b
+clause: 16.12.13 16.14.2 Annex F
+class: interpretation I8
+scope: attempt
+loop: 0
+sample : 0 1
+b      : 1 .
+outcome : T p
+decided : 0 .
+pass    : 1 .
+pending: 1
+final-fail: 1
+inf-outcome : T T
+inf-decided : 0 2
+
+== assume_s_eventually_b_never_again_after_the_prefix
+# assume s_eventually b, b = 1 1 . . with loop 2: b only at positions 0 and 1. Attempts 2, 3: no b
+# at or after the start ever: FALSE in the limit (16.12.2), undecided: the fairness part rules the
+# trace out.
+kind: assume
+property: s_eventually b
+clause: 16.12.13 16.14.2 Annex F
+class: interpretation I8
+scope: attempt
+loop: 2
+sample : 0 1 2 3
+b      : 1 1 . .
+outcome : T T p p
+decided : 0 1 . .
+pass    : 1 1 . .
+pending: 2
+final-fail: 2
+inf-outcome : T T F F
+inf-decided : 0 1 . .
+
+== assume_request_unanswered
+# assume a |-> s_eventually b, a = 1 . 1 . and b = . 1 . . with loop 2: a at 0, 2, 4, ..., b only at
+# 1. Attempt 0: trigger 0, the first b at or after 0 is at 1: TRUE at 1. Attempt 1: a is low, vacuous
+# TRUE at 1. Attempt 2: trigger 2, no b at or after 2 ever: FALSE in the limit, never decided.
+# Attempt 3: vacuous TRUE at 3. The trace is ruled out by the fairness part only.
+kind: assume
+property: a |-> s_eventually b
+clause: 16.12.7 16.12.13 16.14.2 16.14.8 Annex F
+class: interpretation I5, I8
+scope: attempt
+loop: 2
+sample : 0 1 2 3
+a      : 1 . 1 .
+b      : . 1 . .
+outcome : T t p t
+decided : 1 1 . 3
+pass    : . 1 . .
+pending: 1
+final-fail: 1
+inf-outcome : T T F T
+inf-decided : 1 1 . 3
+
+== assume_request_always_answered_later
+# assume a |-> s_eventually b, a = 1 1 1 and b = . . 1 with loop 0: a at every position, b at 2, 5, 8,
+# ... Three requests overlap (triggers 0, 1, 2); the first b at or after each is at 2: all TRUE at 2.
+# Every request is answered: the trace is admitted (the invariant reading `!busy` at every sample
+# would rule it out).
+kind: assume
+property: a |-> s_eventually b
+clause: 16.12.7 16.12.13 16.14.2 16.14.8 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0 1 2
+a      : 1 1 1
+b      : . . 1
+outcome : T T T
+decided : 2 2 2
+pass    : . . 1
+pending: 0
+final-fail: 0
+inf-outcome : T T T
+inf-decided : 2 2 2
+
+== assume_always_request_answered
+# assume always (a |-> s_eventually b), a = 1 1 and b = 1 . with loop 0: a at every position, b at
+# the even ones. X_k = a |-> s_eventually b is TRUE for every k (decided at k for even k, at k + 1
+# for odd k): TRUE in the limit, undecided. Finite: both offsets 1 are pending strong, so both
+# finalize FALSE.
+kind: assume
+property: always (a |-> s_eventually b)
+clause: 16.12.7 16.12.11 16.12.13 16.14.2 Annex F
+class: interpretation I8
+scope: attempt
+loop: 0
+sample : 0 1
+a      : 1 1
+b      : 1 .
+outcome : p p
+decided : . .
+pending: 2
+final-fail: 2
+inf-outcome : T T
+inf-decided : . .
+
+== assume_s_until_c_in_the_loop
+# assume b s_until c, b = 1 1 1 and c = . . 1 with loop 0: c at 2, 5, 8, ... Attempts 0, 1: b holds
+# before the c at 2: TRUE at 2. Attempt 2: c at 2 (b is not needed at the c sample): TRUE at 2.
+kind: assume
+property: b s_until c
+clause: 16.12.12 16.14.2 16.14.8 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0 1 2
+b      : 1 1 1
+c      : . . 1
+outcome : T T T
+decided : 2 2 2
+pass    : . . 1
+pending: 0
+final-fail: 0
+inf-outcome : T T T
+inf-decided : 2 2 2
+
+== assume_s_until_never_c_while_b_holds
+# assume b s_until c, b = 1 and c = 0 for ever: every attempt stays pending: FALSE in the limit
+# (16.12.2), undecided. The fairness part rules the trace out.
+kind: assume
+property: b s_until c
+clause: 16.12.12 16.14.2 Annex F
+class: interpretation I8
+scope: attempt
+loop: 0
+sample : 0
+b      : 1
+c      : .
+outcome : p
+decided : .
+pending: 1
+final-fail: 1
+inf-outcome : F
+inf-decided : .
+
+== assume_not_until_pending_for_ever
+# assume not (a until b), a = 1 for ever and b = 0 for ever. The weak until is alive for ever, TRUE
+# in the limit, so the negation FALSE in the limit, undecided (the fairness part rules the trace
+# out). Finite: pending weak finalizes TRUE, the negation FALSE, for both attempts.
+kind: assume
+property: not (a until b)
+clause: 16.12.3 16.12.12 16.14.2 Annex F
+class: interpretation I8
+signals: b
+scope: attempt
+loop: 0
+sample : 0 1
+a      : 1 1
+outcome : p p
+decided : . .
+pending: 2
+final-fail: 2
+inf-outcome : F F
+inf-decided : . .
+
+== assume_not_until_dies
+# assume not (a until b), a = 0 and b = 0 for ever. Every attempt: a and b both low at the start, the
+# until dies there, the negation TRUE at the attempt's own sample: the trace is admitted.
+kind: assume
+property: not (a until b)
+clause: 16.12.3 16.12.12 16.14.2 16.14.8 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0
+a      : .
+b      : .
+outcome : T
+decided : 0
+pass    : 1
+pending: 0
+final-fail: 0
+inf-outcome : T
+inf-decided : 0
+
+== assume_not_until_matches_or_dies
+# assume not (a until b), a = 1 1 . and b = . 1 . with loop 0. Attempt 0: a at 0, b at 1: the until
+# matches at 1, the negation FALSE at 1. Attempt 1: b at 1: matches, FALSE at 1. Attempt 2: a and b
+# low: the until dies, TRUE at 2. The assumption fails at the finite sample 1 (the safety part).
+kind: assume
+property: not (a until b)
+clause: 16.12.3 16.12.12 16.14.2 16.14.8 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0 1 2
+a      : 1 1 .
+b      : . 1 .
+outcome : F F T
+decided : 1 1 2
+fail    : . 1 .
+pass    : . . 1
+pending: 0
+final-fail: 0
+inf-outcome : F F T
+inf-decided : 1 1 2
+
+== assume_disable_recurring_clears_an_unanswered_request
+# assume disable iff (d) a |-> s_eventually b, a = 1 . . . and d = . . 1 . with loop 0 (period 4: a at
+# 0, 4, ..., d at 2, 6, ...), b never. Attempt 0: trigger 0, never answered, but d holds at 2:
+# disabled at 2 (16.15). Attempt 1: a low, vacuous TRUE at 1. Attempt 2: d holds at 2: disabled at
+# 2. Attempt 3: vacuous TRUE at 3. No attempt is FALSE: the trace is admitted (every obligation is
+# aborted by the next d).
+kind: assume
+property: a |-> s_eventually b
+clause: 16.12 16.12.7 16.12.13 16.14.2 16.14.8 Annex F
+class: interpretation I5
+disable: d
+signals: b
+scope: attempt
+loop: 0
+sample : 0 1 2 3
+a      : 1 . . .
+d      : . . 1 .
+outcome : d t d t
+decided : 2 1 2 3
+pending: 0
+final-fail: 0
+inf-outcome : D T D T
+inf-decided : 2 1 2 3
+
+== assume_disable_once_then_requests_for_ever
+# assume disable iff (d) a |-> s_eventually b, a = 1 for ever, d = 1 at position 0 only, b never
+# (two written samples, loop 1: a 1 1 1 ..., d 1 0 0 ...). Attempt 0: trigger 0, d holds at 0:
+# disabled at 0. Attempt 1 (and every later one, they behave alike): trigger, no b ever and no d
+# at or after the start: FALSE in the limit, undecided. The single d aborts only the obligation
+# alive at it: the trace is ruled out.
+kind: assume
+property: a |-> s_eventually b
+clause: 16.12 16.12.7 16.12.13 16.14.2 Annex F
+class: interpretation I8
+disable: d
+signals: b
+scope: attempt
+loop: 1
+sample : 0 1
+a      : 1 1
+d      : 1 .
+outcome : d p
+decided : 0 .
+pending: 1
+final-fail: 1
+inf-outcome : D F
+inf-decided : 0 .
+
+== assume_past_antecedent_is_false_at_the_first_sample
+# assume $past(a) |-> s_eventually b, a = 1 1 with loop 1 (a high for ever), b never. $past(a) is not
+# known at position 0 (16.9.3: the antecedent does not hold), so attempt 0 is vacuously TRUE at 0.
+# From position 1 on $past(a) holds: attempt 1 (and every later one) has a trigger and no b ever:
+# FALSE in the limit, undecided. The assumption is ruled out by the attempts after the first.
+kind: assume
+property: $past(a) |-> s_eventually b
+clause: 16.9.3 16.12.7 16.12.13 16.14.2 16.14.8 Annex F
+class: interpretation I3, I5, I8
+signals: b
+scope: attempt
+loop: 1
+sample : 0 1
+a      : 1 1
+outcome : t p
+decided : 0 .
+pending: 1
+final-fail: 1
+inf-outcome : T F
+inf-decided : 0 .
+
+== assume_past_antecedent_never_triggers_when_a_stays_low
+# assume $past(a) |-> s_eventually b, a = 0 and b = 0 for ever: the antecedent never holds (not at
+# position 0 for want of history, not later because a is low), so every attempt is vacuously TRUE
+# at its own sample: the trace is admitted although b never holds.
+kind: assume
+property: $past(a) |-> s_eventually b
+clause: 16.9.3 16.12.7 16.12.13 16.14.2 16.14.8 Annex F
+class: interpretation I3, I5
+signals: b
+scope: attempt
+loop: 0
+sample : 0
+a      : .
+outcome : t
+decided : 0
+pending: 0
+final-fail: 0
+inf-outcome : T
+inf-decided : 0

@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1.0."
+    },
+    {
+      "name": "b",
+      "wave": "10.."
+    },
+    {
+      "name": "c",
+      "wave": "0..."
+    },
+    {
+      "name": "d",
+      "wave": "0.10"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0..."
+    }
+  ],
+  "head": {
+    "text": "until_machine/disable_at_the_deciding_sample",
+    "tock": 0
+  },
+  "foot": {
+    "text": "d: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

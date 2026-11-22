@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp............"
+    },
+    {
+      "name": "req",
+      "wave": "0.1.....0....."
+    },
+    {
+      "name": "fail",
+      "wave": "0.10.........."
+    },
+    {
+      "name": "pass",
+      "wave": "1.01.........."
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_9_3_fig16_3_rose_req",
+    "tock": 0
+  }
+}

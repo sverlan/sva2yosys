@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "1.0.1"
+    },
+    {
+      "name": "b",
+      "wave": "010.."
+    },
+    {
+      "name": "fail",
+      "wave": "0.10."
+    },
+    {
+      "name": "pass",
+      "wave": "010.."
+    }
+  ],
+  "head": {
+    "text": "implication/p02_nonoverlapping_and_pending_at_end",
+    "tock": 0
+  }
+}

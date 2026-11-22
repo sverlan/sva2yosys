@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "b",
+      "wave": "01.01."
+    },
+    {
+      "name": "fail",
+      "wave": "0..10."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10.1"
+    }
+  ],
+  "head": {
+    "text": "temporal/always_of_nexttime",
+    "tock": 0
+  }
+}

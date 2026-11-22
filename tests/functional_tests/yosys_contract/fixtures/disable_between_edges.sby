@@ -1,0 +1,29 @@
+[tasks]
+sync_pulse_rv     sync  pulse   rv
+async_pulse_rv    async pulse   rv
+async_nopulse_rv  async nopulse rv
+sync_pulse_mx     sync  pulse   mx
+async_pulse_mx    async pulse   mx
+async_nopulse_mx  async nopulse mx
+
+[options]
+mode bmc
+depth 20
+multiclock on
+
+[engines]
+smtbmc yices
+
+[script]
+rv: read_verilog -formal -sv disable_monitors.sv
+mx: plugin -i slang
+mx: read_slang -D FORMAL --top mon_sync --top mon_async disable_monitors.sv
+read_verilog -formal -sv disable_tb.sv
+sync:    chparam -set ASYNC 0 tb_between_edges
+async:   chparam -set ASYNC 1 tb_between_edges
+nopulse: chparam -set PULSE 0 tb_between_edges
+prep -top tb_between_edges
+
+[files]
+disable_monitors.sv
+disable_tb.sv

@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "b",
+      "wave": "01"
+    },
+    {
+      "name": "c",
+      "wave": "01"
+    },
+    {
+      "name": "fail",
+      "wave": "0."
+    },
+    {
+      "name": "pass",
+      "wave": "01"
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_14_8_s_s_eventually_stops_at_first_satisfaction",
+    "tock": 0
+  }
+}

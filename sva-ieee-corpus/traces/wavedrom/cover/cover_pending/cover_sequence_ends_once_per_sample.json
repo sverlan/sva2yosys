@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1.0."
+    },
+    {
+      "name": "b",
+      "wave": "0.10"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10"
+    }
+  ],
+  "head": {
+    "text": "cover_pending/cover_sequence_ends_once_per_sample",
+    "tock": 0
+  }
+}

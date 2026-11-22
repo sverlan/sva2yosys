@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "101"
+    },
+    {
+      "name": "fail",
+      "wave": "010"
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "implication/nonoverlapping_impossible_consequent_fails_at_the_next_tick",
+    "tock": 0
+  }
+}

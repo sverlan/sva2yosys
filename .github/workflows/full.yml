@@ -1,0 +1,49 @@
+name: Full suite
+
+# Started by hand from the Actions tab (never by a push, a pull request or a schedule): every test
+# tier (default, extended, slow) with every opt-in tool and corpus, on the runner itself. The suite
+# is split into the groups of tests/support/ci_groups.py, one job each, run in parallel. The tools
+# and corpora are set up by .github/actions/tools (downloads checked by SHA-256, Spot compiled from
+# its source, everything cached; a cache entry unused for seven days is deleted), first by the
+# job "prepare", which fills the caches, then by every group. It takes about as long as the
+# longest group.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    name: Tools, corpora and the list of groups
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    outputs:
+      groups: ${{ steps.groups.outputs.groups }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/tools
+      - id: groups
+        run: echo "groups=$(python3 tests/support/ci_groups.py --names)" >> "${GITHUB_OUTPUT}"
+
+  full:
+    name: ${{ matrix.group }}
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        group: ${{ fromJSON(needs.prepare.outputs.groups) }}
+    env:
+      UV_PYTHON: "3.14"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - uses: ./.github/actions/tools
+      - run: uv sync --locked
+      - name: Tests of the group
+        run: uv run pytest --external-tools=all --external-corpora=all --slow $(python3 tests/support/ci_groups.py ${{ matrix.group }})

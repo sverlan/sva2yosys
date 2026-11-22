@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp....."
+    },
+    {
+      "name": "a",
+      "wave": "101.010"
+    },
+    {
+      "name": "b",
+      "wave": "10101.."
+    },
+    {
+      "name": "c",
+      "wave": "0.1.0.1"
+    },
+    {
+      "name": "fail",
+      "wave": "01010.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10..1"
+    }
+  ],
+  "head": {
+    "text": "until_machine/implication_into_until_with",
+    "tock": 0
+  }
+}

@@ -1,0 +1,91 @@
+# Property if (e) p [else q] (IEEE 1800 §16.12.13): e is sampled at the attempt's start
+# and only the selected branch is evaluated; without else and with e false, the attempt is
+# vacuously true.
+
+== if_without_else
+# t0: e, a at 0, b at 1: pass at 1. t1: e false: vacuous. t2: b at 3 is beyond the trace.
+property: if (e) a ##1 b
+clause: 16.7 16.12.6
+class: normative
+signals: e a b
+sample : 0 1 2
+e      : 1 . 1
+a      : 1 . 1
+b      : . 1 .
+pass   : . 1 .
+pending: 1
+
+== if_else_selects_one_branch
+# t0, t1 check a; t2, t3 check b.
+property: if (e) a else b
+clause: 16.12.6
+class: normative
+sample : 0 1 2 3
+e      : 1 1 . .
+a      : 1 . . .
+b      : . . 1 .
+fail   : . 1 . 1
+pass   : 1 . 1 .
+pending: 0
+
+== if_else_with_sequences
+# t0 (e): a ##1 b passes at 1. t1 (!e): b ##1 a fails at 2 (a is 0). t2 (!e): b is 0: fail at 2.
+property: if (e) a ##1 b else b ##1 a
+clause: 16.7 16.12.6
+class: normative
+sample : 0 1 2
+e      : 1 . .
+a      : 1 1 .
+b      : . 1 .
+fail   : . . 1
+pass   : . 1 .
+pending: 0
+
+== if_with_an_implication
+# if (e) (a |-> b) is (e ##0 a) |-> b: t0 passes, t1 fails.
+property: if (e) (a |-> b)
+clause: 16.12.6 16.12.7
+class: normative
+sample : 0 1
+e      : 1 1
+a      : 1 1
+b      : 1 .
+fail   : . 1
+pass   : 1 .
+pending: 0
+
+== if_else_with_not
+# t0 (e): not a, a matches at 0: fail at 0. t1 (!e): not b, b matches at 1: fail at 1.
+property: if (e) not a else not b
+clause: 16.12.3 16.12.6
+class: normative
+sample : 0 1
+e      : 1 .
+a      : 1 .
+b      : . 1
+fail   : 1 1
+pending: 0
+
+== if_without_else_on_past_at_the_first_sample
+# $past(e) is X at sample 0, so the attempt of t0 selects no branch: vacuous, as e |-> a with
+# e forced false. t1: $past(e) is 1 and a is 0: fail at 1.
+property: if ($past(e)) a
+clause: 16.9.3 16.12.6
+class: interpretation I3
+sample : 0 1
+e      : 1 .
+a      : . .
+fail   : . 1
+pending: 0
+
+== cover_of_if_without_else
+# t0: e is false, the attempt is vacuous and not covered; t1 is covered.
+kind: cover
+property: if (e) a
+clause: 16.12.6 16.14.3
+class: normative
+sample : 0 1
+e      : . 1
+a      : 1 1
+pass   : . 1
+pending: 0

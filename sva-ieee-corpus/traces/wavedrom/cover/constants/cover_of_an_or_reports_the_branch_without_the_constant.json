@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "1.0"
+    },
+    {
+      "name": "c",
+      "wave": "10."
+    },
+    {
+      "name": "d",
+      "wave": "010"
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "010"
+    }
+  ],
+  "head": {
+    "text": "constants/cover_of_an_or_reports_the_branch_without_the_constant",
+    "tock": 0
+  }
+}

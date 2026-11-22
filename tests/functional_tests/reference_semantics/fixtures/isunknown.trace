@@ -1,0 +1,199 @@
+# $isunknown (docs/semantics.md section 8a). The model is two-state, so $isunknown(c)
+# is the constant 0 whatever c is; a directive that keeps other checks behaves as the directive
+# without its X part. Every table is hand-derived for that directive without the X part, with
+# c driven to 1 at the decisive samples: a misreading of $isunknown(c) as c would change it.
+
+== mixed_conjunct_is_the_directive_without_the_x_part
+# a |-> b && !$isunknown(c) is a |-> b.
+property: a |-> b && !$isunknown(c)
+clause: 11.4 16.12.7 20.9
+class: implementation-defined
+sample : 0 1 2 3 4
+a      : 1 . 1 1 .
+b      : 1 1 . 1 1
+c      : . 1 1 . .
+fail   : . . 1 . .
+pass   : 1 . . 1 .
+pending: 0
+
+== mixed_conjunct_as_an_assumption
+kind: assume
+property: a |-> b && !$isunknown(c)
+clause: 11.4 16.12.7 16.14.2 20.9
+class: implementation-defined
+sample : 0 1 2 3 4
+a      : 1 . 1 1 .
+b      : 1 1 . 1 1
+c      : . 1 1 . .
+fail   : . . 1 . .
+pass   : 1 . . 1 .
+pending: 0
+
+== x_part_in_the_consequent_delay_chain
+# a |-> !$isunknown(c) ##1 b is a |-> (1'b1 ##1 b): b one sample after a.
+property: a |-> !$isunknown(c) ##1 b
+clause: 11.4 16.7 16.12.7 20.9
+class: implementation-defined
+sample : 0 1 2 3
+a      : 1 . 1 .
+b      : . 1 . .
+c      : 1 1 1 1
+fail   : . . . 1
+pass   : . 1 . .
+pending: 0
+
+== x_part_alone_in_the_consequent_fails_with_the_trigger
+# a |-> $isunknown(c) is a |-> 1'b0: it fails at every sample where a holds, c or not.
+property: a |-> $isunknown(c)
+clause: 11.4 16.12.7 20.9
+class: implementation-defined
+sample : 0 1 2
+a      : 1 . 1
+c      : 1 1 1
+fail   : 1 . 1
+pending: 0
+
+== x_part_in_a_disjunction_of_the_consequent
+# a |-> b || $isunknown(c) is a |-> b.
+property: a |-> b || $isunknown(c)
+clause: 11.4 16.12.7 20.9
+class: implementation-defined
+sample : 0 1 2 3
+a      : 1 1 . 1
+b      : 1 . . .
+c      : 1 1 1 1
+fail   : . 1 . 1
+pass   : 1 . . .
+pending: 0
+
+== x_part_in_a_conditional_selects_the_other_branch
+# a |-> ($isunknown(c) ? b : d) is a |-> d.
+property: a |-> ($isunknown(c) ? b : d)
+clause: 11.4 16.12.7 20.9
+class: implementation-defined
+sample : 0 1 2 3
+a      : 1 1 . 1
+b      : 1 1 1 1
+c      : 1 1 1 1
+d      : . 1 . .
+fail   : 1 . . 1
+pass   : . 1 . .
+pending: 0
+
+== x_part_in_the_antecedent_condition
+# a && !$isunknown(c) |-> b is a |-> b.
+property: a && !$isunknown(c) |-> b
+clause: 11.4 16.12.7 20.9
+class: implementation-defined
+sample : 0 1 2
+a      : 1 . 1
+b      : . . 1
+c      : 1 1 1
+fail   : 1 . .
+pass   : . . 1
+pending: 0
+
+== x_part_in_a_disjunction_of_the_antecedent
+# $isunknown(c) || a |-> b is a |-> b.
+property: $isunknown(c) || a |-> b
+clause: 11.4 16.12.7 20.9
+class: implementation-defined
+sample : 0 1 2
+a      : . 1 .
+b      : . . .
+c      : 1 1 1
+fail   : . 1 .
+pending: 0
+
+== x_part_in_disable_iff_never_disables
+# disable iff ($isunknown(c)) is never true: the attempt of 0 fails at 1 although c is 1 there.
+disable: $isunknown(c)
+property: a |-> ##1 b
+clause: 11.4 16.7 16.12 16.12.7 20.9
+class: implementation-defined
+sample : 0 1 2
+a      : 1 . .
+b      : . . .
+c      : . 1 .
+fail   : . 1 .
+pending: 0
+
+== x_part_in_disable_iff_keeps_the_real_condition_disabling
+# disable iff (r || $isunknown(c)) is disable iff (r): r is true at 1, the decisive sample.
+disable: r || $isunknown(c)
+property: a |-> ##1 b
+clause: 11.4 16.7 16.12 16.12.7 20.9
+class: implementation-defined
+sample : 0 1 2
+a      : 1 . .
+b      : . . .
+c      : . . 1
+r      : . 1 .
+pending: 0
+
+== x_part_in_disable_iff_keeps_the_real_condition_enabling
+# r is false from 0 to the decisive sample 1 (c is true there, which does not disable); it
+# rises at 2, after the failure.
+disable: r || $isunknown(c)
+property: a |-> ##1 b
+clause: 11.4 16.7 16.12 16.12.7 20.9
+class: implementation-defined
+sample : 0 1 2
+a      : 1 . .
+b      : . . .
+c      : . 1 .
+r      : . . 1
+fail   : . 1 .
+pending: 0
+
+== x_conjunct_of_a_property_and_never_fails
+# (a |-> b) and ($isunknown(c) |-> d): the second conjunct has an antecedent that never
+# matches. Only the first conjunct can fail, at 2 (the second would fail at 0 if c were
+# read as a condition, with d low).
+scope: first-failure
+property: (a |-> b) and ($isunknown(c) |-> d)
+clause: 11.4 16.12.5 16.12.7 20.9
+class: implementation-defined
+sample : 0 1 2
+a      : . . 1
+b      : . . .
+c      : 1 1 1
+d      : . . .
+fail   : . . 1
+
+== x_part_next_to_past_keeps_the_first_sample_rule
+# a |-> $past(b) && !$isunknown(c) is a |-> $past(b): the condition does not hold at the first
+# sample (docs/semantics.md section 8), so the attempt of 0 fails.
+property: a |-> $past(b) && !$isunknown(c)
+clause: 11.4 16.9.3 16.12.7 20.9
+class: implementation-defined
+sample : 0 1 2
+a      : 1 . 1
+b      : 1 1 .
+c      : 1 1 1
+fail   : 1 . .
+pass   : . . 1
+pending: 0
+
+== mixed_cover_of_an_implication_counts_the_triggers
+# cover (a |-> !$isunknown(c)) is cover (a |-> 1'b1): non-vacuous success at each a.
+property: a |-> !$isunknown(c)
+clause: 11.4 16.12.7 16.14.3 20.9
+class: implementation-defined
+kind: cover
+sample : 0 1 2
+a      : 1 . 1
+c      : 1 1 1
+pass   : 1 . 1
+
+== mixed_cover_of_a_sequence
+# cover (a ##1 b && !$isunknown(c)) is cover (a ##1 b): the attempt of 0 matches at 1.
+property: a ##1 b && !$isunknown(c)
+clause: 11.4 16.7 16.14.3 20.9
+class: implementation-defined
+kind: cover
+sample : 0 1 2 3
+a      : 1 . 1 .
+b      : . 1 . .
+c      : 1 1 1 1
+pass   : . 1 . .

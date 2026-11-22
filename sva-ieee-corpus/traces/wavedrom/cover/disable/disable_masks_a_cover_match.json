@@ -1,0 +1,31 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "rst_n",
+      "wave": "0."
+    },
+    {
+      "name": "a",
+      "wave": "1."
+    },
+    {
+      "name": "fail",
+      "wave": "0."
+    },
+    {
+      "name": "pass",
+      "wave": "01"
+    }
+  ],
+  "head": {
+    "text": "disable/disable_masks_a_cover_match",
+    "tock": 0
+  },
+  "foot": {
+    "text": "rst_n: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

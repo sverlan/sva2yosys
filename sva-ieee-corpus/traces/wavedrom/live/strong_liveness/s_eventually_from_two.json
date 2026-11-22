@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "b",
+      "wave": "0.10"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10"
+    },
+    {
+      "name": "repeat",
+      "wave": "1..."
+    },
+    {
+      "name": "outcome",
+      "wave": "=...",
+      "data": [
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "strong_liveness/s_eventually_from_two",
+    "tock": 0
+  }
+}

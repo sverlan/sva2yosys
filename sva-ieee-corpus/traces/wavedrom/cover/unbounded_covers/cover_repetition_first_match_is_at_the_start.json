@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "1.0"
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "1.0"
+    }
+  ],
+  "head": {
+    "text": "unbounded_covers/cover_repetition_first_match_is_at_the_start",
+    "tock": 0
+  }
+}

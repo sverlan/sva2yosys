@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "a",
+      "wave": "1010.."
+    },
+    {
+      "name": "b",
+      "wave": "010..1"
+    },
+    {
+      "name": "d",
+      "wave": "0...10"
+    },
+    {
+      "name": "fail",
+      "wave": "0....."
+    },
+    {
+      "name": "pass",
+      "wave": "010..."
+    }
+  ],
+  "head": {
+    "text": "unbounded_covers/cover_disable_during_a_pending_attempt",
+    "tock": 0
+  },
+  "foot": {
+    "text": "d: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

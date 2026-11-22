@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "10."
+    },
+    {
+      "name": "b",
+      "wave": "0.."
+    },
+    {
+      "name": "c",
+      "wave": "0.1"
+    },
+    {
+      "name": "fail",
+      "wave": "010"
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "isunknown/x_part_in_disable_iff_never_disables",
+    "tock": 0
+  },
+  "foot": {
+    "text": "c: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

@@ -1,0 +1,121 @@
+# Expected results of sva2yosys on the SymbiYosys examples and tests (CONTRACT.md).
+# Written for YosysHQ/sby at commit 79fc9eddca5e33a28cc2f2cd19c9825efd9a7255 (docs/examples and
+# tests). The expected result of a task is its own `expect` option (default: pass).
+corpus-commit: 79fc9eddca5e33a28cc2f2cd19c9825efd9a7255
+corpus-sha256: ea3c7f329a220207e3d1073f56ce18dc9a9ca77d5f048a847f3cf026e7bde940
+# Classified with OSS CAD Suite 20261031: Yosys 0.70+286 (git sha1 63eecf3dd), SBY v0.70-9-g79fc9ed.
+oss-cad-suite: 20261031
+yosys-version: 0.70+286
+sby-version: v0.70-9-g79fc9ed
+#
+# One line per (.sby file, task), in file order; a file without tasks, or skipped as a whole, has
+# the task "-". Format:  file  task  class [reason or fragment]
+# class: agrees | agrees-isolated FRAGMENT | rejected FRAGMENT | skipped REASON | excluded REASON
+docs/examples/abstract/abstr.sby  -  skipped proprietary-frontend command
+docs/examples/abstract/props.sby  cvr  skipped proprietary-frontend command
+docs/examples/abstract/props.sby  prv  skipped proprietary-frontend command
+docs/examples/autotune/divider.sby  -  skipped no concurrent SVA
+docs/examples/demos/fib.sby  cover  rejected a procedural concurrent assertion in a block whose statements may not fall throu
+docs/examples/demos/fib.sby  live  rejected a procedural concurrent assertion in a block whose statements may not fall throu
+docs/examples/demos/fib.sby  prove  rejected a procedural concurrent assertion in a block whose statements may not fall throu
+docs/examples/demos/memory.sby  -  skipped no concurrent SVA
+docs/examples/demos/picorv32_axicheck.sby  abc  skipped reader option -assume-asserts changes assertions
+docs/examples/demos/picorv32_axicheck.sby  boolector  skipped reader option -assume-asserts changes assertions
+docs/examples/demos/picorv32_axicheck.sby  yices  skipped reader option -assume-asserts changes assertions
+docs/examples/demos/picorv32_axicheck.sby  z3  skipped reader option -assume-asserts changes assertions
+docs/examples/demos/up_down_counter.sby  avy  rejected the assertion has no clock: give it a clock event, an enclosing event control or
+docs/examples/demos/up_down_counter.sby  suprove  rejected the assertion has no clock: give it a clock event, an enclosing event control or
+docs/examples/dft/data_diode.sby  diode  skipped proprietary-frontend command
+docs/examples/dft/data_diode.sby  direct  skipped proprietary-frontend command
+docs/examples/fifo/fifo.sby  basic  agrees-isolated disable iff is only supported at the top of a property
+docs/examples/fifo/fifo.sby  cover  rejected disable iff is only supported at the top of a property
+docs/examples/fifo/fifo.sby  nofullskip  excluded the job declares no `expect`, but plain SBY without sva2yosys fails it the same way (the design's own immediate assertion a_count_diff, same step); fifo_extra_tests.sby runs this configuration with `expect fail` and agrees
+docs/examples/fifo/fifo.sby  noverific  skipped no concurrent SVA under the job's macros
+docs/examples/fifo/fifo_extra_tests.sby  basic  agrees-isolated disable iff is only supported at the top of a property
+docs/examples/fifo/fifo_extra_tests.sby  cover  rejected disable iff is only supported at the top of a property
+docs/examples/fifo/fifo_extra_tests.sby  nofullskip  agrees-isolated disable iff is only supported at the top of a property
+docs/examples/fifo/fifo_extra_tests.sby  noverific  skipped no concurrent SVA under the job's macros
+docs/examples/fifo/golden/fifo.sby  basic  skipped parameter override after the read (-chparam) is not mirrored in the rewrite
+docs/examples/fifo/golden/fifo.sby  bigtest  skipped parameter override after the read (-chparam) is not mirrored in the rewrite
+docs/examples/fifo/golden/fifo.sby  cover  skipped parameter override after the read (-chparam) is not mirrored in the rewrite
+docs/examples/fifo/golden/fifo.sby  nofullskip  skipped parameter override after the read (-chparam) is not mirrored in the rewrite
+docs/examples/fifo/golden/fifo.sby  noverific  skipped parameter override after the read (-chparam) is not mirrored in the rewrite
+docs/examples/indinv/prove_p0.sby  -  skipped no concurrent SVA
+docs/examples/indinv/prove_p23.sby  -  skipped no concurrent SVA
+docs/examples/multiclk/dpmem.sby  -  skipped no concurrent SVA
+docs/examples/puzzles/djb2hash.sby  -  skipped no concurrent SVA
+docs/examples/puzzles/pour_853_to_4.sby  -  skipped no concurrent SVA
+docs/examples/puzzles/primegen.sby  -  skipped no concurrent SVA
+docs/examples/puzzles/wolf_goat_cabbage.sby  -  skipped no concurrent SVA
+docs/examples/quickstart/cover.sby  -  skipped no concurrent SVA
+docs/examples/quickstart/demo.sby  -  skipped no concurrent SVA
+docs/examples/quickstart/memory.sby  -  skipped no concurrent SVA
+docs/examples/quickstart/prove.sby  -  skipped no concurrent SVA
+docs/examples/tristate/tristate.sby  -  skipped no concurrent SVA
+docs/examples/vhd/formal_bind.sby  bmc  skipped proprietary-frontend command
+docs/examples/vhd/formal_bind.sby  cover  skipped proprietary-frontend command
+tests/autotune/autotune_div.sby  -  skipped no concurrent SVA
+tests/autotune/autotune_options.sby  -  skipped no concurrent SVA
+tests/blackbox/blackbox.sby  -  skipped no concurrent SVA
+tests/blackbox/parameter.sby  -  skipped no concurrent SVA
+tests/blackbox/unknown_cells.sby  -  skipped no concurrent SVA
+tests/blackbox/wider.sby  -  skipped no concurrent SVA
+tests/intertask/cancelledby.sby  -  skipped no concurrent SVA
+tests/intertask/longrunning.sby  -  skipped no concurrent SVA
+tests/junit/junit_assert.sby  -  skipped no concurrent SVA
+tests/junit/junit_cover.sby  -  skipped no concurrent SVA
+tests/junit/junit_expect.sby  -  skipped no concurrent SVA
+tests/junit/junit_nocodeloc.sby  -  skipped no concurrent SVA
+tests/junit/junit_timeout_error.sby  -  skipped no concurrent SVA
+tests/keepgoing/keepgoing_multi_step.sby  -  skipped no concurrent SVA
+tests/keepgoing/keepgoing_same_step.sby  -  skipped no concurrent SVA
+tests/keepgoing/keepgoing_smtc.sby  -  skipped no concurrent SVA
+tests/links/more_dirs.sby  -  skipped no concurrent SVA
+tests/links/symlink.sby  -  skipped SBY feature: links and copies of the files section
+tests/regression/aiger_comb_witness.sby  -  skipped no concurrent SVA
+tests/regression/aiger_options.sby  -  skipped SBY back-end option matrix (aiger engines)
+tests/regression/aim_vs_smt2_nonzero_start_offset.sby  -  skipped no concurrent SVA
+tests/regression/btor_options.sby  -  skipped SBY back-end option matrix (btor engines and options)
+tests/regression/const_clocks.sby  -  skipped no concurrent SVA
+tests/regression/fake_loop.sby  -  skipped no concurrent SVA
+tests/regression/ff_xinit_opt.sby  -  skipped no concurrent SVA
+tests/regression/invalid_ff_dcinit_merge.sby  -  skipped no concurrent SVA
+tests/regression/jobserver_timeout.sby  -  skipped no concurrent SVA
+tests/regression/option_skip.sby  -  skipped no concurrent SVA
+tests/regression/smt_dynamic_index_assign.sby  -  skipped no concurrent SVA
+tests/regression/unroll_noincr_traces.sby  -  skipped no concurrent SVA
+tests/regression/verilog_hier_path.sby  -  skipped no concurrent SVA
+tests/regression/vhdl_hier_path.sby  -  skipped no concurrent SVA
+tests/regression/yosys_5892_memname.sby  -  skipped no concurrent SVA
+tests/staged_sim_and_verif/skip_staged_flow.sby  prep  skipped proprietary-frontend command
+tests/staged_sim_and_verif/skip_staged_flow.sby  stage_1  skipped no Verilog source read (it reads the result of an earlier stage)
+tests/staged_sim_and_verif/skip_staged_flow.sby  stage_2  skipped no Verilog source read (it reads the result of an earlier stage)
+tests/staged_sim_and_verif/skip_staged_flow.sby  stage_3_init  skipped no Verilog source read (it reads the result of an earlier stage)
+tests/staged_sim_and_verif/skip_staged_flow.sby  stage_3a_cover  skipped no Verilog source read (it reads the result of an earlier stage)
+tests/staged_sim_and_verif/skip_staged_flow.sby  stage_3b_assert  skipped no Verilog source read (it reads the result of an earlier stage)
+tests/staged_sim_and_verif/staged_sim_and_verif.sby  -  skipped proprietary-frontend command
+tests/statusdb/mixed.sby  -  skipped no concurrent SVA
+tests/statusdb/reset.sby  -  skipped no concurrent SVA
+tests/statusdb/timeout.sby  -  skipped no concurrent SVA
+tests/unsorted/2props1trace.sby  -  skipped no concurrent SVA
+tests/unsorted/allconst.sby  -  skipped no concurrent SVA
+tests/unsorted/bmc_len.sby  -  skipped no concurrent SVA
+tests/unsorted/both_ex.sby  -  skipped no concurrent SVA
+tests/unsorted/btor_meminit.sby  -  skipped no concurrent SVA
+tests/unsorted/cover.sby  -  skipped no concurrent SVA
+tests/unsorted/cover_fail.sby  -  skipped no concurrent SVA
+tests/unsorted/cover_unreachable.sby  -  skipped no concurrent SVA
+tests/unsorted/demo.sby  -  skipped no concurrent SVA
+tests/unsorted/floor_divmod.sby  -  skipped no concurrent SVA
+tests/unsorted/memory.sby  -  skipped no concurrent SVA
+tests/unsorted/mixed.sby  -  skipped no concurrent SVA
+tests/unsorted/multi_assert.sby  -  skipped no concurrent SVA
+tests/unsorted/no_props.sby  -  skipped no concurrent SVA
+tests/unsorted/no_vcd.sby  -  skipped no concurrent SVA
+tests/unsorted/preunsat.sby  -  skipped no concurrent SVA
+tests/unsorted/prv32fmcmp.sby  btormc  rejected design element does not have a time scale defined but others in the design do
+tests/unsorted/prv32fmcmp.sby  pono  rejected design element does not have a time scale defined but others in the design do
+tests/unsorted/redxor.sby  -  skipped no concurrent SVA
+tests/unsorted/smtlib2_module.sby  -  skipped no concurrent SVA
+tests/unsorted/stopfirst.sby  -  skipped no concurrent SVA
+tests/unsorted/submod_props.sby  -  skipped no concurrent SVA

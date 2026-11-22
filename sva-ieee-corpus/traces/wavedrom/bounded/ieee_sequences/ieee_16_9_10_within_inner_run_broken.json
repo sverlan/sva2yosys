@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp............"
+    },
+    {
+      "name": "go",
+      "wave": "0.10.........."
+    },
+    {
+      "name": "irdy",
+      "wave": "1.0........1.."
+    },
+    {
+      "name": "trdy",
+      "wave": "1..0..10..1..."
+    },
+    {
+      "name": "fail",
+      "wave": "0.....10......"
+    },
+    {
+      "name": "pass",
+      "wave": "0............."
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_9_10_within_inner_run_broken",
+    "tock": 0
+  }
+}

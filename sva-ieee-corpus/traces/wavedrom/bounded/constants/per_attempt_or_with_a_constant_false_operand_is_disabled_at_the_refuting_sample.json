@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "10."
+    },
+    {
+      "name": "c",
+      "wave": "10."
+    },
+    {
+      "name": "d",
+      "wave": "0.."
+    },
+    {
+      "name": "r",
+      "wave": "0.1"
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "constants/per_attempt_or_with_a_constant_false_operand_is_disabled_at_the_refuting_sample",
+    "tock": 0
+  },
+  "foot": {
+    "text": "r: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

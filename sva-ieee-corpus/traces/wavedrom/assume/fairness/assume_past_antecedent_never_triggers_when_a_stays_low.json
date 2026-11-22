@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "l"
+    },
+    {
+      "name": "b",
+      "wave": "0"
+    },
+    {
+      "name": "a",
+      "wave": "0"
+    },
+    {
+      "name": "fail",
+      "wave": "0"
+    },
+    {
+      "name": "pass",
+      "wave": "0"
+    },
+    {
+      "name": "repeat",
+      "wave": "1"
+    },
+    {
+      "name": "outcome",
+      "wave": "=",
+      "data": [
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "fairness/assume_past_antecedent_never_triggers_when_a_stays_low",
+    "tock": 0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "b",
+      "wave": "0.10.."
+    },
+    {
+      "name": "fail",
+      "wave": "0....."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10.."
+    }
+  ],
+  "head": {
+    "text": "temporal/cover_eventually_window",
+    "tock": 0
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "l"
+    },
+    {
+      "name": "b",
+      "wave": "1"
+    },
+    {
+      "name": "c",
+      "wave": "0"
+    },
+    {
+      "name": "fail",
+      "wave": "0"
+    },
+    {
+      "name": "pass",
+      "wave": "0"
+    },
+    {
+      "name": "repeat",
+      "wave": "1"
+    },
+    {
+      "name": "outcome",
+      "wave": "=",
+      "data": [
+        "F"
+      ]
+    }
+  ],
+  "head": {
+    "text": "fairness/assume_s_until_never_c_while_b_holds",
+    "tock": 0
+  }
+}

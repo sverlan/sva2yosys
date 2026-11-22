@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "10.."
+    },
+    {
+      "name": "b",
+      "wave": "10.."
+    },
+    {
+      "name": "c",
+      "wave": "1010"
+    },
+    {
+      "name": "d",
+      "wave": "0101"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0101"
+    }
+  ],
+  "head": {
+    "text": "attempts_cover/cover_of_and_of_implications_at_the_later_decision",
+    "tock": 0
+  }
+}

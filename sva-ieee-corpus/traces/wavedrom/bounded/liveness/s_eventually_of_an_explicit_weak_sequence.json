@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "010.1"
+    },
+    {
+      "name": "b",
+      "wave": "0.10."
+    },
+    {
+      "name": "fail",
+      "wave": "0...."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10."
+    }
+  ],
+  "head": {
+    "text": "liveness/s_eventually_of_an_explicit_weak_sequence",
+    "tock": 0
+  }
+}

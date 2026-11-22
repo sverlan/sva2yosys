@@ -1,0 +1,19 @@
+[tasks]
+prove
+cover
+
+[options]
+prove: mode prove
+cover: mode cover
+cover: depth 10
+
+[engines]
+prove: abc pdr
+cover: smtbmc yices
+
+[script]
+script sva2yosys_read.ys
+prep -top handshake
+
+[files]
+build/sva2yosys_read.ys

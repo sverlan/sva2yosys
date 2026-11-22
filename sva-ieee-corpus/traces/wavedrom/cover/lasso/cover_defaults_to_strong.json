@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "l"
+    },
+    {
+      "name": "b",
+      "wave": "0"
+    },
+    {
+      "name": "a",
+      "wave": "1"
+    },
+    {
+      "name": "fail",
+      "wave": "0"
+    },
+    {
+      "name": "pass",
+      "wave": "0"
+    },
+    {
+      "name": "repeat",
+      "wave": "1"
+    },
+    {
+      "name": "outcome",
+      "wave": "=",
+      "data": [
+        "F"
+      ]
+    }
+  ],
+  "head": {
+    "text": "lasso/cover_defaults_to_strong",
+    "tock": 0
+  }
+}

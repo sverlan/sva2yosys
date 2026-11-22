@@ -1,0 +1,120 @@
+# weak(...) / strong(...) and the default strengths (IEEE 1800 §16.12.2).
+# For bounded sequences the online verdicts do not depend on strength; strength only decides
+# what is still pending when the simulation ends (final-fail).
+
+== weak_pending_at_end
+property: a |-> weak(b ##2 c)
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+sample : 0 1
+a      : 1 .
+b      : 1 .
+c      : . .
+pending: 1
+final-fail: 0
+
+== strong_pending_at_end
+property: a |-> strong(b ##2 c)
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: interpretation I8
+sample : 0 1
+a      : 1 .
+b      : 1 .
+c      : . .
+pending: 1
+final-fail: 1
+
+== default_assert_is_weak
+property: a |-> b ##2 c
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+sample : 0 1
+a      : 1 .
+b      : 1 .
+c      : . .
+pending: 1
+final-fail: 0
+
+== strong_same_online_verdicts
+# A failure and a success are reported at the same samples as for the weak sequence.
+# Attempt 0 passes at 1; attempt 1 fails at 1 (b is 0 there).
+property: a |-> strong(b ##1 c)
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+sample : 0 1 2 3
+a      : 1 1 . .
+b      : 1 . . .
+c      : . 1 . .
+fail   : . 1 . .
+pass   : . 1 . .
+pending: 0
+final-fail: 0
+
+== strong_sequence_property
+property: strong(a ##1 b)
+clause: 16.7 16.12.2 Annex F
+class: interpretation I8
+sample : 0 1 2
+a      : 1 . 1
+b      : . . .
+fail   : . 1 .
+pending: 1
+final-fail: 1
+
+== default_cover_is_strong
+kind: cover
+property: a ##2 b
+clause: 16.7 16.12.2 16.14.3 Annex F
+class: interpretation I8
+sample : 0 1 2
+a      : . 1 .
+b      : . . .
+pending: 1
+final-fail: 1
+
+== weak_cover
+kind: cover
+property: weak(a ##2 b)
+clause: 16.7 16.12.2 16.14.3 Annex F
+class: normative
+sample : 0 1 2
+a      : . 1 .
+b      : . . .
+pending: 1
+final-fail: 0
+
+== disabled_pending_does_not_fail
+disable: r
+property: a |-> strong(b ##2 c)
+clause: 16.7 16.12 16.12.2 16.12.7 Annex F
+class: normative
+sample : 0 1 2
+a      : 1 . .
+b      : 1 . .
+c      : . . .
+r      : . 1 .
+pending: 0
+final-fail: 0
+
+== strong_pending_antecedent_is_not_a_failure
+# The antecedent a ##1 c is still pending at the end: no obligation exists, nothing fails.
+property: a ##1 c |-> strong(b)
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+signals: a b c
+sample : 0
+a      : 1
+pending: 0
+final-fail: 0
+
+== strong_vacuous_attempt_is_not_a_failure
+# The antecedent never matches: every attempt is vacuous.
+property: a |-> strong(b ##2 c)
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+signals: a b c
+sample : 0 1
+a      : . .
+pending: 0
+final-fail: 0
+

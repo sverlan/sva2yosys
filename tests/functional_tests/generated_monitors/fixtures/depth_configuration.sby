@@ -1,0 +1,17 @@
+[tasks]
+prove
+
+[options]
+mode prove
+
+[engines]
+abc pdr
+
+[script]
+read_verilog -formal -sv baseline.sv monitor.sv depth_configuration_miter.sv
+prep -top tb
+
+[files]
+baseline.sv
+monitor.sv
+depth_configuration_miter.sv

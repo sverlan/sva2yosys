@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1..0"
+    },
+    {
+      "name": "b",
+      "wave": "0101"
+    },
+    {
+      "name": "c",
+      "wave": "1010"
+    },
+    {
+      "name": "d",
+      "wave": "010."
+    },
+    {
+      "name": "fail",
+      "wave": "0101"
+    },
+    {
+      "name": "pass",
+      "wave": "010."
+    }
+  ],
+  "head": {
+    "text": "ieee_properties/ieee_16_12_5_conjunction_both_operands",
+    "tock": 0
+  }
+}

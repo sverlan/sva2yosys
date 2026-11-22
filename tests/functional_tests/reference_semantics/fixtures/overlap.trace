@@ -1,0 +1,24 @@
+# Overlapping obligations and several antecedent endpoints (docs/strategies.md).
+
+== strategies_example_3
+# The obligation from 0 dies at 2 although the one from 1 is alive in the same position.
+property: a |-> ##[1:2] b ##1 c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4
+a      : 1 1 . . .
+b      : . 1 . 1 .
+c      : . . . . 1
+fail   : . . 1 . .
+pass   : . . . . 1
+
+== several_antecedent_endpoints_from_one_start
+property: a ##[1:2] b |-> c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : 1 . . .
+b      : . 1 1 .
+c      : . 1 . .
+fail   : . . 1 .
+pass   : . 1 . .

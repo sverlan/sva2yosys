@@ -1,0 +1,47 @@
+# Consecutive repetition (specification p08, p09).
+
+== p08_three_in_a_row
+property: a |-> b[*3]
+clause: 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : 1 . . .
+b      : 1 1 1 .
+pass   : . . 1 .
+
+== p08_gap_fails
+property: a |-> b[*3]
+clause: 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : 1 . . .
+b      : 1 1 . 1
+fail   : . . 1 .
+
+== p09_first_match_passes
+property: a |-> b[*2:5]
+clause: 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3 4 5 6
+a      : 1 . . . . . .
+b      : 1 1 1 1 1 1 .
+pass   : . 1 . . . . .
+
+== p09_too_short
+property: a |-> b[*2:5]
+clause: 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : 1 . . .
+b      : 1 . 1 .
+fail   : . 1 . .
+
+== p09_overlapping
+property: a |-> b[*2:5]
+clause: 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3 4
+a      : 1 1 . . .
+b      : 1 1 . . .
+fail   : . . 1 . .
+pass   : . 1 . . .

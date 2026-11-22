@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "01.0"
+    },
+    {
+      "name": "b",
+      "wave": "0..."
+    },
+    {
+      "name": "c",
+      "wave": "0..1"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "10.1"
+    }
+  ],
+  "head": {
+    "text": "attempts/cover_or_with_vacuous_operand_and_sequence_operand",
+    "tock": 0
+  }
+}

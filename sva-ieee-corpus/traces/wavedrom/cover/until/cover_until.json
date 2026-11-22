@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "0.1"
+    },
+    {
+      "name": "b",
+      "wave": "10."
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "10."
+    }
+  ],
+  "head": {
+    "text": "until/cover_until",
+    "tock": 0
+  }
+}

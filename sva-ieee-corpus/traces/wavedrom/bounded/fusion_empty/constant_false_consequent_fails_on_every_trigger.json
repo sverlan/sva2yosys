@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "101"
+    },
+    {
+      "name": "fail",
+      "wave": "101"
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "fusion_empty/constant_false_consequent_fails_on_every_trigger",
+    "tock": 0
+  }
+}

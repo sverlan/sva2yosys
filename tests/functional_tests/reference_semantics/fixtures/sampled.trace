@@ -1,0 +1,120 @@
+# Sampled-value functions (specification p10; docs/semantics.md section 8).
+
+== p10_rose_antecedent
+# $rose(a) at 1 and 5; the obligation from 5 is still open at the end.
+property: $rose(a) |-> ##[1:3] b
+clause: 16.5.1 16.7 16.9.3 16.12.7
+class: normative
+sample : 0 1 2 3 4 5 6 7
+a      : . 1 1 1 . 1 1 .
+b      : . . . 1 . . . .
+pass   : . . . 1 . . . .
+pending: 1
+
+== rose_at_first_sample_uses_x_default
+# $rose(a) is true at sample 0 when a is 1 (the previous value is X).
+property: $rose(a) |-> b
+clause: 16.5.1 16.9.3 16.12.7
+class: normative
+sample : 0 1
+a      : 1 1
+b      : . .
+fail   : 1 .
+
+== first_sample_fell_stable_changed
+# At sample 0: $fell(a) needs a == 0, $stable is false, $changed is true.
+property: $fell(a) || $stable(b) || !$changed(c)
+clause: 16.5.1 16.9.3
+class: normative
+sample : 0 1
+a      : 1 0
+b      : 0 0
+c      : 0 0
+fail   : 1 .
+pass   : . 1
+
+== fell_at_first_sample_uses_x_default
+# $fell(a) is true at sample 0 when a is 0 (the previous value is X).
+property: $fell(a) |-> b
+clause: 16.5.1 16.9.3 16.12.7
+class: normative
+sample : 0 1
+a      : . .
+b      : . .
+fail   : 1 .
+
+== past_antecedent_does_not_hold_at_the_first_sample
+# At sample 0 the condition uses $past (IEEE: X), so it does not trigger.
+# At sample 1, $past(a) is a at sample 0.
+property: $past(a) |-> b
+clause: 16.9.3 16.12.7
+class: interpretation I3
+sample : 0 1 2
+a      : 1 . .
+b      : . . .
+fail   : . 1 .
+
+== past_consequent_fails_at_the_first_sample
+# IEEE: the consequent b == $past(b) is X at sample 0, hence not satisfied: a failure.
+property: a |-> b == $past(b)
+clause: 16.9.3 16.12.7
+class: interpretation I3
+sample : 0 1 2
+a      : 1 1 1
+b      : 1 1 .
+fail   : 1 . 1
+pass   : . 1 .
+
+== past_used_later_in_attempt_0
+# Attempt 0 evaluates $past only at sample 1, where it has a value.
+property: a |-> ##1 (b == $past(b))
+clause: 16.7 16.9.3 16.12.7
+class: normative
+sample : 0 1 2
+a      : 1 . .
+b      : . 1 .
+fail   : . 1 .
+
+== past_of_a_vector
+# $past(v) == 3 compares a zero-extended value (accepted: X or 0 at the first sample).
+property: $past(v) == 3 |-> b
+clause: 16.9.3 16.12.7
+class: interpretation I3
+signals: v:4 b
+sample : 0 1 2
+v      : 3 3 .
+b      : . 1 .
+fail   : . . 1
+pass   : . 1 .
+
+== past_depth_two_antecedent
+# $past(a, 2) is X at samples 0 and 1: no trigger there. At sample 2 it is a at sample 0.
+property: $past(a, 2) |-> b
+clause: 16.9.3 16.12.7
+class: interpretation I3
+sample : 0 1 2 3 4
+a      : 1 1 . 1 .
+b      : . . . . .
+fail   : . . 1 1 .
+
+== past_depth_two_consequent
+# IEEE: b == $past(b, 2) is X at samples 0 and 1, hence not satisfied.
+property: a |-> b == $past(b, 2)
+clause: 16.9.3 16.12.7
+class: interpretation I3
+sample : 0 1 2 3
+a      : 1 1 1 1
+b      : 1 . 1 1
+fail   : 1 1 . 1
+pass   : . . 1 .
+
+== past_mixed_depths
+# $past(a) == $past(b, 3): unknown while either side is X, i.e. at samples 0-2.
+property: $past(a) == $past(b, 3) |-> c
+clause: 16.9.3 16.12.7
+class: interpretation I3
+sample : 0 1 2 3 4
+a      : 1 1 1 1 1
+b      : 1 . . . .
+c      : . . . . .
+fail   : . . . 1 .

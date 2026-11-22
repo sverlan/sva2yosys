@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "b",
+      "wave": "101"
+    },
+    {
+      "name": "c",
+      "wave": "010"
+    },
+    {
+      "name": "fail",
+      "wave": "010"
+    },
+    {
+      "name": "pass",
+      "wave": "010"
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_14_8_c_weak_sequence_is_nonvacuous",
+    "tock": 0
+  }
+}

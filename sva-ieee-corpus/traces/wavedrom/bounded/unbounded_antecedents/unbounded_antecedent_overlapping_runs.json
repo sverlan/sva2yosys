@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp......"
+    },
+    {
+      "name": "a",
+      "wave": "1..01.01"
+    },
+    {
+      "name": "b",
+      "wave": "0..10.10"
+    },
+    {
+      "name": "c",
+      "wave": "0..10..."
+    },
+    {
+      "name": "fail",
+      "wave": "0.....10"
+    },
+    {
+      "name": "pass",
+      "wave": "0..10..."
+    }
+  ],
+  "head": {
+    "text": "unbounded_antecedents/unbounded_antecedent_overlapping_runs",
+    "tock": 0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "b",
+      "wave": "1010"
+    },
+    {
+      "name": "fail",
+      "wave": "0101"
+    },
+    {
+      "name": "pass",
+      "wave": "1010"
+    }
+  ],
+  "head": {
+    "text": "temporal/plain_sequence_same_trace_as_nexttime_zero",
+    "tock": 0
+  }
+}

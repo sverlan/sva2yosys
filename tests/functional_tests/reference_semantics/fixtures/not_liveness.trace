@@ -1,0 +1,526 @@
+# `not` of an unbounded sequence: lassos for the properties whose verdict the
+# negated configuration-set machine decides, hand-derived from IEEE 1800 and run by every layer (the
+# reference evaluator, the machine through the liveness simulator, and the generated monitors).
+# Clauses: 16.12.2 (the strength of a sequence used as a property: weak by default in assert and
+# assume; a strong sequence with no match is false), 16.12.3 (not reverses the strength: not weak(s) is
+# strong, not strong(s) is weak; not p is true where p is false and false where p is true), 16.12.7
+# (an implication is vacuously TRUE without an antecedent match; with several matches every
+# consequent must hold), 16.12.11 (always), 16.12.12 (until, until_with, s_until, s_until_with),
+# 16.12.13 (s_eventually), 16.15 (disable iff), 16.9.3 ($past is not known at the first sample: the
+# condition does not hold there).
+# For an unbounded sequence S an obligation of S matches (not S is FALSE there), dies (frontier empty
+# without a match; not S is TRUE there) or stays pending for ever: weak(S) is then TRUE in the limit
+# (so not weak(S) is FALSE in the limit, undecided: the liveness part), strong(S) is FALSE in the
+# limit (so not strong(S) is TRUE in the limit: no liveness part).
+# Every case has "loop: k": the written samples k ... last repeat for ever. The rows outcome /
+# decided / fail / pass / pending / final-fail describe the written samples as a FINITE trace (a
+# pending weak sequence finalizes TRUE and a pending strong one FALSE, and not swaps); inf-outcome /
+# inf-decided give the result of the attempt started at each written sample on the INFINITE trace
+# (T / F / D, and the decision sample, "." when no finite prefix decides it).
+# A position q >= the number of written samples shows written sample k + (q - k) mod (n - k).
+# The liveness part is exactly the F attempts that are not decided ("." in inf-decided).
+
+== not_delay_dies
+# not (a ##[1:$] b), a = 0 and b = 0 for ever (loop 0, period 1). Every attempt: a is low at its
+# first sample, the weak sequence has no match and dies there, so the sequence is FALSE and the
+# negation TRUE at the attempt's own sample (16.12.3).
+property: not (a ##[1:$] b)
+clause: 16.7 16.12.2 16.12.3 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0 1
+a      : . .
+b      : . .
+outcome : T T
+decided : 0 1
+pass    : 1 1
+pending: 0
+final-fail: 0
+inf-outcome : T T
+inf-decided : 0 1
+
+== not_delay_matches
+# not (a ##[1:$] b), a = 1 . . and b = . . 1 with loop 2: a only at position 0, b at 2, 3, ...
+# Attempt 0: a at 0, then b at some position >= 1: the first is 2, so the sequence matches at 2 and
+# the negation is FALSE at 2. Attempts 1, 2: a is low, the sequence dies at the attempt's own sample,
+# the negation is TRUE there.
+property: not (a ##[1:$] b)
+clause: 16.7 16.12.2 16.12.3 Annex F
+class: normative
+scope: attempt
+loop: 2
+sample : 0 1 2
+a      : 1 . .
+b      : . . 1
+outcome : F T T
+decided : 2 1 2
+fail    : . . 1
+pass    : . 1 1
+pending: 0
+final-fail: 0
+inf-outcome : F T T
+inf-decided : 2 1 2
+
+== not_delay_pending_for_ever_is_false_in_the_limit
+# not (a ##[1:$] b), a = 1 . and b = 0 for ever (loop 0, period 2: a at 0, 2, 4, ...). Attempt 0:
+# a at 0, no b ever: the weak sequence is alive for ever, TRUE in the limit, so the negation is FALSE
+# in the limit and no finite prefix decides it: it stays pending for ever (liveness fails). Finite:
+# the pending weak sequence finalizes TRUE, so the negation FALSE. Attempt 1: a is low, TRUE at 1.
+property: not (a ##[1:$] b)
+clause: 16.7 16.12.2 16.12.3 Annex F
+class: interpretation I7, I8
+signals: b
+scope: attempt
+loop: 0
+sample : 0 1
+a      : 1 .
+outcome : p T
+decided : . 1
+pass    : . 1
+pending: 1
+final-fail: 1
+inf-outcome : F T
+inf-decided : . 1
+
+== not_explicit_weak_delay_pending_for_ever
+# not weak(a ##[1:$] b) on the trace of the previous case: the explicit weak() is the default, so
+# the same results (the strength of the operand is reversed, 16.12.3).
+property: not weak(a ##[1:$] b)
+clause: 16.7 16.12.2 16.12.3 Annex F
+class: interpretation I7, I8
+signals: b
+scope: attempt
+loop: 0
+sample : 0 1
+a      : 1 .
+outcome : p T
+decided : . 1
+pass    : . 1
+pending: 1
+final-fail: 1
+inf-outcome : F T
+inf-decided : . 1
+
+== not_strong_delay_pending_for_ever_is_true_in_the_limit
+# not strong(a ##[1:$] b) on the same trace. Attempt 0: the strong sequence is alive for ever without
+# a match, FALSE in the limit (16.12.2), so the negation is TRUE in the limit, undecided: nothing
+# fails (no liveness part). Finite: the pending strong sequence finalizes FALSE, so the negation
+# TRUE: final-fail 0. Attempt 1: a is low, TRUE at 1.
+property: not strong(a ##[1:$] b)
+clause: 16.7 16.12.2 16.12.3 Annex F
+class: normative
+signals: b
+scope: attempt
+loop: 0
+sample : 0 1
+a      : 1 .
+outcome : p T
+decided : . 1
+pass    : . 1
+pending: 1
+final-fail: 0
+inf-outcome : T T
+inf-decided : . 1
+
+== not_strong_delay_matches
+# not strong(a ##[1:$] b) on the trace of not_delay_matches: a match is a match whatever the strength,
+# so the same results: attempt 0 FALSE at 2, attempts 1 and 2 TRUE at their own sample.
+property: not strong(a ##[1:$] b)
+clause: 16.7 16.12.2 16.12.3 Annex F
+class: normative
+scope: attempt
+loop: 2
+sample : 0 1 2
+a      : 1 . .
+b      : . . 1
+outcome : F T T
+decided : 2 1 2
+fail    : . . 1
+pass    : . 1 1
+pending: 0
+final-fail: 0
+inf-outcome : F T T
+inf-decided : 2 1 2
+
+== not_until_matches_or_dies
+# not (a until b), a = 1 1 . and b = . 1 . with loop 0 (period 3: a 1 1 0 1 1 0, b 0 1 0 0 1 0). The
+# weak until matches when b holds at q and a at every sample before q (b at the start needs no a).
+# Attempt 0: a at 0, b at 1: matches at 1, the negation FALSE at 1. Attempt 1: b at 1: matches at 1,
+# FALSE at 1. Attempt 2: a and b both low at 2: the until dies there, the negation TRUE at 2.
+property: not (a until b)
+clause: 16.12.3 16.12.12 16.14.8 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0 1 2
+a      : 1 1 .
+b      : . 1 .
+outcome : F F T
+decided : 1 1 2
+fail    : . 1 .
+pass    : . . 1
+pending: 0
+final-fail: 0
+inf-outcome : F F T
+inf-decided : 1 1 2
+
+== not_until_pending_for_ever_is_false_in_the_limit
+# not (a until b), a = 1 for ever and b = 0 for ever. Every attempt: a holds at every sample and b
+# never, the weak until is alive for ever, TRUE in the limit, so the negation FALSE in the limit,
+# undecided (liveness fails; the pending bit stays 1). Finite: pending weak finalizes TRUE, the
+# negation FALSE, for both attempts.
+property: not (a until b)
+clause: 16.12.3 16.12.12 Annex F
+class: interpretation I8
+signals: b
+scope: attempt
+loop: 0
+sample : 0 1
+a      : 1 1
+outcome : p p
+decided : . .
+pending: 2
+final-fail: 2
+inf-outcome : F F
+inf-decided : . .
+
+== not_until_matches_at_the_b_sample
+# not (a until b), a = 1 1 . and b = . . 1 with loop 0 (period 3: a 1 1 0, b 0 0 1). Attempt 0: a at
+# 0 and 1, b at 2: the until matches at 2 (a is needed only before the b sample), the negation is
+# FALSE at 2. Attempt 1: a at 1, b at 2: matches at 2. Attempt 2: b at 2 with no a needed: matches at
+# 2. All FALSE at 2.
+property: not (a until b)
+clause: 16.12.3 16.12.12 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0 1 2
+a      : 1 1 .
+b      : . . 1
+outcome : F F F
+decided : 2 2 2
+fail    : . . 1
+pending: 0
+final-fail: 0
+inf-outcome : F F F
+inf-decided : 2 2 2
+
+== not_until_with_needs_a_at_the_b_sample
+# not (a until_with b) on the trace of the previous case. until_with also needs a at the sample where
+# b holds. Attempt 0: a at 0 and 1, but at 2 a is low and b high: no a && b, the until_with dies at
+# 2, the negation is TRUE at 2. Attempts 1 and 2: the same, TRUE at 2. (Compare with the plain until:
+# FALSE at 2.)
+property: not (a until_with b)
+clause: 16.12.3 16.12.12 16.14.8 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0 1 2
+a      : 1 1 .
+b      : . . 1
+outcome : T T T
+decided : 2 2 2
+pass    : . . 1
+pending: 0
+final-fail: 0
+inf-outcome : T T T
+inf-decided : 2 2 2
+
+== not_s_until_with_dies
+# not (a s_until_with b) on the same trace: the strong until_with dies at 2 as well (a match or a
+# death does not depend on the strength), so the negation is TRUE at 2.
+property: not (a s_until_with b)
+clause: 16.12.3 16.12.12 16.14.8 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0 1 2
+a      : 1 1 .
+b      : . . 1
+outcome : T T T
+decided : 2 2 2
+pass    : . . 1
+pending: 0
+final-fail: 0
+inf-outcome : T T T
+inf-decided : 2 2 2
+
+== not_s_until_pending_for_ever_is_true_in_the_limit
+# not (a s_until b), a = 1 for ever, b = 0 for ever: the strong until is alive for ever without a
+# match, FALSE in the limit (16.12.12), so the negation is TRUE in the limit, undecided. Finite:
+# the pending strong until finalizes FALSE, the negation TRUE: final-fail 0 (the weak not (a until b)
+# of the case above has final-fail 2).
+property: not (a s_until b)
+clause: 16.12.3 16.12.12 Annex F
+class: normative
+signals: b
+scope: attempt
+loop: 0
+sample : 0 1
+a      : 1 1
+outcome : p p
+decided : . .
+pending: 2
+final-fail: 0
+inf-outcome : T T
+inf-decided : . .
+
+== not_s_eventually_fails_at_the_first_b
+# not s_eventually b is always !b. b = . . 1 with loop 2 (b at 2, 3, ...). Every attempt: the first b
+# at or after its start is at 2, s_eventually is TRUE at 2, the negation FALSE at 2 (16.12.13).
+property: not s_eventually b
+clause: 16.12.3 16.12.13 Annex F
+class: normative
+scope: attempt
+loop: 2
+sample : 0 1 2
+b      : . . 1
+outcome : F F F
+decided : 2 2 2
+fail    : . . 1
+pending: 0
+final-fail: 0
+inf-outcome : F F F
+inf-decided : 2 2 2
+
+== not_s_eventually_never_b_is_true_in_the_limit
+# not s_eventually b with b = 0 for ever: s_eventually b is FALSE in the limit (no b ever; 16.12.13),
+# so the negation is TRUE in the limit, undecided. Finite: the pending strong operand finalizes
+# FALSE, the negation TRUE.
+property: not s_eventually b
+clause: 16.12.3 16.12.13 Annex F
+class: normative
+signals: b
+scope: attempt
+loop: 0
+sample : 0
+b      : .
+outcome : p
+decided : .
+pending: 1
+final-fail: 0
+inf-outcome : T
+inf-decided : .
+
+== implication_into_not_goto_matches
+# a |-> not (b[->2]), a = 1 . . and b = . 1 1 with loop 0 (period 3). Attempt 0: the antecedent
+# matches at 0; b[->2] (the second b) matches at 2: the negation is FALSE at 2, the implication FALSE
+# at 2 (16.12.7), nonvacuous. Attempts 1 and 2: a is low, vacuous TRUE at their own sample.
+property: a |-> not (b[->2])
+clause: 16.9.2 16.12.2 16.12.3 16.12.7 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+loop: 0
+sample : 0 1 2
+a      : 1 . .
+b      : . 1 1
+outcome : F t t
+decided : 2 1 2
+fail    : . . 1
+pending: 0
+final-fail: 0
+inf-outcome : F T T
+inf-decided : 2 1 2
+
+== implication_into_not_goto_pending_for_ever
+# a |-> not (b[->2]), a = 1 . . and b = . 1 . with loop 2 (b only at position 1). Attempt 0: the
+# antecedent matches at 0; b[->2] needs a second b, which never comes: the weak sequence is alive for
+# ever, TRUE in the limit, the negation FALSE in the limit, undecided (liveness fails). Finite: the
+# pending weak sequence finalizes TRUE, the negation FALSE. Attempts 1, 2: vacuous TRUE.
+property: a |-> not (b[->2])
+clause: 16.9.2 16.12.2 16.12.3 16.12.7 16.14.8 Annex F
+class: interpretation I5, I7, I8
+scope: attempt
+loop: 2
+sample : 0 1 2
+a      : 1 . .
+b      : . 1 .
+outcome : p t t
+decided : . 1 2
+pending: 1
+final-fail: 1
+inf-outcome : F T T
+inf-decided : . 1 2
+
+== always_implication_into_not_delay_overlapping_obligations
+# always (a |-> not (b ##[1:$] c)), a = 1 and b = 1 for ever, c = . . 1 with loop 2 (c at 2, 3, ...).
+# One obligation per position. Obligation 0: b at 0, the first c at or after 1 is 2: the sequence
+# matches at 2, the negation is FALSE at 2. Obligation 1: b at 1, the first c at or after 2 is 2:
+# FALSE at 2. Obligation 2: b at 2, c at 3: FALSE at 3 (beyond the written samples). always is FALSE
+# at its first FALSE offset: attempts 0 and 1 are FALSE at 2 (offsets 0 and 1 are both FALSE at 2),
+# attempt 2 at 3. Finite: attempt 2 is pending, its offset 2 a pending weak sequence under not, which
+# finalizes FALSE.
+property: always (a |-> not (b ##[1:$] c))
+clause: 16.7 16.12.3 16.12.7 16.12.11 Annex F
+class: interpretation I7, I8
+scope: attempt
+loop: 2
+sample : 0 1 2
+a      : 1 1 1
+b      : 1 1 1
+c      : . . 1
+outcome : F F p
+decided : 2 2 .
+fail    : . . 1
+pending: 1
+final-fail: 1
+inf-outcome : F F F
+inf-decided : 2 2 3
+
+== always_implication_into_not_delay_pending_for_ever
+# always (a |-> not (b ##[1:$] c)), a = 1, b = 1, c = 0 for ever. Every obligation: b holds, c never,
+# the weak sequence is alive for ever, the negation FALSE in the limit, undecided; so always is
+# FALSE in the limit and no finite prefix decides it (liveness fails). Finite: pending, finalizing
+# FALSE.
+property: always (a |-> not (b ##[1:$] c))
+clause: 16.7 16.12.3 16.12.7 16.12.11 Annex F
+class: interpretation I7, I8
+signals: c
+scope: attempt
+loop: 0
+sample : 0
+a      : 1
+b      : 1
+outcome : p
+decided : .
+pending: 1
+final-fail: 1
+inf-outcome : F
+inf-decided : .
+
+== disable_clears_a_pending_not_obligation
+# disable iff (d) not (a ##[1:$] b), a = 1 . . . and d = . . 1 . with loop 0 (period 4: a at 0, 4,
+# ..., d at 2, 6, ...), b never. Attempt 0: a at 0, no b ever: the obligation is pending, but d holds
+# at 2: disabled at 2 (16.15). Attempt 1: a is low, TRUE at 1 (d is not in [1, 1]). Attempt 2: d
+# holds at 2: disabled at 2 (although its sequence died at 2). Attempt 3: a low, TRUE at 3. No attempt
+# is FALSE: the check passes (a witness that ignored the disable would stay busy for ever).
+property: not (a ##[1:$] b)
+clause: 16.7 16.12 16.12.2 16.12.3 Annex F
+class: normative
+disable: d
+signals: b
+scope: attempt
+loop: 0
+sample : 0 1 2 3
+a      : 1 . . .
+d      : . . 1 .
+outcome : d T d T
+decided : 2 1 2 3
+pass    : . 1 . 1
+pending: 0
+final-fail: 0
+inf-outcome : D T D T
+inf-decided : 2 1 2 3
+
+== not_s_eventually_past_b
+# not s_eventually $past(b), b = 1 . . with loop 1: b only at position 0, so $past(b) holds only at
+# position 1 (it does not hold at 0: no previous sample, 16.9.3). Attempts 0, 1: the first position
+# at or after the start where $past(b) holds is 1: s_eventually TRUE at 1, the negation FALSE at 1.
+# Attempt 2: no position >= 2 has $past(b): s_eventually is FALSE in the limit (pending for ever),
+# the negation TRUE in the limit, undecided. Finite: attempt 2 pending, strong, finalizes FALSE, the
+# negation TRUE.
+property: not s_eventually $past(b)
+clause: 16.9.3 16.12.3 16.12.13 Annex F
+class: interpretation I3
+scope: attempt
+loop: 1
+sample : 0 1 2
+b      : 1 . .
+outcome : F F p
+decided : 1 1 .
+fail    : . 1 .
+pending: 1
+final-fail: 0
+inf-outcome : F F T
+inf-decided : 1 1 .
+
+== several_triggers_one_decided_false_one_pending_for_ever_under_not
+# a[*1:2] |-> not (c ##[1:$] b), (a, c, b) = (1, 1, 0), (1, 1, 1), then (0, 0, 0) repeated (loop 2).
+# Attempt 0 has two antecedent matches: a[*1] ends at 0 and a[*2] ends at 1. Trigger 0: c at 0, the
+# first b at or after 1 is 1: the sequence matches at 1, the negation FALSE at 1. Attempt 0 is FALSE
+# at the finite sample 1. Trigger 1 (a[*2] of attempt 0, and a[*1] of attempt 1): c at 1, no b at or
+# after 2 ever: the obligation is pending for ever (the negation FALSE in the limit). Attempt 1 has
+# only trigger 1 (a[*2] from 1 needs a at 2): FALSE in the limit, undecided. Attempt 2: a is low,
+# vacuous TRUE at 2. The obligation of trigger 1 stays pending for ever although an attempt is
+# FALSE at a finite sample: the machine fails at 1 and its liveness signal fails too, the two are
+# not compared.
+property: a[*1:2] |-> not (c ##[1:$] b)
+clause: 16.7 16.9.2 16.12.2 16.12.3 16.12.7 16.14.8 Annex F
+class: interpretation I5, I7, I8
+scope: attempt
+loop: 2
+sample : 0 1 2
+a      : 1 1 .
+c      : 1 1 .
+b      : . 1 .
+outcome : F p t
+decided : 1 . 2
+fail    : . 1 .
+pending: 1
+final-fail: 1
+inf-outcome : F F T
+inf-decided : 1 . 2
+
+== not_of_an_empty_consequent_strong
+# not strong((a ##[1:$] b) intersect c), a = b = c = 1 for ever. The operands of intersect must
+# match over the same samples (16.9.6): c is a Boolean, one sample long, and a ##[1:$] b is at least
+# two samples long, so the intersection has no match. The sequence is FALSE at the start sample
+# (no obligation to wait for), so the negation is TRUE there, strong or not.
+property: not strong((a ##[1:$] b) intersect c)
+clause: 16.7 16.9.6 16.12.2 16.12.3 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0
+a      : 1
+b      : 1
+c      : 1
+outcome : T
+decided : 0
+pass    : 1
+pending: 0
+final-fail: 0
+inf-outcome : T
+inf-decided : 0
+
+== not_of_an_empty_consequent_weak
+# not ((a ##[1:$] b) intersect c) on the same trace: the weak intersection never matches either, so
+# the negation is TRUE at the start sample (no obligation is left pending, hence no liveness part).
+property: not ((a ##[1:$] b) intersect c)
+clause: 16.7 16.9.6 16.12.2 16.12.3 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0
+a      : 1
+b      : 1
+c      : 1
+outcome : T
+decided : 0
+pass    : 1
+pending: 0
+final-fail: 0
+inf-outcome : T
+inf-decided : 0
+
+== implication_into_not_of_an_empty_consequent
+# a |-> not ((a ##[1:$] b) intersect c) with a = 1 and the other signals 1 for ever: the consequent
+# negation is TRUE at the trigger sample (the intersection never matches), so the implication is
+# TRUE at 0 (nonvacuous), for every attempt.
+property: a |-> not ((a ##[1:$] b) intersect c)
+clause: 16.7 16.9.6 16.12.2 16.12.3 16.12.7 16.14.8 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0 1
+a      : 1 1
+b      : 1 1
+c      : 1 1
+outcome : T T
+decided : 0 1
+pass    : 1 1
+pending: 0
+final-fail: 0
+inf-outcome : T T
+inf-decided : 0 1

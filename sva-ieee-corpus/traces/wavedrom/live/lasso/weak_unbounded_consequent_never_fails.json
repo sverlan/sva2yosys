@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "l"
+    },
+    {
+      "name": "b",
+      "wave": "0"
+    },
+    {
+      "name": "a",
+      "wave": "1"
+    },
+    {
+      "name": "fail",
+      "wave": "0"
+    },
+    {
+      "name": "pass",
+      "wave": "0"
+    },
+    {
+      "name": "repeat",
+      "wave": "1"
+    },
+    {
+      "name": "outcome",
+      "wave": "=",
+      "data": [
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "lasso/weak_unbounded_consequent_never_fails",
+    "tock": 0
+  }
+}

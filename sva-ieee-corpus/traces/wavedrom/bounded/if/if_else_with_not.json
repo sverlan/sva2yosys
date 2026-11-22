@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "e",
+      "wave": "10"
+    },
+    {
+      "name": "a",
+      "wave": "10"
+    },
+    {
+      "name": "b",
+      "wave": "01"
+    },
+    {
+      "name": "fail",
+      "wave": "1."
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    }
+  ],
+  "head": {
+    "text": "if/if_else_with_not",
+    "tock": 0
+  }
+}

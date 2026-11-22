@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp....."
+    },
+    {
+      "name": "b",
+      "wave": "1..01.0"
+    },
+    {
+      "name": "fail",
+      "wave": "0..10.1"
+    },
+    {
+      "name": "pass",
+      "wave": "0....10"
+    }
+  ],
+  "head": {
+    "text": "temporal/always_window_starting_later",
+    "tock": 0
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "b",
+      "wave": "010."
+    },
+    {
+      "name": "d",
+      "wave": "0..."
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "010."
+    },
+    {
+      "name": "repeat",
+      "wave": "0.1."
+    },
+    {
+      "name": "outcome",
+      "wave": "=.=.",
+      "data": [
+        "T",
+        "D"
+      ]
+    }
+  ],
+  "head": {
+    "text": "lasso/disable_in_the_loop_hides_a_pending_attempt",
+    "tock": 0
+  },
+  "foot": {
+    "text": "d: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

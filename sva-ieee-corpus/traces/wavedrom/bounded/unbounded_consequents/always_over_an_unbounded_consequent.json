@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1010"
+    },
+    {
+      "name": "b",
+      "wave": "1.01"
+    },
+    {
+      "name": "c",
+      "wave": "0..."
+    },
+    {
+      "name": "fail",
+      "wave": "0.10"
+    },
+    {
+      "name": "pass",
+      "wave": "0..."
+    }
+  ],
+  "head": {
+    "text": "unbounded_consequents/always_over_an_unbounded_consequent",
+    "tock": 0
+  }
+}

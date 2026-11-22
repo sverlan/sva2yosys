@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "b",
+      "wave": "0.1"
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    },
+    {
+      "name": "repeat",
+      "wave": "1.."
+    },
+    {
+      "name": "outcome",
+      "wave": "=..",
+      "data": [
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "lasso/always_eventually_infinitely_often",
+    "tock": 0
+  }
+}

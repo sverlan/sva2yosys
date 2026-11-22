@@ -1,0 +1,188 @@
+# Set membership `inside` (IEEE 1800-2017 11.4.13). The operator is lowered by the
+# converter to the existing IR (an OR over the items), so these tables check the lowering
+# end to end in every layer; the all-values comparison with the independent oracle is in
+# tests/functional_tests/slang_convert/test_slang_convert_inside.py.
+# Every expected row is derived by hand from the clause: `e inside {i, ...}` is 1 when some
+# item matches; a value item matches when `e ==? item` (X, Z and `?` bits of the item are
+# wildcards); a range `[lo:hi]` matches when `lo <= e` and `e <= hi`.
+# Each case is an implication with an always-true antecedent unless it says otherwise, so a
+# sample fails exactly when `inside` is 0 there.
+
+== inside_values
+# uniform list (contract point 16): 4'dN instead of the 32-bit int N, same values
+property: a |-> v inside {4'd1, 4'd5, 4'd9}
+clause: 11.4.13 16.12.7
+class: normative
+signals: a v:4
+sample : 0 1 2 3 4 5
+a      : 1 1 1 1 1 .
+v      : 1 5 9 2 15 3
+# members at samples 0, 1, 2; 2 and 15 are not in the set (fail at 3, 4); a = 0 at 5: vacuous
+fail   : . . . 1 1 .
+pass   : 1 1 1 . . .
+
+== inside_range_is_inclusive
+# uniform list: 4'dN bounds instead of int bounds, same values
+property: a |-> v inside {[4'd3:4'd6]}
+clause: 11.4.13 16.12.7
+class: normative
+signals: a v:4
+sample : 0 1 2 3 4 5
+a      : 1 1 1 1 1 1
+v      : 2 3 4 6 7 0
+# 3 <= v <= 6 holds for 3, 4, 6 (both bounds included); 2, 7 and 0 are outside
+fail   : 1 . . . 1 1
+pass   : . 1 1 1 . .
+
+== inside_wildcard_item
+property: a |-> v inside {4'b1?0?}
+clause: 11.4.13 11.4.6 16.12.7
+class: normative
+signals: a v:4
+sample : 0 1 2 3 4 5 6
+a      : 1 1 1 1 1 1 1
+v      : 8 9 12 13 10 0 15
+# bit 3 must be 1 and bit 1 must be 0; bits 2 and 0 are wildcards: 1000, 1001, 1100, 1101.
+# 10 = 1010 has bit 1 set, 0 = 0000 has bit 3 clear, 15 = 1111 has bit 1 set
+fail   : . . . . 1 1 1
+pass   : 1 1 1 1 . . .
+
+== inside_wildcard_x_and_range_items
+# uniform list: 4'dN bounds instead of int bounds, same values
+property: a |-> v inside {4'b1x0z, [4'd0:4'd1]}
+clause: 11.4.13 11.4.6 16.12.7
+class: normative
+signals: a v:4
+sample : 0 1 2 3 4 5 6
+a      : 1 1 1 1 1 1 1
+v      : 0 1 2 8 9 10 11
+# x and z are wildcards just as ?: 4'b1x0z is 1000, 1001, 1100, 1101. [0:1] adds 0 and 1.
+# 2 is in neither; 8 and 9 are in the pattern; 10 = 1010 and 11 = 1011 have bit 1 set
+fail   : . . 1 . . 1 1
+pass   : 1 1 . 1 1 . .
+
+== inside_wildcard_wider_than_operand
+# uniform list: the explicit cast 8'(v) is the zero extension that the comparison does anyway
+property: a |-> 8'(v) inside {8'h?A}
+clause: 11.4.13 11.4.6 11.8.1 16.12.7
+class: normative
+signals: a v:4
+sample : 0 1 2 3
+a      : 1 1 1 1
+v      : 10 11 2 0
+# the 4-bit v is zero-extended to the item's 8 bits; the upper nibble of 8'h?A is wildcard, the
+# lower nibble must be 1010 = 10: only v = 10 matches
+fail   : . 1 1 1
+pass   : 1 . . .
+
+== inside_signed_operand_negative_range
+# uniform list: 3-bit signed bounds -3'sd2 and 3'sd1 instead of int bounds, same values
+property: a |-> signed'(v) inside {[-3'sd2:3'sd1]}
+clause: 11.4.13 11.8.1 16.12.7
+class: normative
+signals: a v:3
+sample : 0 1 2 3 4 5 6 7
+a      : 1 1 1 1 1 1 1 1
+v      : 0 1 2 3 4 5 6 7
+# signed'(v) is a 3-bit signed value and the bounds are signed ints, so the comparisons are
+# signed: v = 6 is -2 and v = 7 is -1 (inside); 2, 3 and 4 (= -4), 5 (= -3) are outside
+fail   : . . 1 1 1 1 . .
+pass   : 1 1 . . . . 1 1
+
+== inside_reversed_range_matches_nothing
+# uniform list: 3'dN instead of the 32-bit int N, same values
+property: a |-> v inside {[3'd5:3'd2], 3'd7}
+clause: 11.4.13 16.12.7
+class: normative
+signals: a v:3
+sample : 0 1 2 3 4
+a      : 1 1 1 1 1
+v      : 3 4 7 2 5
+# 11.4.13: a range whose left bound is greater than its right bound is empty. [5:2] is
+# empty; only the item 7 matches (sample 2)
+fail   : 1 1 . 1 1
+pass   : . . 1 . .
+
+== inside_values_and_signals
+property: a |-> v inside {w, [w:4'd9]}
+clause: 11.4.13 16.12.7
+class: normative
+signals: a v:4 w:4
+sample : 0 1 2 3 4 5
+a      : 1 1 1 1 1 1
+v      : 3 5 2 12 9 10
+w      : 3 3 3 3 9 9
+# items: v == w, or w <= v <= 9. (3,3): equal; (5,3): 3 <= 5 <= 9; (2,3): below; (12,3): above 9;
+# (9,9): equal; (10,9): not equal and above 9
+fail   : . . 1 1 . 1
+pass   : 1 1 . . 1 .
+
+== inside_as_antecedent
+# uniform list: 4'd2 instead of the 32-bit int 2, same value
+property: v inside {4'd2, 4'b11??} |=> b
+clause: 11.4.13 11.4.6 16.12.7
+class: normative
+signals: v:4 b
+sample : 0 1 2 3 4 5
+v      : 2 3 12 15 13 0
+b      : . 1 . 1 . 1
+# the antecedent holds at 0 (v = 2), 2 (1100), 3 (1111) and 4 (1101); at 1 (v = 3) and 5
+# (v = 0) it does not. The consequent b must hold one sample later: at 1 yes, at 3 yes,
+# at 4 no (the attempt from sample 3 fails), at 5 yes
+fail   : . . . . 1 .
+pass   : . 1 . 1 . 1
+
+== inside_cover
+# uniform list: 3'dN instead of the 32-bit int N, same values
+property: v inside {[3'd2:3'd3], 3'd7}
+kind: cover
+clause: 11.4.13 16.14.3
+class: normative
+signals: v:3
+sample : 0 1 2 3 4
+v      : 0 2 3 5 7
+# the cover is hit where v is 2, 3 or 7
+pass   : . 1 1 . 1
+
+== signed_operand_in_unsigned_context_extends_by_zeros
+property: a |-> signed'(v) == {4'd0, w}
+clause: 11.4.5 11.8.1 11.8.2 16.12.7
+class: normative
+origin: an implementation (pre-existing Convert sign extension): a signed operand was sign-extended although the propagated type is unsigned (11.8.2)
+signals: a v:4 w:4
+sample : 0 1 2
+a      : 1 1 1
+v      : 15 15 7
+w      : 15 0 7
+# {4'd0, w} is 8 bits unsigned, so the comparison is unsigned and signed'(v) is zero-extended:
+# v = 15 gives 8'h0F. Equal to w = 15 (sample 0), not to w = 0 (sample 1); 7 == 7 (sample 2)
+fail   : . 1 .
+pass   : 1 . 1
+
+== inside_dollar_bounds_unsigned
+# uniform list: 3'dN bounds instead of int bounds, same values
+property: a |-> v inside {[$:3'd2], [3'd6:$]}
+clause: 11.4.13 16.12.7
+class: normative
+signals: a v:3
+sample : 0 1 2 3 4 5
+a      : 1 1 1 1 1 1
+v      : 0 2 3 5 6 7
+# $ is the lowest (0) or highest (7) value of the type of v: [$:2] is 0..2, [6:$] is 6..7.
+# 3 and 5 are in neither
+fail   : . . 1 1 . .
+pass   : 1 1 . . 1 1
+
+== inside_dollar_bound_signed
+# uniform list: the 3-bit signed bound -3'sd3 instead of the int -3, same value
+property: a |-> signed'(v) inside {[$:-3'sd3]}
+clause: 11.4.13 11.8.1 16.12.7
+class: normative
+signals: a v:3
+sample : 0 1 2 3 4
+a      : 1 1 1 1 1
+v      : 4 5 6 0 3
+# signed'(v) has the type of a 3-bit signed value, whose lowest value is -4 (pattern 100):
+# [$:-3] is -4..-3, i.e. the patterns 4 and 5. 6 is -2, 0 and 3 are non-negative
+fail   : . . 1 1 1
+pass   : 1 1 . . .

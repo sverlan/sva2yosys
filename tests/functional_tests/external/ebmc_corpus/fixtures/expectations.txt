@@ -1,0 +1,765 @@
+# Expected results of sva2yosys on the EBMC regression suite (CONTRACT.md).
+# Written for diffblue/hw-cbmc at commit 2a3263c66d042364769353ea0b068ea1f5eec54e (tag ebmc-6.1,
+# regression/verilog/SVA). EBMC itself is not run: its answers are the .desc files' expected lines.
+ebmc-version: 6.1 (ebmc-6.1)
+corpus-commit: 2a3263c66d042364769353ea0b068ea1f5eec54e
+corpus-sha256: a9e6e39867f927fcd8952ae46071ba7390847d55b596fa74ac6d71cf6c1438b8
+# Classified with OSS CAD Suite 20261031: Yosys 0.70+286 (git sha1 63eecf3dd), SBY v0.70-9-g79fc9ed;
+# liveness with the suprove build (Linux): Yosys 0.70+286 (git sha1 63eecf3dd), one task per property.
+oss-cad-suite: 20261031
+yosys-version: 0.70+286
+sby-version: v0.70-9-g79fc9ed
+#
+# One line per (case, property), in the order of the case's .desc file; a wildcard property
+# ([.*]) is one line per expected line. Format:  case  property  class [reason or fragment]  [# note]
+# class: agrees | agrees-bounded REASON | excluded REASON | rejected FRAGMENT | skipped REASON
+# A case skipped as a whole has the property "-".
+always_with_range1  main.p0  agrees
+always_with_range1  main.p1  agrees
+always_with_range1  main.p2  agrees
+always_with_range1  main.p3  rejected property operator 'implies' is not supported yet
+always_with_range2.buechi  main.p0  agrees
+always_with_range2.buechi  main.p1  agrees
+always_with_range2.buechi  main.p2  agrees
+always_with_range2.buechi  main.p3  agrees
+assert_else1  -  skipped no property with a known answer
+case1.buechi  main.p0  rejected unsupported construct 'Case'
+case1  main.p0  rejected unsupported construct 'Case'
+cover1.bdd  main.p0  agrees
+cover1.bdd  main.p1  agrees-bounded EBMC claims the cover is never reached; our check is bounded to depth 41
+cover1.bmc  main.p0  agrees
+cover1.bmc  main.p1  agrees
+cover1.buechi  main.p0  agrees
+cover1.buechi  main.p1  agrees
+cover1.k-induction  main.p0  agrees
+cover1.k-induction  main.p1  skipped no known answer
+cover2.buechi  main.blk.p0  agrees
+cover2.buechi  main.blk.p1  agrees
+cover2  main.blk.p0  agrees
+cover2  main.blk.p1  agrees
+cover3.bdd.buechi  main.p0  agrees
+cover3.bdd.buechi  main.p1  agrees-bounded EBMC claims the cover is never reached; our check is bounded to depth 41
+cover3.bdd.buechi  main.p2  rejected the disable iff condition reads X, which may change at the clock edge
+cover3.bmc.buechi  main.p0  agrees
+cover3.bmc.buechi  main.p1  agrees
+cover3.bmc.buechi  main.p2  rejected the disable iff condition reads X, which may change at the clock edge
+cover3  main.p0  agrees
+cover3  main.p1  agrees
+cover3  main.p2  rejected the disable iff condition reads X, which may change at the clock edge
+cover4.bdd  main.p0  agrees
+cover4.bdd  main.p1  agrees-bounded EBMC claims the cover is never reached; our check is bounded to depth 41
+cover4.bmc.buechi  main.p0  agrees
+cover4.bmc.buechi  main.p1  agrees
+cover4.buechi  main.p0  agrees
+cover4.buechi  main.p1  agrees-bounded EBMC claims the cover is never reached; our check is bounded to depth 41
+cover4  main.p0  agrees
+cover4  main.p1  agrees-bounded EBMC claims the cover is never reached; our check is bounded to depth 41
+cover4.k-induction  main.p0  agrees
+cover4.k-induction  main.p1  agrees-bounded EBMC claims the cover is never reached; our check is bounded to depth 41
+cover_sequence1.bmc.buechi  main.p0  rejected cover sequence is not supported yet
+cover_sequence1.bmc.buechi  main.p1  rejected cover sequence is not supported yet
+cover_sequence1  main.p0  rejected cover sequence is not supported yet
+cover_sequence1  main.p1  rejected cover sequence is not supported yet
+cover_sequence2.bmc.buechi  main.p0  rejected cover sequence is not supported yet
+cover_sequence2.bmc.buechi  main.p1  rejected cover sequence is not supported yet
+cover_sequence2.bmc.buechi  main.p2  rejected cover sequence is not supported yet
+cover_sequence2.bmc.buechi  main.p3  rejected cover sequence is not supported yet
+cover_sequence2  main.p0  rejected cover sequence is not supported yet
+cover_sequence2  main.p1  rejected cover sequence is not supported yet
+cover_sequence2  main.p2  rejected cover sequence is not supported yet
+cover_sequence2  main.p3  rejected cover sequence is not supported yet
+cover_sequence3.bmc.buechi  main.p0  rejected cover sequence is not supported yet
+cover_sequence3.bmc.buechi  main.p1  rejected cover sequence is not supported yet
+cover_sequence3.bmc.buechi  main.p2  rejected cover sequence is not supported yet
+cover_sequence3.bmc  main.p0  rejected cover sequence is not supported yet
+cover_sequence3.bmc  main.p1  rejected cover sequence is not supported yet
+cover_sequence3.bmc  main.p2  rejected cover sequence is not supported yet
+cover_sequence4.bmc.buechi  main.p0  rejected cover sequence is not supported yet
+cover_sequence4.bmc.buechi  main.p1  rejected cover sequence is not supported yet
+cover_sequence4.bmc.buechi  main.p2  rejected cover sequence is not supported yet
+cover_sequence4.bmc  main.p0  rejected cover sequence is not supported yet
+cover_sequence4.bmc  main.p1  rejected cover sequence is not supported yet
+cover_sequence4.bmc  main.p2  rejected cover sequence is not supported yet
+cover_sequence5.bmc.buechi  main.p0  rejected cover sequence is not supported yet
+cover_sequence5.bmc.buechi  main.p1  rejected cover sequence is not supported yet
+cover_sequence5.bmc  main.p0  rejected cover sequence is not supported yet
+cover_sequence5.bmc  main.p1  rejected cover sequence is not supported yet
+cycle_delay1  -  skipped EBMC rejects the input (EXIT=2)
+cycle_delay2.bmc.buechi  [.*]  agrees
+cycle_delay2  [.*]  agrees
+cycle_delay2.k.buechi  [.*]  agrees
+cycle_delay3  top.pause_window  skipped no known answer
+cycle_delay3  top.never_4pauses  agrees
+cycle_delay4  zero.a1  agrees
+cycle_delay4  zero.a2  agrees
+cycle_delay4  zero.b1  agrees
+cycle_delay4  zero.b2  agrees
+cycle_delay5  main.p0  agrees
+cycle_delay5  main.p1  agrees
+cycle_delay5  main.p2  agrees
+cycle_delay6  main.p0  agrees
+cycle_delay6  main.p1  agrees
+cycle_delay6  main.p2  agrees
+cycle_delay7  -  skipped EBMC rejects the input (EXIT=2)
+cycle_delay_plus4.buechi  main.p0  agrees
+cycle_delay_plus4.buechi  main.p1  agrees
+cycle_delay_plus4.buechi  main.p2  agrees
+cycle_delay_plus4.buechi  main.p3  agrees
+cycle_delay_plus4  main.p0  agrees
+cycle_delay_plus4  main.p1  agrees
+cycle_delay_plus4  main.p2  agrees
+cycle_delay_plus4  main.p3  agrees
+cycle_delay_star1.bdd.buechi  main.p0  agrees
+cycle_delay_star1.bmc.buechi  main.p0  agrees
+cycle_delay_star1  main.p0  agrees
+cycle_delay_star2.bdd.buechi  main.p0  agrees
+cycle_delay_star2.bmc.buechi  main.p0  agrees
+cycle_delay_star2  main.p0  agrees
+cycle_delay_star3.bdd.buechi  main.p0  agrees
+cycle_delay_star3.bdd  -  skipped no property with a known answer
+cycle_delay_star3.bmc.buechi  main.p0  agrees
+cycle_delay_star3.bmc  main.p0  agrees
+cycle_delay_star4.buechi  main.p0  agrees
+cycle_delay_star4.buechi  main.p1  agrees
+cycle_delay_star4.buechi  main.p2  agrees
+cycle_delay_star4.buechi  main.p3  agrees
+cycle_delay_star4.buechi  main.p4  agrees
+cycle_delay_star4  main.p0  agrees
+cycle_delay_star4  main.p1  agrees
+cycle_delay_star4  main.p2  agrees
+cycle_delay_star4  main.p3  agrees
+cycle_delay_star4  main.p4  agrees
+cycle_delay_star5.buechi  main.p0  agrees
+default_disable1.bmc  main.p0  rejected use of undeclared identifier 'clk'  # EBMC's test design uses an undeclared clk (its port is clock): invalid SystemVerilog
+default_disable1.bmc  main.p1  rejected use of undeclared identifier 'clk'  # EBMC's test design uses an undeclared clk (its port is clock): invalid SystemVerilog
+default_disable1.buechi  main.p0  rejected use of undeclared identifier 'clk'  # EBMC's test design uses an undeclared clk (its port is clock): invalid SystemVerilog
+default_disable1.buechi  main.p1  rejected use of undeclared identifier 'clk'  # EBMC's test design uses an undeclared clk (its port is clock): invalid SystemVerilog
+default_disable2  main.0.p0  agrees
+disable_iff1.bdd.buechi  main.p0  rejected the disable iff condition reads X, which may change at the clock edge
+disable_iff1.bdd.buechi  main.p1  agrees
+disable_iff1.bdd.buechi  main.p2  rejected the disable iff condition reads X, which may change at the clock edge
+disable_iff1.bmc.buechi  main.p0  rejected the disable iff condition reads X, which may change at the clock edge
+disable_iff1.bmc.buechi  main.p1  agrees
+disable_iff1.bmc.buechi  main.p2  rejected the disable iff condition reads X, which may change at the clock edge
+disable_iff1  main.p0  rejected the disable iff condition reads X, which may change at the clock edge
+disable_iff1  main.p1  agrees
+disable_iff1  main.p2  rejected the disable iff condition reads X, which may change at the clock edge
+disable_iff2  -  skipped tag KNOWNBUG: EBMC itself does not pass it
+empty_sequence1.bdd.buechi  main.p0  rejected sequence must not admit an empty match
+empty_sequence1.bdd.buechi  main.p1  rejected sequence must not admit an empty match
+empty_sequence1.bdd.buechi  main.p2  rejected sequence must not admit an empty match
+empty_sequence1.bdd.buechi  main.p3  rejected sequence must not admit an empty match
+empty_sequence1.bdd.buechi  main.p4  rejected sequence must not admit an empty match
+empty_sequence1.bdd  main.p0  rejected sequence must not admit an empty match
+empty_sequence1.bdd  main.p1  rejected sequence must not admit an empty match
+empty_sequence1.bdd  main.p2  rejected sequence must not admit an empty match
+empty_sequence1.bdd  main.p3  rejected sequence must not admit an empty match
+empty_sequence1.bdd  main.p4  rejected sequence must not admit an empty match
+empty_sequence1.bmc.buechi  main.p0  rejected sequence must not admit an empty match
+empty_sequence1.bmc.buechi  main.p1  rejected sequence must not admit an empty match
+empty_sequence1.bmc.buechi  main.p2  rejected sequence must not admit an empty match
+empty_sequence1.bmc.buechi  main.p3  rejected sequence must not admit an empty match
+empty_sequence1.bmc.buechi  main.p4  rejected sequence must not admit an empty match
+empty_sequence1.bmc  main.p0  rejected sequence must not admit an empty match
+empty_sequence1.bmc  main.p1  rejected sequence must not admit an empty match
+empty_sequence1.bmc  main.p2  rejected sequence must not admit an empty match
+empty_sequence1.bmc  main.p3  rejected sequence must not admit an empty match
+empty_sequence1.bmc  main.p4  rejected sequence must not admit an empty match
+empty_sequence1.k.buechi  main.p0  rejected sequence must not admit an empty match
+empty_sequence1.k.buechi  main.p1  rejected sequence must not admit an empty match
+empty_sequence1.k.buechi  main.p2  rejected sequence must not admit an empty match
+empty_sequence1.k.buechi  main.p3  rejected sequence must not admit an empty match
+empty_sequence1.k.buechi  main.p4  rejected sequence must not admit an empty match
+eventually1.bmc.buechi  main.p0  rejected property operator 'implies' is not supported yet
+eventually1  main.p0  rejected property operator 'implies' is not supported yet
+eventually1.k.buechi  main.p0  rejected property operator 'implies' is not supported yet
+eventually2.buechi  main.p0  agrees
+eventually2  main.p0  agrees
+eventually4.bmc.buechi  -  skipped no property with a known answer
+eventually4  -  skipped no property with a known answer
+eventually4.k.buechi  -  skipped no property with a known answer
+expect1  -  skipped EBMC rejects the input (EXIT=2)
+followed-by1.bdd.buechi  main.p0  rejected property operator '#=#' is not supported yet
+followed-by1.bdd.buechi  main.p1  rejected property operator '#-#' is not supported yet
+followed-by1.bdd  main.p0  rejected property operator '#=#' is not supported yet
+followed-by1.bdd  main.p1  rejected property operator '#-#' is not supported yet
+followed-by1.bmc.buechi  main.p0  rejected property operator '#=#' is not supported yet
+followed-by1.bmc.buechi  main.p1  rejected property operator '#-#' is not supported yet
+followed-by1.bmc  main.p0  rejected property operator '#=#' is not supported yet
+followed-by1.bmc  main.p1  rejected property operator '#-#' is not supported yet
+followed-by1.k.buechi  main.p0  rejected property operator '#=#' is not supported yet
+followed-by1.k.buechi  main.p1  rejected property operator '#-#' is not supported yet
+followed-by2.bdd.buechi  main.p0  rejected property operator 'iff' is not supported yet
+followed-by2.bdd.buechi  main.p1  rejected property operator 'iff' is not supported yet
+followed-by2.bdd  main.p0  rejected property operator 'iff' is not supported yet
+followed-by2.bdd  main.p1  rejected property operator 'iff' is not supported yet
+followed-by2.bmc.buechi  main.p0  rejected property operator 'iff' is not supported yet
+followed-by2.bmc.buechi  main.p1  rejected property operator 'iff' is not supported yet
+followed-by2.bmc  main.p0  rejected property operator 'iff' is not supported yet
+followed-by2.bmc  main.p1  rejected property operator 'iff' is not supported yet
+followed-by2.k.buechi  main.p0  rejected property operator 'iff' is not supported yet
+followed-by2.k.buechi  main.p1  rejected property operator 'iff' is not supported yet
+followed-by3.buechi  [.*]  rejected property operator '#-#' is not supported yet
+followed-by3.buechi  [.*]  rejected property operator '#=#' is not supported yet
+followed-by3.buechi  [.*]  rejected property operator '#-#' is not supported yet
+followed-by3.buechi  [.*]  rejected property operator '#-#' is not supported yet
+followed-by3.buechi  [.*]  rejected property operator '#=#' is not supported yet
+followed-by3.buechi  [.*]  rejected property operator '#-#' is not supported yet
+followed-by3  [.*]  rejected property operator '#-#' is not supported yet
+followed-by3  [.*]  rejected property operator '#=#' is not supported yet
+followed-by3  [.*]  rejected property operator '#-#' is not supported yet
+followed-by3  [.*]  rejected property operator '#-#' is not supported yet
+followed-by3  [.*]  rejected property operator '#=#' is not supported yet
+followed-by3  [.*]  rejected property operator '#-#' is not supported yet
+followed-by4.bdd.buechi  main.p1  rejected property operator '#-#' is not supported yet
+followed-by4.bdd.buechi  main.p2  rejected property operator '#-#' is not supported yet
+followed-by4.bdd.buechi  main.p3  rejected property operator '#-#' is not supported yet
+followed-by4.bdd  main.p1  rejected property operator '#-#' is not supported yet
+followed-by4.bdd  main.p2  rejected property operator '#-#' is not supported yet
+followed-by4.bdd  main.p3  rejected property operator '#-#' is not supported yet
+followed-by4.bmc.buechi  main.p1  rejected property operator '#-#' is not supported yet
+followed-by4.bmc.buechi  main.p2  rejected property operator '#-#' is not supported yet
+followed-by4.bmc.buechi  main.p3  rejected property operator '#-#' is not supported yet
+followed-by4.bmc  main.p1  rejected property operator '#-#' is not supported yet
+followed-by4.bmc  main.p2  rejected property operator '#-#' is not supported yet
+followed-by4.bmc  main.p3  rejected property operator '#-#' is not supported yet
+followed-by4.k.buechi  main.p1  rejected property operator '#-#' is not supported yet
+followed-by4.k.buechi  main.p2  rejected property operator '#-#' is not supported yet
+followed-by4.k.buechi  main.p3  rejected property operator '#-#' is not supported yet
+followed-by5.bdd.buechi  main.p0  rejected sequence admits only empty matches
+followed-by5.bdd.buechi  main.p1  rejected sequence admits only empty matches
+followed-by5.bdd  main.p0  rejected sequence admits only empty matches
+followed-by5.bdd  main.p1  rejected sequence admits only empty matches
+followed-by5.bmc.buechi  main.p0  rejected sequence admits only empty matches
+followed-by5.bmc.buechi  main.p1  rejected sequence admits only empty matches
+followed-by5.bmc  main.p0  rejected sequence admits only empty matches
+followed-by5.bmc  main.p1  rejected sequence admits only empty matches
+goto_repetition1.buechi  goto.assert_goto  agrees
+goto_repetition1.buechi  goto.assert_equivalent  agrees
+goto_repetition1  goto.assert_goto  agrees
+goto_repetition1  goto.assert_equivalent  agrees
+if1.bdd.buechi  main.p0  agrees
+if1.bdd.buechi  main.p1  agrees
+if1.bmc.buechi  main.p0  agrees
+if1.bmc.buechi  main.p1  agrees
+if1  main.p0  agrees
+if1  main.p1  agrees
+if1.k.buechi  main.p0  agrees
+if1.k.buechi  main.p1  agrees
+immediate1.bmc.buechi  main.blk.assert.1  skipped no concurrent directive of that name (immediate assertion?)
+immediate1  main.blk.assert.1  skipped no concurrent directive of that name (immediate assertion?)
+immediate1.k.buechi  main.blk.assert.1  skipped no concurrent directive of that name (immediate assertion?)
+immediate2.buechi  main.blk.assume.1  skipped no concurrent directive of that name (immediate assertion?)
+immediate2.buechi  main.blk.assert.2  skipped no concurrent directive of that name (immediate assertion?)
+immediate2.buechi  main.blk.assert.3  skipped no concurrent directive of that name (immediate assertion?)
+immediate2  main.blk.assume.1  skipped no concurrent directive of that name (immediate assertion?)
+immediate2  main.blk.assert.2  skipped no concurrent directive of that name (immediate assertion?)
+immediate2  main.blk.assert.3  skipped no concurrent directive of that name (immediate assertion?)
+immediate3.buechi  full_adder.assert.1  skipped no concurrent directive of that name (immediate assertion?)
+immediate3  full_adder.assert.1  skipped no concurrent directive of that name (immediate assertion?)
+immediate4  -  skipped tag KNOWNBUG: EBMC itself does not pass it
+immediate5  main.blk1.P  skipped no concurrent directive of that name (immediate assertion?)
+immediate5  main.blk2.P  skipped no concurrent directive of that name (immediate assertion?)
+immediate_cover1  main.p0  skipped no concurrent directive of that name (immediate assertion?)
+immediate_cover1  main.p1  skipped no concurrent directive of that name (immediate assertion?)
+initial1.bdd  main.p0  agrees
+initial1.bdd  main.p1  agrees
+initial1.bdd  main.p2  agrees
+initial1.bdd  main.p3  agrees
+initial1.bdd  main.p4  agrees
+initial1.bdd  main.p5  agrees
+initial1.bmc.buechi  main.p0  agrees
+initial1.bmc.buechi  main.p1  agrees
+initial1.bmc.buechi  main.p2  agrees
+initial1.bmc.buechi  main.p3  agrees
+initial1.bmc.buechi  main.p4  agrees
+initial1.bmc.buechi  main.p5  agrees
+initial1.bmc  main.p0  agrees
+initial1.bmc  main.p1  agrees
+initial1.bmc  main.p2  agrees
+initial1.bmc  main.p3  agrees
+initial1.bmc  main.p4  agrees
+initial1.bmc  main.p5  agrees
+initial1.k.buechi  main.p0  agrees
+initial1.k.buechi  main.p1  agrees
+initial1.k.buechi  main.p2  agrees
+initial1.k.buechi  main.p3  agrees
+initial1.k.buechi  main.p4  agrees
+initial1.k.buechi  main.p5  agrees
+initial2.bmc.buechi  main.blk.p0  skipped no concurrent directive of that name (immediate assertion?)
+initial2.bmc.buechi  main.p1  agrees
+initial2  main.blk.p0  skipped no concurrent directive of that name (immediate assertion?)
+initial2  main.p1  agrees
+initial2.k.buechi  main.blk.p0  skipped no concurrent directive of that name (immediate assertion?)
+initial2.k.buechi  main.p1  agrees
+issue669.bmc.buechi  top.assert.1  agrees
+issue669.bmc.buechi  top.assert.2  rejected property operator 'implies' is not supported yet
+issue669.bmc.buechi  top.assert.3  rejected property operator 'implies' is not supported yet
+issue669.bmc.buechi  top.assert.4  rejected property operator 'implies' is not supported yet
+issue669.bmc.buechi  top.assert.5  rejected property operator 'implies' is not supported yet
+issue669.bmc.buechi  top.assert.6  rejected property operator 'implies' is not supported yet
+issue669.bmc.buechi  top.assert.7  rejected property operator 'implies' is not supported yet
+issue669.bmc.buechi  top.assert.8  rejected property operator 'implies' is not supported yet
+issue669.bmc.buechi  top.assert.9  rejected property operator 'implies' is not supported yet
+issue669  top.assert.1  agrees
+issue669  top.assert.2  rejected property operator 'implies' is not supported yet
+issue669  top.assert.3  rejected property operator 'implies' is not supported yet
+issue669  top.assert.4  rejected property operator 'implies' is not supported yet
+issue669  top.assert.5  rejected property operator 'implies' is not supported yet
+issue669  top.assert.6  rejected property operator 'implies' is not supported yet
+issue669  top.assert.7  rejected property operator 'implies' is not supported yet
+issue669  top.assert.8  rejected property operator 'implies' is not supported yet
+issue669  top.assert.9  rejected property operator 'implies' is not supported yet
+issue669.k.buechi  top.assert.1  agrees
+issue669.k.buechi  top.assert.2  rejected property operator 'implies' is not supported yet
+issue669.k.buechi  top.assert.3  rejected property operator 'implies' is not supported yet
+issue669.k.buechi  top.assert.4  rejected property operator 'implies' is not supported yet
+issue669.k.buechi  top.assert.5  rejected property operator 'implies' is not supported yet
+issue669.k.buechi  top.assert.6  rejected property operator 'implies' is not supported yet
+issue669.k.buechi  top.assert.7  rejected property operator 'implies' is not supported yet
+issue669.k.buechi  top.assert.8  rejected property operator 'implies' is not supported yet
+issue669.k.buechi  top.assert.9  rejected property operator 'implies' is not supported yet
+named_property1  -  skipped EBMC rejects the input (EXIT=2)
+nexttime1.bdd.buechi  main.p1  agrees
+nexttime1.bdd.buechi  main.p2  agrees
+nexttime1.bdd.buechi  main.p3  agrees
+nexttime1.bdd  main.p1  agrees
+nexttime1.bdd  main.p2  agrees
+nexttime1.bdd  main.p3  agrees
+nexttime1.bmc.buechi  main.p1  agrees
+nexttime1.bmc.buechi  main.p2  agrees
+nexttime1.bmc.buechi  main.p3  agrees
+nexttime1.bmc  main.p1  agrees
+nexttime1.bmc  main.p2  agrees
+nexttime1.bmc  main.p3  agrees
+nexttime1.k.buechi  main.p1  agrees
+nexttime1.k.buechi  main.p2  agrees
+nexttime1.k.buechi  main.p3  agrees
+pending_and1  m.a1  agrees
+pending_cycle_delay_rhs1  m.a1  agrees
+pending_first_match1  m.a1  rejected unsupported construct 'FirstMatch'
+pending_intersect1  m.a1  excluded EBMC's pending intersect (EBMC study B4): ack[->2] and ack[->3] never end together, so the sequence never matches (16.9.6) and the attempt fails at the second ack (16.12.2); EBMC's PROVED up to bound 10 is its pending-match handling, ours is the IEEE verdict (hand-derived trace case intersect_of_goto_2_and_goto_3_never_matches)
+pending_throughout1  m.a1  agrees
+pending_within1  m.a1  agrees
+property_and1.aig  -  skipped option --aig tests EBMC itself
+property_and1  [.*]  agrees
+property_vs_typedef1  -  skipped no property with a known answer
+range_repetition_inclusive  -  skipped option --smv-word-level tests EBMC itself
+restrict1.bdd.buechi  main.p0  skipped no known answer
+restrict1.bdd.buechi  main.p1  agrees
+restrict1.bdd  main.p0  skipped no known answer
+restrict1.bdd  main.p1  agrees
+restrict1.bmc.buechi  main.p0  skipped no known answer
+restrict1.bmc.buechi  main.p1  agrees
+restrict1.bmc  main.p0  skipped no known answer
+restrict1.bmc  main.p1  agrees
+restrict1.k.buechi  main.p0  skipped no known answer
+restrict1.k.buechi  main.p1  agrees
+s_always1.bmc.buechi  main.p0  agrees
+s_always1.bmc.buechi  main.p1  agrees
+s_always1  main.p0  agrees
+s_always1  main.p1  agrees
+s_always1.k.buechi  main.p0  agrees
+s_always1.k.buechi  main.p1  agrees
+s_eventually1.bdd.buechi  -  skipped no property with a known answer
+s_eventually1.bdd  -  skipped no property with a known answer
+s_eventually1.bmc  -  skipped no property with a known answer
+s_eventually2.bdd.buechi  -  skipped tag KNOWNBUG: EBMC itself does not pass it
+s_eventually2.bmc.buechi  main.p0  agrees
+s_eventually2.bmc.buechi  main.p1  agrees
+s_eventually2  main.p0  agrees
+s_eventually2  main.p1  agrees
+s_eventually2.k.buechi  main.p0  skipped no known answer
+s_eventually2.k.buechi  main.p1  agrees
+s_eventually3.buechi  -  skipped tag KNOWNBUG: EBMC itself does not pass it
+s_eventually3  main.p0  agrees
+s_eventually4.buechi  main.p0  rejected unbounded 's_eventually' (no upper bound) is not supported yet
+s_eventually4  main.p0  rejected unbounded 's_eventually' (no upper bound) is not supported yet
+s_eventually5  main.p0  agrees
+s_eventually5  main.p1  agrees
+s_eventually5  main.p2  agrees
+s_eventually_assumption1  main.a0  skipped no known answer
+s_eventually_assumption1  main.p0  agrees
+s_until1.bdd.buechi  [.*]  rejected the value of '$past' before the first clock tick is not unknown
+s_until1.bdd.buechi  [.*]  agrees
+s_until1  [.*]  rejected the value of '$past' before the first clock tick is not unknown
+s_until1  [.*]  agrees
+s_until2  main.p0  agrees
+sequence1.bmc  main.p0  agrees
+sequence1.buechi  main.p0  agrees
+sequence2.bmc.buechi  main.p0  agrees
+sequence2.bmc.buechi  main.p1  agrees
+sequence2.bmc.buechi  main.c0  rejected unbounded ranges ($) are not supported yet
+sequence2.bmc  main.p0  agrees
+sequence2.bmc  main.p1  agrees-bounded EBMC claims PROVED up to the bound and our bounded run agrees; our liveness run also finds the infinite-trace failure of the strong sequence (IEEE 1800-2017 16.12.2), which EBMC's bounded answer does not claim
+sequence2.bmc  main.c0  rejected unbounded ranges ($) are not supported yet
+sequence2.k.buechi  main.p0  agrees
+sequence2.k.buechi  main.p1  skipped no known answer
+sequence3.bmc.buechi  main.ps0  agrees
+sequence3.bmc.buechi  main.ps1  agrees
+sequence3.bmc.buechi  main.ps2  agrees
+sequence3.bmc.buechi  main.ps3  agrees
+sequence3.bmc.buechi  main.pw0  agrees
+sequence3.bmc.buechi  main.pw1  agrees
+sequence3.bmc.buechi  main.pw2  agrees
+sequence3.bmc.buechi  main.pw3  agrees
+sequence3.bmc.buechi  main.cs0  rejected unbounded ranges ($) are not supported yet
+sequence3.bmc.buechi  main.cs2  rejected unbounded ranges ($) are not supported yet
+sequence3.bmc  main.ps0  agrees-bounded EBMC claims PROVED up to the bound and our bounded run agrees; our liveness run also finds the infinite-trace failure of the strong sequence (IEEE 1800-2017 16.12.2), which EBMC's bounded answer does not claim
+sequence3.bmc  main.ps1  agrees
+sequence3.bmc  main.ps2  agrees-bounded EBMC claims PROVED up to the bound and our bounded run agrees; our liveness run also finds the infinite-trace failure of the strong sequence (IEEE 1800-2017 16.12.2), which EBMC's bounded answer does not claim
+sequence3.bmc  main.ps3  agrees
+sequence3.bmc  main.pw0  agrees
+sequence3.bmc  main.pw1  agrees
+sequence3.bmc  main.pw2  agrees
+sequence3.bmc  main.pw3  agrees
+sequence3.bmc  main.cs0  rejected unbounded ranges ($) are not supported yet
+sequence3.bmc  main.cs2  rejected unbounded ranges ($) are not supported yet
+sequence4.bdd.buechi  -  skipped no property with a known answer
+sequence4.bdd  -  skipped no property with a known answer
+sequence4.bmc.buechi  -  skipped no property with a known answer
+sequence4.bmc  -  skipped no property with a known answer
+sequence4.k.buechi  -  skipped no property with a known answer
+sequence5.buechi  main.p0  agrees
+sequence5.buechi  main.p1  agrees
+sequence5.buechi  main.p2  rejected constant N'bx contains x/z bits (two-state model)
+sequence5.buechi  main.p3  rejected constant N'bz contains x/z bits (two-state model)
+sequence5  main.p0  agrees
+sequence5  main.p1  agrees
+sequence5  main.p2  rejected constant N'bx contains x/z bits (two-state model)
+sequence5  main.p3  rejected constant N'bz contains x/z bits (two-state model)
+sequence6.bmc.buechi  main.p0  agrees
+sequence6.bmc  main.p0  agrees
+sequence6.k.buechi  main.p0  agrees
+sequence_and1.bdd.buechi  main.p0  agrees
+sequence_and1.bdd.buechi  main.p1  agrees
+sequence_and1.bdd.buechi  main.p2  agrees
+sequence_and1.bdd.buechi  main.p3  agrees
+sequence_and1.bdd.buechi  main.p4  agrees
+sequence_and1.bdd  main.p0  agrees
+sequence_and1.bdd  main.p1  agrees
+sequence_and1.bdd  main.p2  agrees
+sequence_and1.bdd  main.p3  agrees
+sequence_and1.bdd  main.p4  agrees
+sequence_and1.bmc.buechi  main.p0  agrees
+sequence_and1.bmc.buechi  main.p1  agrees
+sequence_and1.bmc.buechi  main.p2  agrees
+sequence_and1.bmc.buechi  main.p3  agrees
+sequence_and1.bmc.buechi  main.p4  agrees
+sequence_and1.bmc  main.p0  agrees
+sequence_and1.bmc  main.p1  agrees
+sequence_and1.bmc  main.p2  agrees
+sequence_and1.bmc  main.p3  agrees
+sequence_and1.bmc  main.p4  agrees
+sequence_and2.bdd.buechi  [.*]  agrees
+sequence_and2.bdd.buechi  [.*]  agrees
+sequence_and2.bdd.buechi  [.*]  rejected property operator '#-#' is not supported yet
+sequence_and2.bdd  [.*]  skipped no known answer
+sequence_and2.bdd  [.*]  skipped no known answer
+sequence_and2.bdd  [.*]  rejected property operator '#-#' is not supported yet
+sequence_and2.bmc.buechi  [.*]  agrees
+sequence_and2.bmc.buechi  [.*]  agrees
+sequence_and2.bmc.buechi  [.*]  rejected property operator '#-#' is not supported yet
+sequence_and2.bmc  [.*]  agrees
+sequence_and2.bmc  [.*]  agrees
+sequence_and2.bmc  [.*]  rejected property operator '#-#' is not supported yet
+sequence_and2.k.buechi  [.*]  agrees
+sequence_and2.k.buechi  [.*]  agrees
+sequence_and2.k.buechi  [.*]  rejected property operator '#-#' is not supported yet
+sequence_and3.bmc.buechi  [.*]  agrees
+sequence_and3.bmc.buechi  [.*]  agrees
+sequence_and3.bmc.buechi  [.*]  agrees
+sequence_and3.bmc.buechi  [.*]  agrees
+sequence_and3  [.*]  agrees
+sequence_and3  [.*]  agrees
+sequence_and3  [.*]  agrees
+sequence_and3  [.*]  agrees
+sequence_and3.k.buechi  [.*]  agrees
+sequence_and3.k.buechi  [.*]  agrees
+sequence_and3.k.buechi  [.*]  agrees
+sequence_and3.k.buechi  [.*]  agrees
+sequence_first_match1  [.*]  rejected sequence match items can only modify local variables
+sequence_first_match1  [.*]  rejected sequence match items can only modify local variables
+sequence_first_match1.k.buechi  [.*]  rejected sequence match items can only modify local variables
+sequence_first_match1.k.buechi  [.*]  rejected sequence match items can only modify local variables
+sequence_first_match2  [.*]  agrees
+sequence_first_match2  [.*]  rejected unsupported construct 'FirstMatch'
+sequence_first_match2  [.*]  agrees
+sequence_first_match2  [.*]  rejected unsupported construct 'FirstMatch'
+sequence_first_match2.k.buechi  [.*]  agrees
+sequence_first_match2.k.buechi  [.*]  rejected unsupported construct 'FirstMatch'
+sequence_first_match2.k.buechi  [.*]  agrees
+sequence_first_match2.k.buechi  [.*]  rejected unsupported construct 'FirstMatch'
+sequence_implication1.bmc.buechi  [.*]  agrees
+sequence_implication1.bmc.buechi  [.*]  agrees
+sequence_implication1.bmc.buechi  [.*]  agrees
+sequence_implication1.bmc.buechi  [.*]  agrees
+sequence_implication1  [.*]  agrees
+sequence_implication1  [.*]  agrees
+sequence_implication1  [.*]  agrees
+sequence_implication1  [.*]  agrees
+sequence_implication1.k.buechi  [.*]  agrees
+sequence_implication1.k.buechi  [.*]  agrees
+sequence_implication1.k.buechi  [.*]  agrees
+sequence_implication1.k.buechi  [.*]  agrees
+sequence_implication2.buechi  -  skipped EBMC rejects the input (EXIT=2)
+sequence_implication2  -  skipped EBMC rejects the input (EXIT=2)
+sequence_implication3.bdd  main.p0  rejected sequence admits only empty matches
+sequence_implication3.bdd  main.p1  rejected sequence admits only empty matches
+sequence_implication3.bdd  main.p2  rejected sequence admits only empty matches
+sequence_implication3.bmc  main.p0  rejected sequence admits only empty matches
+sequence_implication3.bmc  main.p1  rejected sequence admits only empty matches
+sequence_implication3.bmc  main.p2  rejected sequence admits only empty matches
+sequence_implication4  main.p0  agrees
+sequence_intersect1.bmc.buechi  main.p0  agrees
+sequence_intersect1.bmc.buechi  main.p1  agrees
+sequence_intersect1.bmc.buechi  main.p2  agrees
+sequence_intersect1.bmc.buechi  main.p3  agrees
+sequence_intersect1.bmc.buechi  main.p4  agrees
+sequence_intersect1.bmc.buechi  main.p5  agrees
+sequence_intersect1  main.p0  agrees
+sequence_intersect1  main.p1  agrees
+sequence_intersect1  main.p2  agrees
+sequence_intersect1  main.p3  agrees
+sequence_intersect1  main.p4  agrees
+sequence_intersect1  main.p5  agrees
+sequence_intersect1.k.buechi  main.p0  agrees
+sequence_intersect1.k.buechi  main.p1  agrees
+sequence_intersect1.k.buechi  main.p2  agrees
+sequence_intersect1.k.buechi  main.p3  agrees
+sequence_intersect1.k.buechi  main.p4  agrees
+sequence_intersect1.k.buechi  main.p5  agrees
+sequence_not1  -  skipped EBMC rejects the input (EXIT=2)
+sequence_not2  main.p0  agrees
+sequence_not2  main.p1  agrees
+sequence_or1.bdd.buechi  main.p0  agrees
+sequence_or1.bdd.buechi  main.p1  agrees
+sequence_or1.bdd.buechi  main.p2  agrees
+sequence_or1.bdd.buechi  main.p3  agrees
+sequence_or1.bdd.buechi  main.p4  agrees
+sequence_or1.bdd  main.p0  agrees
+sequence_or1.bdd  main.p1  agrees
+sequence_or1.bdd  main.p2  skipped no known answer
+sequence_or1.bdd  main.p3  skipped no known answer
+sequence_or1.bdd  main.p4  skipped no known answer
+sequence_or1.bmc.buechi  main.p0  agrees
+sequence_or1.bmc.buechi  main.p1  agrees
+sequence_or1.bmc.buechi  main.p2  agrees
+sequence_or1.bmc.buechi  main.p3  agrees
+sequence_or1.bmc.buechi  main.p4  agrees
+sequence_or1.bmc  main.p0  agrees
+sequence_or1.bmc  main.p1  agrees
+sequence_or1.bmc  main.p2  agrees
+sequence_or1.bmc  main.p3  agrees
+sequence_or1.bmc  main.p4  agrees
+sequence_or1.k.buechi  main.p0  agrees
+sequence_or1.k.buechi  main.p1  agrees
+sequence_or1.k.buechi  main.p2  agrees
+sequence_or1.k.buechi  main.p3  agrees
+sequence_or1.k.buechi  main.p4  agrees
+sequence_repetition1.bdd.buechi  main.p0  agrees
+sequence_repetition1.bdd.buechi  main.p1  agrees
+sequence_repetition1.bdd.buechi  main.p2  agrees
+sequence_repetition1.bdd.buechi  main.p3  agrees
+sequence_repetition1.bdd.buechi  main.p4w  agrees
+sequence_repetition1.bdd.buechi  main.p5w  agrees
+sequence_repetition1.bdd.buechi  main.p4s  agrees
+sequence_repetition1.bdd.buechi  main.p5s  agrees
+sequence_repetition1.bdd  [.*]  agrees
+sequence_repetition1.bdd  [.*]  skipped no known answer
+sequence_repetition1.bdd  [.*]  skipped no known answer
+sequence_repetition1.bdd  [.*]  agrees
+sequence_repetition1.bdd  [.*]  skipped no known answer
+sequence_repetition1.bdd  [.*]  skipped no known answer
+sequence_repetition1.bmc.buechi  main.p0  agrees
+sequence_repetition1.bmc.buechi  main.p1  agrees
+sequence_repetition1.bmc.buechi  main.p2  agrees
+sequence_repetition1.bmc.buechi  main.p3  agrees
+sequence_repetition1.bmc.buechi  main.p4w  agrees
+sequence_repetition1.bmc.buechi  main.p5w  agrees
+sequence_repetition1.bmc.buechi  main.p4s  agrees
+sequence_repetition1.bmc.buechi  main.p5s  agrees
+sequence_repetition1  main.p0  agrees
+sequence_repetition1  main.p1  agrees
+sequence_repetition1  main.p2  agrees
+sequence_repetition1  main.p3  agrees
+sequence_repetition1  main.p4w  agrees
+sequence_repetition1  main.p5w  agrees
+sequence_repetition1  main.p4s  agrees
+sequence_repetition1  main.p5s  agrees
+sequence_repetition1  main.c4s  rejected goto repetition [->] is not supported yet
+sequence_repetition1  main.c5s  rejected nonconsecutive repetition [=] is not supported yet
+sequence_repetition1.k.buechi  main.p0  agrees
+sequence_repetition1.k.buechi  main.p1  agrees
+sequence_repetition1.k.buechi  main.p2  agrees
+sequence_repetition1.k.buechi  main.p3  agrees
+sequence_repetition1.k.buechi  main.p4w  agrees
+sequence_repetition1.k.buechi  main.p5w  agrees
+sequence_repetition1.k.buechi  main.p4s  skipped no known answer
+sequence_repetition1.k.buechi  main.p5s  skipped no known answer
+sequence_repetition2.bmc.buechi  main.p0  rejected sequence must not admit an empty match
+sequence_repetition2.bmc.buechi  main.p1  rejected sequence must not admit an empty match
+sequence_repetition2.bmc.buechi  main.p2  rejected sequence must not admit an empty match
+sequence_repetition2.bmc.buechi  main.p3  rejected sequence must not admit an empty match
+sequence_repetition2.bmc.buechi  main.p4  rejected sequence must not admit an empty match
+sequence_repetition2.bmc.buechi  main.p5  rejected sequence must not admit an empty match
+sequence_repetition2.bmc.buechi  main.p6  rejected sequence must not admit an empty match
+sequence_repetition2.bmc.buechi  main.p7  rejected sequence must not admit an empty match
+sequence_repetition2.bmc.buechi  main.p8  rejected sequence must not admit an empty match
+sequence_repetition2  main.p0  rejected sequence must not admit an empty match
+sequence_repetition2  main.p1  rejected sequence must not admit an empty match
+sequence_repetition2  main.p2  rejected sequence must not admit an empty match
+sequence_repetition2  main.p3  rejected sequence must not admit an empty match
+sequence_repetition2  main.p4  rejected sequence must not admit an empty match
+sequence_repetition2  main.p5  rejected sequence must not admit an empty match
+sequence_repetition2  main.p6  rejected sequence must not admit an empty match
+sequence_repetition2  main.p7  rejected sequence must not admit an empty match
+sequence_repetition2  main.p8  rejected sequence must not admit an empty match
+sequence_repetition3.bdd.buechi  main.p0  rejected property operator '#=#' is not supported yet
+sequence_repetition3.bdd.buechi  main.p1  rejected property operator '#=#' is not supported yet
+sequence_repetition3.bdd.buechi  main.p2  agrees
+sequence_repetition3.bdd  main.p0  rejected property operator '#=#' is not supported yet
+sequence_repetition3.bdd  main.p1  rejected property operator '#=#' is not supported yet
+sequence_repetition3.bdd  main.p2  agrees
+sequence_repetition3.bmc.buechi  main.p0  rejected property operator '#=#' is not supported yet
+sequence_repetition3.bmc.buechi  main.p1  rejected property operator '#=#' is not supported yet
+sequence_repetition3.bmc.buechi  main.p2  agrees
+sequence_repetition3  main.p0  rejected property operator '#=#' is not supported yet
+sequence_repetition3  main.p1  rejected property operator '#=#' is not supported yet
+sequence_repetition3  main.p2  agrees
+sequence_repetition3.k.buechi  main.p0  rejected property operator '#=#' is not supported yet
+sequence_repetition3.k.buechi  main.p1  rejected property operator '#=#' is not supported yet
+sequence_repetition3.k.buechi  main.p2  agrees
+sequence_repetition4.bdd.buechi  main.p0  agrees
+sequence_repetition4.bdd.buechi  main.p1  agrees
+sequence_repetition4.bdd  main.p0  agrees
+sequence_repetition4.bdd  main.p1  agrees
+sequence_repetition4.bmc.buechi  main.p0  agrees
+sequence_repetition4.bmc.buechi  main.p1  agrees
+sequence_repetition4  main.p0  agrees
+sequence_repetition4  main.p1  agrees
+sequence_repetition4.k.buechi  main.p0  agrees
+sequence_repetition4.k.buechi  main.p1  agrees
+sequence_repetition5.bmc.buechi  [.*]  agrees
+sequence_repetition5.bmc.buechi  [.*]  agrees
+sequence_repetition5  [.*]  agrees
+sequence_repetition5  [.*]  agrees
+sequence_repetition5.k.buechi  [.*]  agrees
+sequence_repetition5.k.buechi  [.*]  agrees
+sequence_repetition6  -  skipped EBMC rejects the input (EXIT=2)
+sequence_repetition7.bdd.buechi  [.*]  agrees
+sequence_repetition7.bdd.buechi  [.*]  agrees
+sequence_repetition7.bdd  [.*]  agrees
+sequence_repetition7.bdd  [.*]  agrees
+sequence_repetition7.bmc.buechi  [.*]  agrees
+sequence_repetition7.bmc.buechi  [.*]  agrees
+sequence_repetition7  [.*]  agrees
+sequence_repetition7  [.*]  agrees
+sequence_repetition7.k.buechi  [.*]  agrees
+sequence_repetition7.k.buechi  [.*]  agrees
+sequence_repetition8.buechi  main.p0  agrees
+sequence_repetition8.buechi  main.p1  agrees
+sequence_repetition8  main.p0  agrees
+sequence_repetition8  main.p1  agrees
+sequence_throughout1.buechi  -  skipped no property with a known answer
+sequence_throughout1  main.p0  agrees
+sequence_throughout1  main.p1  agrees
+sequence_throughout1  main.p2  agrees
+sequence_within1.buechi  -  skipped no property with a known answer
+sequence_within1  main.p0  agrees
+sequence_within1  main.p1  agrees
+sequence_within1  main.p2  agrees
+sequence_within1  main.p3  agrees
+sequence_within1  main.p4  agrees
+stable1  main.p0  agrees
+stable1.k.buechi  main.p0  agrees
+static_final1.bmc.buechi  full_adder.p0  skipped no concurrent directive of that name (immediate assertion?)
+static_final1  full_adder.p0  skipped no concurrent directive of that name (immediate assertion?)
+static_final1.k.buechi  full_adder.p0  skipped no concurrent directive of that name (immediate assertion?)
+strong1.buechi  main.p0  agrees
+strong1.buechi  main.c0  agrees
+strong1  main.p0  agrees
+strong1  main.c0  agrees
+strong_R1  main.p0  agrees
+sva_abort1.bdd.buechi  main.p0  rejected unsupported construct 'Abort'
+sva_abort1.bdd.buechi  main.p1  rejected unsupported construct 'Abort'
+sva_abort1.bdd.buechi  main.p2  rejected unsupported construct 'Abort'
+sva_abort1.bdd.buechi  main.p3  rejected unsupported construct 'Abort'
+sva_abort1.bdd.buechi  main.p4  rejected unsupported construct 'Abort'
+sva_abort1.bmc.buechi  main.p0  rejected unsupported construct 'Abort'
+sva_abort1.bmc.buechi  main.p1  rejected unsupported construct 'Abort'
+sva_abort1.bmc.buechi  main.p2  rejected unsupported construct 'Abort'
+sva_abort1.bmc.buechi  main.p3  rejected unsupported construct 'Abort'
+sva_abort1.bmc.buechi  main.p4  rejected unsupported construct 'Abort'
+sva_abort1  main.p0  rejected unsupported construct 'Abort'
+sva_abort1  main.p1  rejected unsupported construct 'Abort'
+sva_abort1  main.p2  rejected unsupported construct 'Abort'
+sva_abort1  main.p3  rejected unsupported construct 'Abort'
+sva_abort1  main.p4  rejected unsupported construct 'Abort'
+sva_abort1.k.buechi  main.p0  rejected unsupported construct 'Abort'
+sva_abort1.k.buechi  main.p1  rejected unsupported construct 'Abort'
+sva_abort1.k.buechi  main.p2  rejected unsupported construct 'Abort'
+sva_abort1.k.buechi  main.p3  rejected unsupported construct 'Abort'
+sva_abort1.k.buechi  main.p4  rejected unsupported construct 'Abort'
+sva_abort2  -  skipped tag KNOWNBUG: EBMC itself does not pass it
+sva_and1.buechi  main.p0  agrees
+sva_and1.buechi  main.p1  agrees
+sva_and1.buechi  main.p2  rejected constant N'dx contains x/z bits (two-state model)
+sva_and1  main.p0  agrees
+sva_and1  main.p1  agrees
+sva_and1  main.p2  rejected constant N'dx contains x/z bits (two-state model)
+sva_assume1.bdd.buechi  main.assume.1  skipped no known answer
+sva_assume1.bdd.buechi  main.assert.2  agrees
+sva_assume1.bdd  main.assume.1  skipped no known answer
+sva_assume1.bdd  main.assert.2  agrees
+sva_assume1.bmc.buechi  main.assume.1  skipped no known answer
+sva_assume1.bmc.buechi  main.assert.2  agrees
+sva_assume1.bmc  main.assume.1  skipped no known answer
+sva_assume1.bmc  main.assert.2  agrees
+sva_assume2.bdd.buechi  -  skipped no property with a known answer
+sva_assume2.bmc.buechi  main.assume.1  rejected property operator 'implies' is not supported yet
+sva_assume2.bmc.buechi  main.assert.2  rejected property operator 'implies' is not supported yet
+sva_assume2.bmc  main.assume.1  rejected property operator 'implies' is not supported yet
+sva_assume2.bmc  main.assert.2  rejected property operator 'implies' is not supported yet
+sva_assume2.k.buechi  -  skipped no property with a known answer
+sva_iff1.buechi  main.p0  rejected property operator 'iff' is not supported yet
+sva_iff1.buechi  main.p1  rejected property operator 'iff' is not supported yet
+sva_iff1.buechi  main.p2  rejected property operator 'iff' is not supported yet
+sva_iff1  main.p0  rejected property operator 'iff' is not supported yet
+sva_iff1  main.p1  rejected property operator 'iff' is not supported yet
+sva_iff1  main.p2  rejected property operator 'iff' is not supported yet
+sva_iff2.bmc.buechi  -  skipped no property with a known answer
+sva_iff2  -  skipped no property with a known answer
+sva_iff2.k.buechi  -  skipped no property with a known answer
+sva_implies1.buechi  main.p0  rejected property operator 'implies' is not supported yet
+sva_implies1.buechi  main.p1  rejected property operator 'implies' is not supported yet
+sva_implies1.buechi  main.p2  rejected property operator 'implies' is not supported yet
+sva_implies1  main.p0  rejected property operator 'implies' is not supported yet
+sva_implies1  main.p1  rejected property operator 'implies' is not supported yet
+sva_implies1  main.p2  rejected property operator 'implies' is not supported yet
+sva_implies2.bmc.buechi  -  skipped no property with a known answer
+sva_implies2  -  skipped no property with a known answer
+sva_implies2.k.buechi  -  skipped no property with a known answer
+sva_not1.buechi  main.p0  agrees
+sva_not1.buechi  main.p1  agrees
+sva_not1  main.p0  agrees
+sva_not1  main.p1  agrees
+sva_or1.bmc  -  skipped tag KNOWNBUG: EBMC itself does not pass it
+sva_until1.buechi  main.p0  agrees
+sva_until1.buechi  main.p1  agrees
+sva_until1.buechi  main.p2  agrees
+sva_until1  main.p0  agrees
+sva_until1  main.p1  agrees
+sva_until1  main.p2  agrees
+system_verilog_assertion1.buechi  -  skipped no property with a known answer
+system_verilog_assertion1  -  skipped no property with a known answer
+system_verilog_assertion2.buechi  -  skipped no property with a known answer
+system_verilog_assertion2  -  skipped no property with a known answer
+system_verilog_assertion3.buechi  -  skipped no property with a known answer
+system_verilog_assertion3  -  skipped no property with a known answer
+system_verilog_assertion4.buechi  main.p11  agrees
+system_verilog_assertion4  -  skipped no property with a known answer
+unbounded1.buechi  -  skipped no property with a known answer
+unbounded1  main.assert.1  rejected upper is visible at this assertion but cannot be compared  # the $-valued parameter cannot key a monitor: check mode and generation refuse it alike (a literal ##[0:$] is supported)
+weak1.buechi  main.p0  agrees
+weak1  main.p0  agrees

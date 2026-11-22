@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "101."
+    },
+    {
+      "name": "b",
+      "wave": "1..."
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "101."
+    }
+  ],
+  "head": {
+    "text": "implication/p01_pass_each_sample",
+    "tock": 0
+  }
+}

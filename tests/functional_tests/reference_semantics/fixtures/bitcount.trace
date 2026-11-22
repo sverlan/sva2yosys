@@ -1,0 +1,33 @@
+# Bit-count functions (IEEE 1800 §20.9): lowered to sums of bits.
+
+== onehot_antecedent
+property: $onehot(v) |-> b
+clause: 16.12.7 20.9
+class: normative
+signals: v:4 b
+sample : 0 1 2 3 4
+v      : 0 1 3 8 15
+b      : . . . . .
+fail   : . 1 . 1 .
+
+== onehot0_consequent
+property: a |-> $onehot0(v)
+clause: 16.12.7 20.9
+class: normative
+signals: a v:4
+sample : 0 1 2 3
+a      : 1 1 1 1
+v      : 0 4 6 2
+fail   : . . 1 .
+pass   : 1 1 . 1
+
+== countones_compare
+property: a |-> $countones(v) == 2
+clause: 16.12.7 20.9
+class: normative
+signals: a v:4
+sample : 0 1 2 3
+a      : 1 1 1 1
+v      : 3 5 7 0
+fail   : . . 1 1
+pass   : 1 1 . .

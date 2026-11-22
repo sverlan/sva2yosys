@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "b",
+      "wave": "0.1"
+    },
+    {
+      "name": "fail",
+      "wave": "0.1"
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    },
+    {
+      "name": "repeat",
+      "wave": "0.1"
+    },
+    {
+      "name": "outcome",
+      "wave": "=..",
+      "data": [
+        "F"
+      ]
+    }
+  ],
+  "head": {
+    "text": "not_liveness/not_s_eventually_fails_at_the_first_b",
+    "tock": 0
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "b",
+      "wave": "10."
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    },
+    {
+      "name": "repeat",
+      "wave": "01."
+    },
+    {
+      "name": "outcome",
+      "wave": "=..",
+      "data": [
+        "F"
+      ]
+    }
+  ],
+  "head": {
+    "text": "lasso/always_eventually_b_only_once",
+    "tock": 0
+  }
+}

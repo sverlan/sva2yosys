@@ -1,0 +1,58 @@
+# Conditions for contract point 4: one per line, "name: condition".
+# Signals: a, b (1 bit), u, v (4 bits), w (8 bits) unsigned; s (4 bits), z (8 bits) signed.
+
+unary_plus_minus: -u < +v
+bitwise_not: ~u == v
+logical_not: !u || b
+reduce_and: &u
+reduce_or: |u ^ a
+reduce_xor: ^w
+reduce_nand: ~&v
+reduce_nor: ~|u || a
+reduce_xnor: ~^w
+add_mixed_width: u + w > 8'd20
+subtract_wraps: u - v < 4'd3
+multiply: u * v > w
+divide_by_constant: w / 3 == u
+mod_by_constant: w % 5 < 3
+bitwise_and_or: (u & v) == (u | ~v)
+bitwise_xor_xnor: (u ^ v) < (u ~^ w[3:0])
+signed_less_than: s < z
+signed_mixed_width_compare: s >= z + s
+unsigned_compare: u <= v
+greater_than: w > {u, v}
+logical_and_or: (u && v) || (a && !b)
+logical_implication: a -> b
+logical_equivalence: u <-> v
+case_equality: (u[1:0] === v[1:0]) ^ (w[1:0] !== {a, b})
+shift_left: (u << v[1:0]) == w[3:0]
+shift_right: (w >> u) == v
+arithmetic_shift_right_signed: (z >>> 2) < s
+arithmetic_shift_left: (u <<< 1) > v
+conditional: (a ? u : v) == w[7:4]
+conditional_vector_select: (u[0] ? w : {u, v}) > 8'd100
+bit_select: u[3] ^ v[0] ^ w[7]
+part_select: w[6:3] == u
+concat: {a, b, u} == w[5:0]
+replicate: {2{u}} > w
+replicate_bits: {4{a}} == v
+sign_extension: s + z < 8'sd3
+mixed_signedness_is_unsigned: s < u
+signed_negative_constant: s < -3
+signed_divide: z / 3 == s
+past_vector: $past(w) != w
+rose_of_vector_lsb: $rose(u) || b
+fell_of_vector_lsb: $fell(w) || b
+stable_vector: $stable(u)
+changed_vector: $changed({a, v})
+signed_divide_by_minus_one: z / -1 < s
+signed_mod_negative_divisor: z % -3 < s
+signed_mod_negative_dividend: z % 3 == s
+shift_by_width_or_more: (v << u) == w[3:0]
+signed_shift_amount_is_unsigned: (w >> s) > 8'd3
+arithmetic_shift_right_by_width: (z >>> u) < s
+signed_in_concatenation: {s, z[3:0]} > w
+signed_in_replication: {2{s}} > w
+conditional_mixed_signedness: (a ? s : z) < 0
+conditional_mixed_width_signed: (a ? s : z) < w
+signed_to_unsigned_widening: s == w

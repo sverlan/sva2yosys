@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "go",
+      "wave": "10.."
+    },
+    {
+      "name": "b",
+      "wave": "010."
+    },
+    {
+      "name": "a",
+      "wave": "0..."
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "010."
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_9_2_1_empty_then_delay_n",
+    "tock": 0
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "r",
+      "wave": "0...1"
+    },
+    {
+      "name": "b",
+      "wave": "0.101"
+    },
+    {
+      "name": "fail",
+      "wave": "0...."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10."
+    }
+  ],
+  "head": {
+    "text": "temporal/disable_while_s_nexttime_is_pending",
+    "tock": 0
+  },
+  "foot": {
+    "text": "r: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

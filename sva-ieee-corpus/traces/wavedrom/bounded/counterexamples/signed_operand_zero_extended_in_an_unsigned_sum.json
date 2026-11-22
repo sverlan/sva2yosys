@@ -1,0 +1,41 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "1.0"
+    },
+    {
+      "name": "s",
+      "wave": "=.=",
+      "data": [
+        "F",
+        "0"
+      ]
+    },
+    {
+      "name": "v",
+      "wave": "===",
+      "data": [
+        "01",
+        "02",
+        "00"
+      ]
+    },
+    {
+      "name": "fail",
+      "wave": "010"
+    },
+    {
+      "name": "pass",
+      "wave": "10."
+    }
+  ],
+  "head": {
+    "text": "counterexamples/signed_operand_zero_extended_in_an_unsigned_sum",
+    "tock": 0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "l"
+    },
+    {
+      "name": "a",
+      "wave": "0"
+    },
+    {
+      "name": "fail",
+      "wave": "0"
+    },
+    {
+      "name": "pass",
+      "wave": "0"
+    }
+  ],
+  "head": {
+    "text": "unbounded/long_common_length_is_pending_not_false",
+    "tock": 0
+  }
+}

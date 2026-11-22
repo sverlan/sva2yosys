@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "0.1"
+    },
+    {
+      "name": "b",
+      "wave": "101"
+    },
+    {
+      "name": "c",
+      "wave": "1.."
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "101"
+    }
+  ],
+  "head": {
+    "text": "counterexamples/isunknown_vacuous_operand_does_not_stop_and_from_covering",
+    "tock": 0
+  }
+}

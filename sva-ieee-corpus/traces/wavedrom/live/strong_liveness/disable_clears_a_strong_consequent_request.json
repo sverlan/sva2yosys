@@ -1,0 +1,49 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "b",
+      "wave": "0..."
+    },
+    {
+      "name": "a",
+      "wave": "10.."
+    },
+    {
+      "name": "d",
+      "wave": "0..1"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0..."
+    },
+    {
+      "name": "repeat",
+      "wave": "1..."
+    },
+    {
+      "name": "outcome",
+      "wave": "====",
+      "data": [
+        "D",
+        "T",
+        "D",
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "strong_liveness/disable_clears_a_strong_consequent_request",
+    "tock": 0
+  },
+  "foot": {
+    "text": "d: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

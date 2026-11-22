@@ -1,0 +1,10 @@
+{
+  "yosys_version": "Yosys 0.70+286 (git sha1 63eecf3dd, Release, GNU /usr/bin/x86_64-w64-mingw32-g++ 15.2.1)",
+  "inputs_sha256": "adb86f8c4dfc41e267d45561089f194c2f8d65e3364749528398812b225f0ded",
+  "slang_plugin_relative": "share/yosys/plugins/slang.so",
+  "slang_plugin_sha256": "f0da835f9b07ad2ce74c63ba168c7b84780da590aff80bdbb0a50e1c1a873d68",
+  "linux": {
+    "yosys_version": "Yosys 0.70+286 (git sha1 63eecf3dd, Release, Clang /usr/bin/clang++ 21.1.8)",
+    "slang_plugin_sha256": "9db09219931d851901ef2d23071b7b80462472f35f11353a115b6b478b8b977b"
+  }
+}

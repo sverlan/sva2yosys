@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "a",
+      "wave": "1."
+    },
+    {
+      "name": "b",
+      "wave": "1."
+    },
+    {
+      "name": "fail",
+      "wave": "01"
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    },
+    {
+      "name": "repeat",
+      "wave": "1."
+    },
+    {
+      "name": "outcome",
+      "wave": "=.",
+      "data": [
+        "F"
+      ]
+    }
+  ],
+  "head": {
+    "text": "constants/lasso_constant_false_refutes_at_its_sample_in_the_loop",
+    "tock": 0
+  }
+}

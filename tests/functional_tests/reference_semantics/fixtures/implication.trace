@@ -1,0 +1,57 @@
+# |-> and |=> on Boolean operands (specification p01, p02).
+
+== p01_pass_each_sample
+property: a |-> b
+clause: 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : 1 . 1 1
+b      : 1 1 1 1
+pass   : 1 . 1 1
+pending: 0
+
+== p01_fail_in_trigger_sample
+property: a |-> b
+clause: 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : . 1 . 1
+b      : 1 . . 1
+fail   : . 1 . .
+pass   : . . . 1
+
+== nonoverlapping_impossible_consequent_fails_at_the_next_tick
+# a |=> 1'b0 is (a ##1 1) |-> 1'b0 (§16.12.7): the consequent starts, and fails, at the
+# next tick (a disable iff rising there would disable the attempt). The attempt from 2
+# has no obligation yet: its consequent would start at 3, beyond the trace.
+property: a |=> 1'b0
+clause: 16.12.7
+class: normative
+sample : 0 1 2
+a      : 1 . 1
+fail   : . 1 .
+pending: 0
+
+== p02_nonoverlapping_and_pending_at_end
+# The attempt from sample 4 has no obligation yet: its consequent would start at sample 5,
+# beyond the trace.
+property: a |=> b
+clause: 16.12.7
+class: normative
+sample : 0 1 2 3 4
+a      : 1 1 . . 1
+b      : . 1 . . .
+fail   : . . 1 . .
+pass   : . 1 . . .
+pending: 0
+
+== nonoverlapping_impossible_consequent_disabled_at_the_next_tick
+# The consequent of the attempt from 0 starts at 1, where r disables the attempt: no failure.
+disable: r
+property: a |=> 1'b0
+clause: 16.12 16.12.7
+class: normative
+sample : 0 1
+a      : 1 .
+r      : . 1
+pending: 0

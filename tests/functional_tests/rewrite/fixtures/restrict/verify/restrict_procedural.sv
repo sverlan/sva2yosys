@@ -1,0 +1,9 @@
+// IEEE 1800-2017 16.14.4: formal scenario constraints, not simulation checks.
+// Each finite constraint has a reachable witness and a failing unconstrained control.
+module restrict_procedural(input logic clk, en, a);
+  always @(posedge clk) begin
+    if (en) scenario: restrict property (a);
+  end
+  checked: assert property (@(posedge clk) en |-> a);
+  witness: cover property (@(posedge clk) !en && !a);
+endmodule

@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp....."
+    },
+    {
+      "name": "a",
+      "wave": "10.10.."
+    },
+    {
+      "name": "b",
+      "wave": "01.010."
+    },
+    {
+      "name": "c",
+      "wave": "0..10.."
+    },
+    {
+      "name": "fail",
+      "wave": "0....10"
+    },
+    {
+      "name": "pass",
+      "wave": "0..10.."
+    }
+  ],
+  "head": {
+    "text": "until_machine/nonoverlapping_implication_into_until",
+    "tock": 0
+  }
+}

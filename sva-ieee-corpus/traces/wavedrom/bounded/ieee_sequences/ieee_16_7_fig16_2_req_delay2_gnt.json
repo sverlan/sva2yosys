@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "go",
+      "wave": "10.."
+    },
+    {
+      "name": "req",
+      "wave": "10.."
+    },
+    {
+      "name": "gnt",
+      "wave": "0.10"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10"
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_7_fig16_2_req_delay2_gnt",
+    "tock": 0
+  }
+}

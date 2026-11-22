@@ -1,0 +1,501 @@
+# Weak until and until_with (docs/semantics.md 9.3, 9.6, IEEE 1800 16.12.12),
+# Boolean operands, hand-derived, per attempt (scope: attempt), accepted by the configuration-set
+# machine as the weak sequences p[*0:$] ##1 q and p[*0:$] ##1 (p && q). Every case runs through
+# the reference, the machine simulation and the generated monitors.
+# p until q at the samples t = start, start+1, ...: TRUE at the first t where q holds (p is not
+# needed there); FALSE at the first t where p does not hold and q does not hold. until_with: TRUE
+# at the first t where p and q hold; FALSE at the first t where p does not hold (q or not). If
+# neither happens the attempt is pending: a weak until finalizes TRUE. "attempt s" starts at s.
+# An implication attempt is vacuously TRUE (t) at its own sample when its antecedent is low.
+
+== implication_into_until
+# a |-> b until c. a = 1 . 1 . . 1 ., b = 1 . 1 1 . 1 1, c = . 1 . . . . .
+# attempt 0: b0 holds, c0 does not; c1 holds: TRUE at 1 (b1 is low, but until does not need p
+# where q holds). attempt 2: b2, b3 hold, then b4 and c4 are low: FALSE at 4. attempt 5: b5, b6
+# hold, c never: pending, weak. attempts 1, 3, 4, 6: vacuous at their own sample.
+property: a |-> b until c
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4 5 6
+a       : 1 . 1 . . 1 .
+b       : 1 . 1 1 . 1 1
+c       : . 1 . . . . .
+outcome : T t F t t p t
+decided : 1 1 4 3 4 . 6
+fail    : . . . . 1 . .
+pass    : . 1 . . . . .
+pending: 1
+final-fail: 0
+
+== implication_into_until_with
+# a |-> b until_with c. a = 1 . 1 1 . 1 ., b = 1 . 1 . 1 1 1, c = . . 1 1 . . 1
+# attempt 0: b0 holds, c0 not; b1 is low: FALSE at 1. attempt 2: b2 and c2 hold: TRUE at 2.
+# attempt 3: c3 holds without b3: FALSE at 3 (until_with needs p where q holds). attempt 5: b5
+# holds, c5 not; b6 and c6 hold: TRUE at 6. attempts 1, 4, 6: vacuous.
+property: a |-> b until_with c
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4 5 6
+a       : 1 . 1 1 . 1 .
+b       : 1 . 1 . 1 1 1
+c       : . . 1 1 . . 1
+outcome : F t T F t T t
+decided : 1 1 2 3 4 6 6
+fail    : . 1 . 1 . . .
+pass    : . . 1 . . . 1
+pending: 0
+final-fail: 0
+
+== nonoverlapping_implication_into_until
+# a |=> b until c. a = 1 . . 1 . . ., b = . 1 1 . 1 . ., c = . . . 1 . . .
+# attempt 0: the until starts at 1: b1, b2 hold; c3 holds (b3 is low): TRUE at 3. attempt 3: the
+# until starts at 4: b4 holds, c4 not; b5 and c5 are low: FALSE at 5. attempts 1, 2, 4, 5, 6:
+# vacuous at their own sample.
+property: a |=> b until c
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4 5 6
+a       : 1 . . 1 . . .
+b       : . 1 1 . 1 . .
+c       : . . . 1 . . .
+outcome : T t t F t t t
+decided : 3 1 2 5 4 5 6
+fail    : . . . . . 1 .
+pass    : . . . 1 . . .
+pending: 0
+final-fail: 0
+
+== always_of_an_implication_into_until
+# always (a |-> b until c). a = 1 . . 1 . ., b = 1 1 . 1 1 ., c = . . 1 . . .
+# X_k is the attempt of (a |-> b until c) at k. X_0: b0, b1 hold, c2 holds: TRUE at 2 (nonvacuous).
+# X_3: b3, b4 hold, then b5 and c5 are low: FALSE at 5. X_1, X_2, X_4, X_5 are vacuous.
+# attempts 0-3 see X_3 = FALSE: FALSE at 5. attempts 4, 5: the window is open: pending, weak.
+property: always (a |-> b until c)
+clause: 16.12.7 16.12.11 16.12.12 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 . . 1 . .
+b       : 1 1 . 1 1 .
+c       : . . 1 . . .
+outcome : F F F F p p
+decided : 5 5 5 5 . .
+fail    : . . . . . 1
+pending: 2
+final-fail: 0
+
+== top_level_until_overlapping
+# b until c. b = 1 1 . . 1 1, c = . . 1 . . .
+# attempts 0, 1: TRUE at 2. attempt 2: c2 holds (b2 is low): TRUE at 2. attempt 3: b3 and c3 are
+# both low: FALSE at 3. attempts 4, 5: b holds, c never: pending, weak.
+property: b until c
+clause: 16.12.12 16.14.8 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : 1 1 . . 1 1
+c       : . . 1 . . .
+outcome : T T T F p p
+decided : 2 2 2 3 . .
+fail    : . . . 1 . .
+pass    : . . 1 . . .
+pending: 2
+final-fail: 0
+
+== until_with_at_the_top_level
+# b until_with c. b = 1 1 . 1 1, c = . 1 . . .
+# attempts 0, 1: b0 (b1) holds, c1 holds with b1: TRUE at 1 (attempt 0 needs b0 and b1). attempt
+# 2: b2 is low: FALSE at 2. attempts 3, 4: b holds, c never: pending.
+property: b until_with c
+clause: 16.12.12 16.14.8 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+b       : 1 1 . 1 1
+c       : . 1 . . .
+outcome : T T F p p
+decided : 1 1 2 . .
+fail    : . . 1 . .
+pass    : . 1 . . .
+pending: 2
+final-fail: 0
+
+== q_at_the_first_sample_needs_no_p_for_until
+# a |-> b until c. a = 1 1 ., b = . . 1, c = 1 . .
+# attempt 0: c0 holds: TRUE at 0, although b0 is low. attempt 1: b1 and c1 are low: FALSE at 1.
+# attempt 2: vacuous.
+property: a |-> b until c
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 1 .
+b       : . . 1
+c       : 1 . .
+outcome : T F t
+decided : 0 1 2
+fail    : . 1 .
+pass    : 1 . .
+pending: 0
+final-fail: 0
+
+== q_at_the_first_sample_needs_p_for_until_with
+# a |-> b until_with c on the previous trace. attempt 0: c0 holds but b0 does not: FALSE at 0.
+# attempt 1: b1 is low: FALSE at 1. attempt 2: vacuous.
+property: a |-> b until_with c
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 1 .
+b       : . . 1
+c       : 1 . .
+outcome : F F t
+decided : 0 1 2
+fail    : 1 1 .
+pending: 0
+final-fail: 0
+
+== p_false_before_q_fails
+# a |-> b until c. a = 1 . . ., b = 1 . . ., c = . . 1 .
+# attempt 0: b0 holds, c0 not; b1 and c1 are low: FALSE at 1, before c2 could hold. attempts 1-3:
+# vacuous.
+property: a |-> b until c
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . . .
+b       : 1 . . .
+c       : . . 1 .
+outcome : F t t t
+decided : 1 1 2 3
+fail    : . 1 . .
+pending: 0
+final-fail: 0
+
+== p_and_q_both_false_at_the_first_sample
+# a |-> b until c. a = . 1 1, b = . . 1, c = . . .
+# attempt 1: b1 and c1 are both low at the first sample of the until: FALSE at 1. attempt 2: b2
+# holds, c never: pending. attempt 0: vacuous.
+property: a |-> b until c
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2
+a       : . 1 1
+b       : . . 1
+c       : . . .
+outcome : t F p
+decided : 0 1 .
+fail    : . 1 .
+pending: 1
+final-fail: 0
+
+== overlapping_attempts_with_different_outcomes
+# a |-> b until c. a = 1 1 1 1 . ., b = 1 1 . 1 . 1, c = . . 1 . . .
+# attempts 0, 1: b holds until c2: TRUE at 2. attempt 2: c2 holds (b2 is low): TRUE at 2. attempt 3:
+# b3 holds, c3 not; b4 and c4 are low: FALSE at 4. attempts 4, 5: vacuous.
+property: a |-> b until c
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 1 1 1 . .
+b       : 1 1 . 1 . 1
+c       : . . 1 . . .
+outcome : T T T F t t
+decided : 2 2 2 4 4 5
+fail    : . . . . 1 .
+pass    : . . 1 . . .
+pending: 0
+final-fail: 0
+
+== disable_at_the_deciding_sample
+# disable iff (d) a |-> b until c. a = 1 1 . ., b = 1 . . ., c low, d = . 1 . .
+# attempt 0 would be FALSE at 1 (b1 and c1 low) and attempt 1 FALSE at 1, but d is high at 1,
+# inside both [start, end]: both are disabled at 1. attempts 2, 3: vacuous.
+property: a |-> b until c
+clause: 16.12 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+disable: d
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 1 . .
+b       : 1 . . .
+c       : . . . .
+d       : . 1 . .
+outcome : d d t t
+decided : 1 1 2 3
+pending: 0
+final-fail: 0
+
+== disable_after_the_deciding_sample_does_not_matter
+# disable iff (d) a |-> b until c. a = 1 . . ., b = 1 . . ., c low, d = . . 1 .
+# attempt 0 is FALSE at 1; d is high only at 2, after the decision (the attempt has ended): FALSE.
+# attempt 2 starts at 2, where d is high: disabled at its own sample. attempts 1, 3: vacuous.
+property: a |-> b until c
+clause: 16.12 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+disable: d
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . . .
+b       : 1 . . .
+c       : . . . .
+d       : . . 1 .
+outcome : F t d t
+decided : 1 1 2 3
+fail    : . 1 . .
+pending: 0
+final-fail: 0
+
+== disable_aborts_a_pending_until
+# disable iff (d) a |-> b until c. a = 1 . 1 . ., b = 1 1 1 1 1, c low, d = . . . 1 .
+# attempts 0 and 2 stay pending through sample 2; d is high at 3: both disabled there. attempts
+# 1, 3, 4: vacuous (attempt 3 is disabled at its own sample).
+property: a |-> b until c
+clause: 16.12 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+disable: d
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . 1 . .
+b       : 1 1 1 1 1
+c       : . . . . .
+d       : . . . 1 .
+outcome : d t d d t
+decided : 3 1 3 3 4
+pending: 0
+final-fail: 0
+
+== past_in_p_of_until
+# a |-> $past(b) until c. a = . 1 1 . ., b = 1 1 . . ., c = . . . 1 .
+# $past(b) is b of the previous sample. attempt 1: $past(b) at 1 is b0 = 1, at 2 it is b1 = 1,
+# c3 holds: TRUE at 3. attempt 2: $past(b) at 2 is b1 = 1; c3 holds: TRUE at 3. attempts 0, 3, 4:
+# vacuous.
+property: a |-> $past(b) until c
+clause: 16.9.3 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4
+a       : . 1 1 . .
+b       : 1 1 . . .
+c       : . . . 1 .
+outcome : t T T t t
+decided : 0 3 3 3 4
+pass    : . . . 1 .
+pending: 0
+final-fail: 0
+
+== past_in_p_of_until_does_not_hold_at_the_first_sample
+# a |-> $past(b) until c. a = 1 . ., b = 1 1 1, c = . . .
+# attempt 0: the first sample has no previous sample, so $past(b) does not hold there and c0 is low:
+# FALSE at 0 (b0 itself is high, which does not matter). attempts 1, 2: vacuous.
+property: a |-> $past(b) until c
+clause: 16.9.3 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I3, I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : 1 1 1
+c       : . . .
+outcome : F t t
+decided : 0 1 2
+fail    : 1 . .
+pending: 0
+final-fail: 0
+
+== past_in_q_of_until
+# a |-> b until $past(c). a = 1 . ., b = 1 1 ., c = . 1 .
+# attempt 0: q = $past(c) does not hold at 0 (first sample), b0 holds; at 1 it is c0 = 0, b1
+# holds; at 2 it is c1 = 1: TRUE at 2. attempts 1, 2: vacuous.
+property: a |-> b until $past(c)
+clause: 16.9.3 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I3, I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : 1 1 .
+c       : . 1 .
+outcome : T t t
+decided : 2 1 2
+pass    : . . 1
+pending: 0
+final-fail: 0
+
+== past_in_q_of_until_does_not_hold_at_the_first_sample
+# a |-> b until $past(c). a = 1 . ., b = . . ., c = 1 . .
+# attempt 0: $past(c) does not hold at the first sample, b0 is low: FALSE at 0. attempts 1, 2:
+# vacuous.
+property: a |-> b until $past(c)
+clause: 16.9.3 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I3, I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : . . .
+c       : 1 . .
+outcome : F t t
+decided : 0 1 2
+fail    : 1 . .
+pending: 0
+final-fail: 0
+
+== past_in_q_of_until_with_does_not_hold_at_the_first_sample
+# a |-> b until_with $past(c). a = 1 . ., b = 1 1 1, c = 1 . .
+# attempt 0: p && $past(c) does not hold at 0 (no previous sample, whatever c0 is); b0 holds so
+# the attempt goes on; at 1, b1 holds and $past(c) = c0 = 1: TRUE at 1. attempts 1, 2: vacuous.
+property: a |-> b until_with $past(c)
+clause: 16.9.3 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I3, I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : 1 1 1
+c       : 1 . .
+outcome : T t t
+decided : 1 1 2
+pass    : . 1 .
+pending: 0
+final-fail: 0
+
+== past_in_p_of_until_with_does_not_hold_at_the_first_sample
+# a |-> $past(b) until_with c. a = 1 . ., b = 1 1 1, c = 1 . .
+# attempt 0: $past(b) does not hold at 0, so p fails there (and so does p && c0): FALSE at 0.
+# attempts 1, 2: vacuous.
+property: a |-> $past(b) until_with c
+clause: 16.9.3 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I3, I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : 1 1 1
+c       : 1 . .
+outcome : F t t
+decided : 0 1 2
+fail    : 1 . .
+pending: 0
+final-fail: 0
+
+== until_with_past_in_both_operands
+# a |-> $past(b) until_with $past(c). a = . 1 1 ., b = 1 1 1 ., c = . . 1 .
+# attempt 1: at 1, $past(b) = 1, $past(c) = c0 = 0: continue; at 2, $past(b) = 1 and $past(c) =
+# c1 = 0: continue; at 3, $past(b) = b2 = 1 and $past(c) = c2 = 1: TRUE at 3. attempt 2: the same
+# at 2 and 3: TRUE at 3. attempts 0, 3: vacuous.
+property: a |-> $past(b) until_with $past(c)
+clause: 16.9.3 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3
+a       : . 1 1 .
+b       : 1 1 1 .
+c       : . . 1 .
+outcome : t T T t
+decided : 0 3 3 3
+pass    : . . . 1
+pending: 0
+final-fail: 0
+
+== until_false_q_holds_while_p_holds
+# a |-> b until 1'b0. a = 1 . 1 . ., b = 1 1 1 1 1
+# q never holds: while b holds nothing is decided (a weak until never fails there). attempts 0, 2:
+# pending, weak. attempts 1, 3, 4: vacuous.
+property: a |-> b until 1'b0
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . 1 . .
+b       : 1 1 1 1 1
+outcome : p t p t t
+decided : . 1 . 3 4
+pending: 2
+final-fail: 0
+
+== until_false_q_fails_when_p_drops
+# a |-> b until 1'b0. a = 1 . 1 . ., b = 1 . 1 1 .
+# attempt 0: b0 holds; b1 is low (q is false): FALSE at 1. attempt 2: b2, b3 hold; b4 is low:
+# FALSE at 4. attempts 1, 3, 4: vacuous.
+property: a |-> b until 1'b0
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . 1 . .
+b       : 1 . 1 1 .
+outcome : F t F t t
+decided : 1 1 4 3 4
+fail    : . 1 . . 1
+pending: 0
+final-fail: 0
+
+== until_true_q_is_decided_at_the_start
+# a |-> b until 1'b1. a = 1 . 1, b low: q holds at the start sample: TRUE at once (nonvacuous).
+property: a |-> b until 1'b1
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 . 1
+b       : . . .
+outcome : T t T
+decided : 0 1 2
+pass    : 1 . 1
+pending: 0
+final-fail: 0
+
+== false_p_until_q
+# a |-> 1'b0 until c. a = 1 1 ., c = 1 . .
+# attempt 0: c0 holds: TRUE at 0 (p is not needed where q holds). attempt 1: c1 is low and p is
+# false: FALSE at 1. attempt 2: vacuous.
+property: a |-> 1'b0 until c
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 1 .
+c       : 1 . .
+outcome : T F t
+decided : 0 1 2
+fail    : . 1 .
+pass    : 1 . .
+pending: 0
+final-fail: 0
+
+== false_p_until_with_q
+# a |-> 1'b0 until_with c on the previous trace: p && q is never true and p is false: attempt 0
+# is FALSE at 0 although c0 holds, attempt 1 FALSE at 1. attempt 2: vacuous.
+property: a |-> 1'b0 until_with c
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 1 .
+c       : 1 . .
+outcome : F F t
+decided : 0 1 2
+fail    : 1 1 .
+pending: 0
+final-fail: 0
+
+== until_in_nexttime
+# nexttime (b until c). b = . 1 1 . 1, c low
+# attempt 0: the until starts at 1: b1, b2 hold; b3 is low and c3 not: FALSE at 3. attempt 1: the
+# until starts at 2: FALSE at 3. attempt 2: starts at 3: FALSE at 3. attempt 3: starts at 4: b4
+# holds, c never: pending (weak). attempt 4: the next sample does not exist: pending (weak).
+property: nexttime (b until c)
+clause: 16.12.10 16.12.12 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+b       : . 1 1 . 1
+c       : . . . . .
+outcome : F F F p p
+decided : 3 3 3 . .
+fail    : . . . 1 .
+pending: 2
+final-fail: 0

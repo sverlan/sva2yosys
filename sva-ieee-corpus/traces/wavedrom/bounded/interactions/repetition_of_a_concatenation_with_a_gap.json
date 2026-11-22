@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "10.."
+    },
+    {
+      "name": "b",
+      "wave": "10.."
+    },
+    {
+      "name": "c",
+      "wave": "010."
+    },
+    {
+      "name": "fail",
+      "wave": "0.10"
+    },
+    {
+      "name": "pass",
+      "wave": "0..."
+    }
+  ],
+  "head": {
+    "text": "interactions/repetition_of_a_concatenation_with_a_gap",
+    "tock": 0
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1..."
+    },
+    {
+      "name": "v",
+      "wave": "====",
+      "data": [
+        "A",
+        "B",
+        "2",
+        "0"
+      ]
+    },
+    {
+      "name": "fail",
+      "wave": "01.."
+    },
+    {
+      "name": "pass",
+      "wave": "10.."
+    }
+  ],
+  "head": {
+    "text": "inside/inside_wildcard_wider_than_operand",
+    "tock": 0
+  }
+}

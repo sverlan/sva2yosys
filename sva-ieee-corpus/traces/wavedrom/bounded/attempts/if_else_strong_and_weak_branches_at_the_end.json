@@ -1,0 +1,40 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "e",
+      "wave": "1010"
+    },
+    {
+      "name": "a",
+      "wave": "1010"
+    },
+    {
+      "name": "b",
+      "wave": "0.10"
+    },
+    {
+      "name": "c",
+      "wave": "0101"
+    },
+    {
+      "name": "d",
+      "wave": "0..."
+    },
+    {
+      "name": "fail",
+      "wave": "0..1"
+    },
+    {
+      "name": "pass",
+      "wave": "0.10"
+    }
+  ],
+  "head": {
+    "text": "attempts/if_else_strong_and_weak_branches_at_the_end",
+    "tock": 0
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "10."
+    },
+    {
+      "name": "b",
+      "wave": "01."
+    },
+    {
+      "name": "fail",
+      "wave": "0.1"
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    },
+    {
+      "name": "repeat",
+      "wave": "1.."
+    },
+    {
+      "name": "outcome",
+      "wave": "==.",
+      "data": [
+        "F",
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "not_liveness/implication_into_not_goto_matches",
+    "tock": 0
+  }
+}

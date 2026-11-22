@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "c",
+      "wave": "1.0"
+    },
+    {
+      "name": "a",
+      "wave": "1.0"
+    },
+    {
+      "name": "b",
+      "wave": "010"
+    },
+    {
+      "name": "fail",
+      "wave": "0.1"
+    },
+    {
+      "name": "pass",
+      "wave": "010"
+    }
+  ],
+  "head": {
+    "text": "ieee_properties/ieee_16_12_6_if_without_else_true_when_condition_false",
+    "tock": 0
+  }
+}

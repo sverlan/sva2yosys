@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "req",
+      "wave": "10..."
+    },
+    {
+      "name": "ack",
+      "wave": "01..0"
+    },
+    {
+      "name": "val",
+      "wave": "1...."
+    },
+    {
+      "name": "fail",
+      "wave": "0.10."
+    },
+    {
+      "name": "pass",
+      "wave": "0...."
+    }
+  ],
+  "head": {
+    "text": "composition/intersect_of_goto_2_and_goto_3_never_matches",
+    "tock": 0
+  }
+}

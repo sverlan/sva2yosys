@@ -1,0 +1,30 @@
+[tasks]
+bmc_ok    bmc   ok
+bmc_bad   bmc   bad
+prove_ok  prove ok
+cover_d2  cover ok
+cover_d3  cover d3
+
+[options]
+bmc: mode bmc
+bmc: depth 12
+prove: mode prove
+cover: mode cover
+cover: depth 12
+
+[engines]
+bmc: smtbmc yices
+prove: abc pdr
+cover: smtbmc yices
+
+[script]
+read_verilog -formal -sv monitor_window.sv
+read_verilog -formal -sv dut_delay.sv
+ok: chparam -set DELAY 2 top_delay
+bad: chparam -set DELAY 4 top_delay
+d3: chparam -set DELAY 3 top_delay
+prep -top top_delay
+
+[files]
+monitor_window.sv
+dut_delay.sv

@@ -1,0 +1,595 @@
+# Infinite, ultimately periodic traces ("lassos"), reference semantics
+# only (docs/semantics.md 9.2, 9.6). Every case has a "loop: k" header: the written samples k ...
+# last repeat forever, so the infinite trace is samples 0 .. k-1 followed by (k .. last)^omega.
+# The rows outcome / decided / fail / pass / pending / final-fail describe the written samples as
+# a FINITE trace (so the finite semantics stay checked on these traces); inf-outcome / inf-decided
+# give the exact result of the attempt started at each written sample on the INFINITE trace:
+# T / F / D (disabled), and the sample at which the attempt is decided online ("." when no finite
+# prefix decides it: a weak attempt pending forever is TRUE, a strong one FALSE, in the limit).
+# Position q of the infinite trace shows written sample k + (q - k) mod (n - k) once q >= n.
+# Everything is derived by hand from the written semantics. Cases are support: oracle unless the
+# production pipeline accepts the property.
+
+== past_depth_matches_in_a_one_sample_loop
+# strong(1'b1 ##[1:$] $past(b,3)), b = 1 forever (one sample, loop 0). The condition $past(b,3) does
+# not hold before position 3 (first-sample rule) and then reads b = 1: attempt 0 matches with the
+# delay landing on position 3 (delay 3 >= 1), so it is TRUE at 3. It is not pending forever.
+# Finite (one sample): the sequence is alive, pending, and a strong pending attempt finalizes FALSE.
+property: strong(1'b1 ##[1:$] $past(b,3))
+clause: 16.7 16.9.3 16.12.2 Annex F
+class: interpretation I3, I8
+scope: attempt
+loop: 0
+sample : 0
+b      : 1
+outcome : p
+decided : .
+pending: 1
+final-fail: 1
+inf-outcome : T
+inf-decided : 3
+
+== past_depth_never_matches_when_b_is_low
+# The same property with b = 0 forever: $past(b,3) is 0 at every position, no match ever, and the
+# sequence stays alive for ever (the delay is unbounded): a strong attempt pending forever is
+# FALSE, with no decision sample.
+property: strong(1'b1 ##[1:$] $past(b,3))
+clause: 16.7 16.9.3 16.12.2 Annex F
+class: interpretation I3, I8
+scope: attempt
+loop: 0
+sample : 0
+b      : .
+outcome : p
+decided : .
+pending: 1
+final-fail: 1
+inf-outcome : F
+inf-decided : .
+
+== past_depth_matches_once_from_the_prefix
+# The same property, b = 1 then 0 forever (loop 1). $past(b,3) holds only at position 3 (it reads
+# b0 = 1). Attempt 0: 1'b1 at 0 then a delay of 3 lands on 3: TRUE at 3. Attempt 1: 1'b1 at 1, delay
+# 2 lands on 3: TRUE at 3. After the prefix nothing matches again, but both already did.
+property: strong(1'b1 ##[1:$] $past(b,3))
+clause: 16.7 16.9.3 16.12.2 Annex F
+class: interpretation I3, I8
+scope: attempt
+loop: 1
+sample : 0 1
+b      : 1 .
+outcome : p p
+decided : . .
+pending: 2
+final-fail: 2
+inf-outcome : T T
+inf-decided : 3 3
+
+== s_eventually_b_periodic
+# s_eventually b, b = 1 . . forever (loop 0): b at positions 0, 3, 6, ... Attempt 0: TRUE at 0.
+# Attempts 1, 2: the next b is at 3, beyond the written samples: TRUE at 3. Finite: attempts 1, 2
+# pending, and strong pending attempts finalize FALSE.
+property: s_eventually b
+clause: 16.12.13 Annex F
+class: interpretation I8
+scope: attempt
+loop: 0
+sample : 0 1 2
+b      : 1 . .
+outcome : T p p
+decided : 0 . .
+pass    : 1 . .
+pending: 2
+final-fail: 2
+inf-outcome : T T T
+inf-decided : 0 3 3
+
+== s_eventually_b_only_in_the_prefix
+# s_eventually b, b = 1 . . with loop 1: b only at position 0. Attempt 0: TRUE at 0. Attempts 1, 2:
+# no b at or after the start ever: FALSE on the infinite trace, but no finite prefix decides it
+# (b could still come), so there is no decision sample.
+property: s_eventually b
+clause: 16.12.13 Annex F
+class: interpretation I8
+scope: attempt
+loop: 1
+sample : 0 1 2
+b      : 1 . .
+outcome : T p p
+decided : 0 . .
+pass    : 1 . .
+pending: 2
+final-fail: 2
+inf-outcome : T F F
+inf-decided : 0 . .
+
+== s_eventually_b_never
+# s_eventually b with b low for ever: every attempt FALSE in the limit, none decided.
+property: s_eventually b
+clause: 16.12.13 Annex F
+class: interpretation I8
+scope: attempt
+loop: 1
+sample : 0 1 2
+b      : . . .
+outcome : p p p
+decided : . . .
+pending: 3
+final-fail: 3
+inf-outcome : F F F
+inf-decided : . . .
+
+== eventually_b_in_the_loop_from_the_start
+# s_eventually b, b = . . . 1 with loop 2: positions 0, 1, 2: low, 3: high, 4: low, 5: high, ...
+# Every written attempt sees the b at 3: TRUE at 3.
+property: s_eventually b
+clause: 16.12.13 Annex F
+class: normative
+scope: attempt
+loop: 2
+sample : 0 1 2 3
+b      : . . . 1
+outcome : T T T T
+decided : 3 3 3 3
+pass    : . . . 1
+pending: 0
+final-fail: 0
+inf-outcome : T T T T
+inf-decided : 3 3 3 3
+
+== implication_into_a_strong_unbounded_consequent
+# a |-> strong(##[1:$] b), a = 1 . 1 . and b = . 1 . ., loop 2: positions 0: a, 1: b, 2: a, 3: -,
+# 4: a, 5: -, ... b only at 1. Attempt 0: trigger 0, the first b after it is at 1: TRUE at 1.
+# Attempt 1: a is low, vacuous TRUE at 1. Attempt 2: trigger 2, no b after 2 ever: the strong
+# consequent is pending for ever: FALSE, undecided. Attempt 3: vacuous TRUE at 3.
+property: a |-> strong(##[1:$] b)
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: interpretation I8
+scope: attempt
+loop: 2
+sample : 0 1 2 3
+a      : 1 . 1 .
+b      : . 1 . .
+outcome : T t p t
+decided : 1 1 . 3
+pass    : . 1 . .
+pending: 1
+final-fail: 1
+inf-outcome : T T F T
+inf-decided : 1 1 . 3
+
+== overlapping_triggers_with_a_rare_b
+# a |-> strong(##[1:$] b), a = 1 for ever, b = . . . 1 with loop 1: positions 1, 2, 3 repeat, so b is
+# high at 3, 6, 9, ... Attempts 0, 1, 2: trigger at the start, the first b after it is at 3: TRUE at
+# 3. Attempt 3: trigger 3, the first b after 3 is at 6, beyond the written samples: TRUE at 6.
+# Every trigger is satisfied (overlapping obligations), so none is pending for ever.
+property: a |-> strong(##[1:$] b)
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: interpretation I8
+scope: attempt
+loop: 1
+sample : 0 1 2 3
+a      : 1 1 1 1
+b      : . . . 1
+outcome : T T T p
+decided : 3 3 3 .
+pass    : . . . 1
+pending: 1
+final-fail: 1
+inf-outcome : T T T T
+inf-decided : 3 3 3 6
+
+== weak_unbounded_consequent_never_fails
+# a |-> ##[1:$] b (weak in an assert), a = 1, b = 0 for ever (loop 0): the obligation is alive for
+# ever and weak: TRUE in the limit, never decided (the weak form can never fail).
+property: a |-> ##[1:$] b
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+signals: b
+scope: attempt
+loop: 0
+sample : 0
+a      : 1
+outcome : p
+decided : .
+pending: 1
+final-fail: 0
+inf-outcome : T
+inf-decided : .
+
+== always_b_holds_in_the_loop
+# always b, b = 1 for ever (b1 is in the loop): every offset is TRUE, but a window with no end never
+# completes online: TRUE in the limit, undecided. Finite: pending, weak, finalizes TRUE.
+property: always b
+clause: 16.12.11 Annex F
+class: normative
+scope: attempt
+loop: 1
+sample : 0 1
+b      : 1 1
+outcome : p p
+decided : . .
+pending: 2
+final-fail: 0
+inf-outcome : T T
+inf-decided : . .
+
+== always_b_fails_in_the_loop
+# always b, b = 1 1 0 with loop 1: positions 0: 1, 1: 1, 2: 0, 3: 1, 4: 0, ... Attempts 0, 1, 2 all
+# see the low sample 2: FALSE at 2.
+property: always b
+clause: 16.12.11 Annex F
+class: normative
+scope: attempt
+loop: 1
+sample : 0 1 2
+b      : 1 1 .
+outcome : F F F
+decided : 2 2 2
+fail    : . . 1
+pending: 0
+final-fail: 0
+inf-outcome : F F F
+inf-decided : 2 2 2
+
+== until_never_b_is_true_when_weak
+# a until b, a = 1 and b = 0 for ever: a holds at every sample and b never does. The weak form
+# holds: TRUE, undecided.
+property: a until b
+clause: 16.12.12 Annex F
+class: normative
+signals: b
+scope: attempt
+loop: 0
+sample : 0
+a      : 1
+outcome : p
+decided : .
+pending: 1
+final-fail: 0
+inf-outcome : T
+inf-decided : .
+
+== s_until_never_b_is_false_when_strong
+# a s_until b with the same trace: the strong form needs b: FALSE, undecided.
+property: a s_until b
+clause: 16.12.12 Annex F
+class: interpretation I8
+signals: b
+scope: attempt
+loop: 0
+sample : 0
+a      : 1
+outcome : p
+decided : .
+pending: 1
+final-fail: 1
+inf-outcome : F
+inf-decided : .
+
+== s_until_b_periodic
+# a s_until b, a = 1 for ever, b = 1 . . forever (positions 0, 3, 6, ...). Attempt 0: b at 0: TRUE
+# at 0. Attempts 1, 2: a holds until b at 3: TRUE at 3.
+property: a s_until b
+clause: 16.12.12 16.14.8 Annex F
+class: interpretation I8
+scope: attempt
+loop: 0
+sample : 0 1 2
+a      : 1 1 1
+b      : 1 . .
+outcome : T p p
+decided : 0 . .
+pass    : 1 . .
+pending: 2
+final-fail: 2
+inf-outcome : T T T
+inf-decided : 0 3 3
+
+== until_fails_when_a_drops
+# a until b, a = 1 then 0 for ever, b = 0: attempt 0: a at 0, neither at 1: FALSE at 1. Attempt 1:
+# neither at 1: FALSE at 1.
+property: a until b
+clause: 16.12.12 Annex F
+class: normative
+signals: b
+scope: attempt
+loop: 1
+sample : 0 1
+a      : 1 .
+outcome : F F
+decided : 1 1
+fail    : . 1
+pending: 0
+final-fail: 0
+inf-outcome : F F
+inf-decided : 1 1
+
+== not_of_a_weak_unbounded_sequence_never_b
+# not (a ##[1:$] b), a = 1 and b = 0 for ever: the weak sequence is alive for ever, so TRUE in the
+# limit, so its negation FALSE (the strength is reversed). Undecided. Finite: the pending weak
+# sequence finalizes TRUE, so the negation FALSE.
+property: not (a ##[1:$] b)
+clause: 16.7 16.12.2 16.12.3 Annex F
+class: interpretation I7, I8
+signals: b
+scope: attempt
+loop: 0
+sample : 0
+a      : 1
+outcome : p
+decided : .
+pending: 1
+final-fail: 1
+inf-outcome : F
+inf-decided : .
+
+== not_of_a_sequence_that_matches_in_the_loop
+# not (a ##[1:$] b), a = 1 for ever, b = . 1 with loop 1 (b high from position 1). Attempt 0: the
+# sequence matches at 1, so the negation is FALSE at 1. Attempt 1: matches at 2 (the delay is at
+# least 1), FALSE at 2, beyond the written samples; finite: pending, finalizing FALSE.
+property: not (a ##[1:$] b)
+clause: 16.7 16.12.2 16.12.3 Annex F
+class: interpretation I7, I8
+scope: attempt
+loop: 1
+sample : 0 1
+a      : 1 1
+b      : . 1
+outcome : F p
+decided : 1 .
+fail    : . 1
+pending: 1
+final-fail: 1
+inf-outcome : F F
+inf-decided : 1 2
+
+== not_of_a_dead_sequence
+# not (a ##[1:$] b) with a low for ever: the sequence is dead at the start, the negation TRUE there.
+property: not (a ##[1:$] b)
+clause: 16.7 16.12.2 16.12.3 Annex F
+class: normative
+signals: b
+scope: attempt
+loop: 0
+sample : 0
+a      : .
+outcome : T
+decided : 0
+pass    : 1
+pending: 0
+final-fail: 0
+inf-outcome : T
+inf-decided : 0
+
+== disable_in_the_loop_hides_a_pending_attempt
+# disable iff (d) s_eventually b; b = . 1 . . and d = . . . 1 with loop 2: b only at position 1,
+# d at 3, 5, 7, ... Attempts 0, 1 are TRUE at 1 and d is low in [start, 1]: TRUE (the later d does
+# not matter). Attempts 2, 3 would be FALSE in the limit (no b after 1) but d rises at 3, inside
+# [start, infinity): disabled at 3.
+property: s_eventually b
+clause: 16.12 16.12.13 Annex F
+class: normative
+disable: d
+scope: attempt
+loop: 2
+sample : 0 1 2 3
+b      : . 1 . .
+d      : . . . 1
+outcome : T T d d
+decided : 1 1 3 3
+pass    : . 1 . .
+pending: 0
+final-fail: 0
+inf-outcome : T T D D
+inf-decided : 1 1 3 3
+
+== disable_only_in_the_prefix
+# disable iff (d) s_eventually b; b low for ever, d = 1 . . with loop 1 (d only at position 0).
+# Attempt 0: disabled at 0. Attempts 1, 2: FALSE in the limit, d never rises again.
+property: s_eventually b
+clause: 16.12 16.12.13 Annex F
+class: interpretation I8
+disable: d
+scope: attempt
+loop: 1
+sample : 0 1 2
+b      : . . .
+d      : 1 . .
+outcome : d p p
+decided : 0 . .
+pending: 2
+final-fail: 2
+inf-outcome : D F F
+inf-decided : 0 . .
+
+== always_of_an_implication_with_a_pending_consequent
+# always (a |-> s_eventually b), a = 1 . . with loop 1 (a only at position 0), b low for ever.
+# X_0 = a |-> s_eventually b is a trigger with no b ever: FALSE in the limit; X_q (q >= 1) are vacuous
+# TRUE. Attempt 0 sees X_0 FALSE: FALSE in the limit, but X_0 is never decided online, so neither is
+# the attempt. Attempts 1, 2: every offset TRUE, the window never ends: TRUE in the limit.
+# Finite: attempt 0's pending X_0 finalizes FALSE, the others finalize TRUE.
+property: always (a |-> s_eventually b)
+clause: 16.12.7 16.12.11 16.12.13 Annex F
+class: interpretation I8
+signals: b
+scope: attempt
+loop: 1
+sample : 0 1 2
+a      : 1 . .
+outcome : p p p
+decided : . . .
+pending: 3
+final-fail: 1
+inf-outcome : F T T
+inf-decided : . . .
+
+== always_eventually_infinitely_often
+# always s_eventually b (infinitely often b), b = . . 1 forever (loop 0): positions 2, 5, 8, ...
+# Every offset's s_eventually is TRUE (decided at 2 for offsets 0 to 2, at 5 for offsets 3 to 5, ...):
+# every attempt is TRUE in the limit; the window never ends, so it is never decided online.
+property: always s_eventually b
+clause: 16.12.11 16.12.13 Annex F
+class: normative
+scope: attempt
+loop: 0
+sample : 0 1 2
+b      : . . 1
+outcome : p p p
+decided : . . .
+pending: 3
+final-fail: 0
+inf-outcome : T T T
+inf-decided : . . .
+
+== always_eventually_b_only_once
+# always s_eventually b, b = 1 . . with loop 1: b only at position 0. Offset 0 is TRUE at 0, every
+# later offset is FALSE in the limit (no b after it): every attempt is FALSE in the limit
+# (attempt 0 through offset 1, attempts 1, 2 through their own offsets), undecided.
+# Finite: attempt 0's offsets 1 and 2 are pending and finalize FALSE.
+property: always s_eventually b
+clause: 16.12.11 16.12.13 Annex F
+class: interpretation I8
+scope: attempt
+loop: 1
+sample : 0 1 2
+b      : 1 . .
+outcome : p p p
+decided : . . .
+pending: 3
+final-fail: 3
+inf-outcome : F F F
+inf-decided : . . .
+
+== cover_defaults_to_strong
+# cover property (a ##[1:$] b): a plain sequence is strong in a cover. a = 1, b = 0 for ever:
+# alive for ever without a match: FALSE in the limit.
+property: a ##[1:$] b
+clause: 16.7 16.12.2 16.14.3 Annex F
+class: interpretation I8
+kind: cover
+signals: b
+scope: attempt
+loop: 0
+sample : 0
+a      : 1
+outcome : p
+decided : .
+pending: 1
+final-fail: 1
+inf-outcome : F
+inf-decided : .
+
+== rose_across_the_loop
+# s_eventually $rose(b), b = 1 1 0 with loop 1: positions 0: 1, 1: 1, 2: 0, 3: 1, 4: 0, 5: 1, ...
+# $rose(b) is true at 0 (first-sample rule, the previous value counts as 0), false at 1 (previous 1),
+# false at 2, true at 3 (previous 0), and so on every 2 positions. Attempt 0: TRUE at 0. Attempts 1,
+# 2: the next rise is at 3: TRUE at 3 (beyond the written samples).
+property: s_eventually $rose(b)
+clause: 16.5.1 16.9.3 16.12.13 Annex F
+class: interpretation I8
+scope: attempt
+loop: 1
+sample : 0 1 2
+b      : 1 1 .
+outcome : T p p
+decided : 0 . .
+pass    : 1 . .
+pending: 2
+final-fail: 2
+inf-outcome : T T T
+inf-decided : 0 3 3
+
+== repetition_longer_than_the_written_trace
+# strong(x[*7]), x = 1 for ever (one sample): the match needs seven samples: attempt 0 ends at 6.
+property: strong(x[*7])
+clause: 16.9.2 16.12.2 Annex F
+class: interpretation I8
+scope: attempt
+loop: 0
+sample : 0
+x      : 1
+outcome : p
+decided : .
+pending: 1
+final-fail: 1
+inf-outcome : T
+inf-decided : 6
+
+== goto_count_spans_several_periods
+# strong(b[->3]), b = . . 1 forever (positions 2, 5, 8, ...): the third high b is at 8. Every
+# written attempt (0, 1, 2) sees the highs 2, 5, 8: TRUE at 8.
+property: strong(b[->3])
+clause: 16.9.2 16.12.2 Annex F
+class: interpretation I8
+scope: attempt
+loop: 0
+sample : 0 1 2
+b      : . . 1
+outcome : p p p
+decided : . . .
+pending: 3
+final-fail: 3
+inf-outcome : T T T
+inf-decided : 8 8 8
+
+== bounded_implication_on_a_lasso
+# a |-> ##2 b, a = 1 . 1 ., b = . . 1 ., loop 2: positions 0: a, 2: a and b, 3: -, 4: a and b, ...
+# Attempt 0: trigger 0, b at 2: TRUE at 2. Attempt 1: vacuous TRUE at 1. Attempt 2: trigger 2, b
+# at 4: TRUE at 4 (beyond the written samples; finite: pending, weak). Attempt 3: vacuous at 3.
+property: a |-> ##2 b
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+loop: 2
+sample : 0 1 2 3
+a      : 1 . 1 .
+b      : . . 1 .
+outcome : T t p t
+decided : 2 1 . 3
+pass    : . . 1 .
+pending: 1
+final-fail: 0
+inf-outcome : T T T T
+inf-decided : 2 1 4 3
+
+== several_triggers_one_never_satisfied
+# a[*1:2] |-> strong(##[1:$] b), a = 1 1 . and b = . 1 . with loop 2 (a and b low from position 2).
+# Attempt 0 has two triggers: a[*1] ends at 0 (b at 1 follows: satisfied) and a[*2] ends at 1 (no b at
+# or after 2, ever: the strong obligation is pending for ever). So attempt 0 is FALSE in the limit,
+# undecided. Attempt 1: a[*1] ends at 1 (pending for ever); a[*2] needs a at 2: dead. FALSE in the
+# limit. Attempt 2: a is low, vacuous TRUE at 2.
+property: a[*1:2] |-> strong(##[1:$] b)
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: interpretation I8
+scope: attempt
+loop: 2
+sample : 0 1 2
+a      : 1 1 .
+b      : . 1 .
+outcome : p p t
+decided : . . 2
+pending: 2
+final-fail: 2
+inf-outcome : F F T
+inf-decided : . . 2
+
+== unbounded_antecedent_keeps_a_true_attempt_open
+# a[*1:$] |-> strong(##[1:$] b), a = 1 and b = 1 for ever (one sample, loop 0). Triggers at every
+# position, each satisfied at the next one, but the antecedent is alive for ever (it can still match),
+# so the attempt is never decided online: TRUE in the limit. Finite: the consequent of the trigger at
+# 0 needs sample 1: pending, strong, finalizes FALSE.
+property: a[*1:$] |-> strong(##[1:$] b)
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: interpretation I8
+scope: attempt
+loop: 0
+sample : 0
+a      : 1
+b      : 1
+outcome : p
+decided : .
+pending: 1
+final-fail: 1
+inf-outcome : T
+inf-decided : .

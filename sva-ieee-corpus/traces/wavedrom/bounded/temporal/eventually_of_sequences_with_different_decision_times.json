@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp....."
+    },
+    {
+      "name": "a",
+      "wave": "101.010"
+    },
+    {
+      "name": "b",
+      "wave": "01010.."
+    },
+    {
+      "name": "fail",
+      "wave": "0.....1"
+    },
+    {
+      "name": "pass",
+      "wave": "01010.."
+    }
+  ],
+  "head": {
+    "text": "temporal/eventually_of_sequences_with_different_decision_times",
+    "tock": 0
+  }
+}

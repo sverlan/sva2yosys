@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "1.010"
+    },
+    {
+      "name": "b",
+      "wave": "0.10."
+    },
+    {
+      "name": "fail",
+      "wave": "0...."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10."
+    }
+  ],
+  "head": {
+    "text": "unbounded_covers/cover_repetition_with_a_tail_frontier_dies",
+    "tock": 0
+  }
+}

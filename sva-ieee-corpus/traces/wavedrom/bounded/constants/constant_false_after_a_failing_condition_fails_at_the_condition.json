@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "a",
+      "wave": "10"
+    },
+    {
+      "name": "b",
+      "wave": "0."
+    },
+    {
+      "name": "fail",
+      "wave": "10"
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    }
+  ],
+  "head": {
+    "text": "constants/constant_false_after_a_failing_condition_fails_at_the_condition",
+    "tock": 0
+  }
+}

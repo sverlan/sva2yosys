@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "a",
+      "wave": "1..0.."
+    },
+    {
+      "name": "b",
+      "wave": "010.10"
+    },
+    {
+      "name": "fail",
+      "wave": "0101.."
+    },
+    {
+      "name": "pass",
+      "wave": "0..10."
+    }
+  ],
+  "head": {
+    "text": "attempts/not_of_implication_with_delayed_consequent",
+    "tock": 0
+  }
+}

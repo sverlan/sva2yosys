@@ -1,0 +1,200 @@
+# Counterexamples found in development (a review finding, a probe, a caught mutant; each is added in the commit of its fix):
+# each case is the input that told the right result from a wrong one, with the expected
+# result derived by hand from IEEE 1800, the clause, the classification and the origin
+# (the `clause`, `class` and `origin` keys of every case).
+
+== compact_window_discards_an_obligation_after_its_first_match
+# 16.7 (sequence match), 16.12.7 (overlapping implication).
+# The sole trigger at sample 0
+# matches b at sample 1, discharging that obligation. Keeping its successors can
+# incorrectly fail it at sample 3. Later attempts are vacuous because a is low.
+property: a |-> ##[1:3] b
+clause: 16.7 16.12.7
+class: normative
+origin: discharge mutant required by the plan
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . . .
+b       : . 1 . .
+outcome : T t t t
+decided : 1 1 2 3
+fail    : . . . .
+pass    : . 1 . .
+pending: 0
+
+== isunknown_vacuous_operand_does_not_stop_and_from_covering
+# 16.14.8 (p and q is nonvacuous when either operand is), 20.9. The verdict rests on the
+# two-state model ($isunknown is 0), hence implementation-defined.
+# The cover was skipped as "can never succeed".
+# $isunknown(c) is 0, so ($isunknown(c) |-> a) is TRUE and vacuous at every attempt; the and
+# is TRUE exactly when b holds, nonvacuous through b (a sequence is always nonvacuous).
+property: ($isunknown(c) |-> a) and b
+clause: 16.14.8 20.9
+class: implementation-defined
+origin: found while checking the X-check skip criterion
+kind: cover
+scope: attempt
+sample  : 0 1 2
+a       : . . 1
+b       : 1 . 1
+c       : 1 1 1
+outcome : T F T
+decided : 0 1 2
+pass    : 1 . 1
+pending: 0
+
+== isunknown_false_sequence_operand_makes_or_nonvacuous
+# 16.14.8 (p or q is nonvacuous when either operand is), 20.9 (two-state model, as above).
+# $isunknown(c) or ($isunknown(c) |-> a): the implication is TRUE
+# vacuously at the attempt's start, so the or is TRUE there, and nonvacuous through its
+# sequence operand (FALSE, but a sequence is always nonvacuous): covered at every sample.
+property: $isunknown(c) or ($isunknown(c) |-> a)
+clause: 16.14.8 20.9
+class: implementation-defined
+origin: as above
+kind: cover
+scope: attempt
+sample  : 0 1
+a       : . 1
+c       : 1 1
+outcome : T T
+decided : 0 1
+pass    : 1 1
+pending: 0
+
+== throughout_over_a_nullable_operand_keeps_the_empty_match
+# 16.9.9 (throughout), 16.9.2.1 (empty match: (empty ##1 s) is ##0 s), 20.9 (two-state model).
+# The directive was skipped as "can never fail".
+# $isunknown(a) is 0, so ($isunknown(a) throughout a[*0:1]) has only its empty match, and
+# (empty ##1 1'b1) matches 1'b1 at the attempt's own sample: the antecedent matches at every
+# sample, and the assertion fails wherever b is low.
+property: (($isunknown(a) throughout a[*0:1]) ##1 1'b1) |-> b
+clause: 16.9.9 16.9.2.1 20.9
+class: implementation-defined
+origin: a review (P1)
+sample : 0 1 2
+a      : 1 1 .
+b      : 1 . 1
+fail   : . 1 .
+pass   : 1 . 1
+pending: 0
+
+== goto_of_a_constant_true_is_decided_at_its_own_samples_disabled
+# Annex F (an unknown future sample satisfies every Boolean), 16.9.2 (goto), 16.12
+# (disable iff).
+# Pruning the constant letters of 1'b1[->2] emptied the automaton and
+# the monitor failed at sample 0; superseded by the rule that constants are evaluated at their own sample.
+# 1'b1[->2] matches exactly over samples 0..1 (its !1'b1 letters are false at known samples);
+# a ##[2:$] b cannot end before sample 2, so the intersect is decided FALSE at sample 1, where
+# d disables the attempt. Attempts 1 and 2 are disabled at their start: no failure at all.
+property: 1'b1[->2] intersect (a ##[2:$] b)
+clause: 16.9.2 16.9.6 16.12 Annex F
+class: interpretation I1
+origin: a review (P1)
+disable: d
+scope: attempt
+sample  : 0 1 2
+a       : 1 1 .
+b       : . . .
+d       : . 1 1
+outcome : d d d
+decided : 1 1 2
+pending: 0
+
+== goto_of_a_constant_true_is_decided_at_its_own_samples
+# As above without the disable: attempt 0 fails at sample 1, not at sample 0. Attempt 1 is
+# still pending at the end (1'b1[->2] from sample 1 may end at 3 or later through an unknown
+# !1'b1 sample, and a ##[2:$] b from sample 1 ends at 3 or later).
+property: 1'b1[->2] intersect (a ##[2:$] b)
+clause: 16.9.2 16.9.6 Annex F
+class: interpretation I1
+origin: a review (P1), as above
+scope: attempt
+sample  : 0 1
+a       : 1 1
+b       : . .
+outcome : F p
+decided : 1 .
+fail    : . 1
+pending: 1
+final-fail: 0
+
+== cover_of_an_implication_whose_antecedent_cannot_match
+# 16.9.6 (intersect: both operands match over the same interval), 16.14.8.
+# A cover with an impossible antecedent is accepted and
+# never covered (its attempts are vacuous). a intersect (b ##1 c): lengths 1 and 2 never meet.
+property: (a intersect (b ##1 c)) |-> d
+clause: 16.9.6 16.14.8
+class: normative
+origin: a review (low)
+kind: cover
+sample : 0 1 2
+a      : 1 1 1
+b      : 1 1 1
+c      : 1 1 1
+d      : 1 1 1
+pending: 0
+
+== goto_of_a_past_condition_skips_a_definitely_false_first_sample
+# 16.9.2 (b[->1] is !b[*0:$] ##1 b), 16.9.3 ($past is X at the first sample), 11.4.7
+# (0 && X is 0).
+# CE-04: the goto's generated negated
+# condition !(a && $past(b)) was gated false at the first sample, so attempt 0 died there and
+# the monitor never failed. Attempt 0: x holds; at sample 0 a && $past(b) is 0 && X = 0, so
+# the goto skips it; at sample 1 it is 1 && b@0 = 1, the antecedent matches and the
+# consequent 1'b0 fails: FALSE at 1, nonvacuous. Attempts 1 and 2: x is low, vacuous TRUE.
+# The pipeline rejects the property (the condition uses $past and could be known at the first
+# sample); the table is checked by the reference evaluator.
+property: x ##0 (a && $past(b))[->1] |-> 1'b0
+clause: 16.9.2 16.9.3 11.4.7
+class: normative
+origin: a review (CE-04)
+support: oracle
+rejected-by: could be known true at the first sample
+scope: attempt
+sample  : 0 1 2
+x       : 1 . .
+a       : . 1 .
+b       : 1 1 .
+outcome : F t t
+decided : 1 1 2
+fail    : . 1 .
+pending: 0
+
+== nonconsecutive_of_a_past_condition_skips_a_definitely_false_first_sample
+# 16.9.2 (b[=1] is !b[*0:$] ##1 b ##1 !b[*0:$]), 16.9.3, 11.4.7.
+# CE-04: the same defect for nonconsecutive repetition. The first match of
+# attempt 0 ends at sample 1 (as above), where the consequent fails: FALSE at 1.
+property: x ##0 (a && $past(b))[=1] |-> 1'b0
+clause: 16.9.2 16.9.3 11.4.7
+class: normative
+origin: a review (CE-04), the same defect for nonconsecutive repetition
+support: oracle
+rejected-by: could be known true at the first sample
+scope: attempt
+sample  : 0 1 2
+x       : 1 . .
+a       : . 1 .
+b       : 1 1 .
+outcome : F t t
+decided : 1 1 2
+fail    : . 1 .
+pending: 0
+
+== signed_operand_zero_extended_in_an_unsigned_sum
+# 11.8.2: signed'(s) is a signed 4-bit value, v is unsigned 8-bit, so the sum is an unsigned
+# 8-bit context and the signed operand is zero-extended (not sign-extended).
+# Sample 0: s = 15 (1111, signed -1), v = 1: 15 + 1 = 16 in 8 bits, equal: pass.
+# (A sign-extended 0xFF + 1 would be 0 and the assertion would fail.)
+# Sample 1: s = 15, v = 2: 15 + 2 = 17 != 16: fail. Sample 2: a is 0, vacuous.
+property: a |-> (signed'(s) + v) == 8'd16
+clause: 11.8.2
+class: normative
+origin: an implementation (pre-existing Convert sign extension)
+signals: a s:4 v:8
+sample : 0 1 2
+a      : 1 1 .
+s      : 15 15 .
+v      : 1 2 .
+fail   : . 1 .
+pass   : 1 . .

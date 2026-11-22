@@ -1,0 +1,40 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp............"
+    },
+    {
+      "name": "data_phase",
+      "wave": "01......0....."
+    },
+    {
+      "name": "irdy",
+      "wave": "1..0...1......"
+    },
+    {
+      "name": "trdy",
+      "wave": "1............."
+    },
+    {
+      "name": "stop",
+      "wave": "1....0..1....."
+    },
+    {
+      "name": "frame",
+      "wave": "0.....1......."
+    },
+    {
+      "name": "fail",
+      "wave": "0............."
+    },
+    {
+      "name": "pass",
+      "wave": "0......10....."
+    }
+  ],
+  "head": {
+    "text": "ieee_properties/ieee_16_12_7_data_end_rule1_fig_16_15",
+    "tock": 0
+  }
+}

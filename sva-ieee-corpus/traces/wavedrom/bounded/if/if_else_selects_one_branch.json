@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "e",
+      "wave": "1.0."
+    },
+    {
+      "name": "a",
+      "wave": "10.."
+    },
+    {
+      "name": "b",
+      "wave": "0.10"
+    },
+    {
+      "name": "fail",
+      "wave": "0101"
+    },
+    {
+      "name": "pass",
+      "wave": "1010"
+    }
+  ],
+  "head": {
+    "text": "if/if_else_selects_one_branch",
+    "tock": 0
+  }
+}

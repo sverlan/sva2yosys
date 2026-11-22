@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "1...."
+    },
+    {
+      "name": "v",
+      "wave": "=====",
+      "data": [
+        "3",
+        "4",
+        "7",
+        "2",
+        "5"
+      ]
+    },
+    {
+      "name": "fail",
+      "wave": "1.01."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10."
+    }
+  ],
+  "head": {
+    "text": "inside/inside_reversed_range_matches_nothing",
+    "tock": 0
+  }
+}

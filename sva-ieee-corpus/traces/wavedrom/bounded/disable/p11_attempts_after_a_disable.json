@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp....."
+    },
+    {
+      "name": "rst_n",
+      "wave": "1.01..."
+    },
+    {
+      "name": "a",
+      "wave": "1010..."
+    },
+    {
+      "name": "b",
+      "wave": "0....10"
+    },
+    {
+      "name": "fail",
+      "wave": "0......"
+    },
+    {
+      "name": "pass",
+      "wave": "0....10"
+    }
+  ],
+  "head": {
+    "text": "disable/p11_attempts_after_a_disable",
+    "tock": 0
+  },
+  "foot": {
+    "text": "rst_n: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

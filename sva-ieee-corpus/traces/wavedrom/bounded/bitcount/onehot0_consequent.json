@@ -1,0 +1,34 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1..."
+    },
+    {
+      "name": "v",
+      "wave": "====",
+      "data": [
+        "0",
+        "4",
+        "6",
+        "2"
+      ]
+    },
+    {
+      "name": "fail",
+      "wave": "0.10"
+    },
+    {
+      "name": "pass",
+      "wave": "1.01"
+    }
+  ],
+  "head": {
+    "text": "bitcount/onehot0_consequent",
+    "tock": 0
+  }
+}

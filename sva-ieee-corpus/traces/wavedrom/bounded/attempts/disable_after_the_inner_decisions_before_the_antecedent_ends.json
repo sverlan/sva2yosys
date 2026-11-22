@@ -1,0 +1,43 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "rst",
+      "wave": "0.1"
+    },
+    {
+      "name": "a",
+      "wave": "10."
+    },
+    {
+      "name": "b",
+      "wave": "10."
+    },
+    {
+      "name": "c",
+      "wave": "0.."
+    },
+    {
+      "name": "d",
+      "wave": "0.."
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "attempts/disable_after_the_inner_decisions_before_the_antecedent_ends",
+    "tock": 0
+  },
+  "foot": {
+    "text": "rst: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

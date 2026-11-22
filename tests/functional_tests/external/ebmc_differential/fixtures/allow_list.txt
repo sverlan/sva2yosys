@@ -1,0 +1,128 @@
+# The allow-list of the EBMC differential tier (CONTRACT.md 3-4; format and token rules in the
+# docstring of tests/support/ebmc_differential.py, parse_allow_list and property_tokens).
+#
+# Nothing is compared unless a shape below admits it. A trace case is named
+# <trace file stem>:<case name>. Order matters: the first matching exclude line gives the reason
+# a case is not compared; the first admitting shape of each engine compares it.
+#
+# Exclusions: the areas where the EBMC study found that EBMC's
+# reading differs from IEEE 1800-2017 or is not decidable here, so that agreement would prove
+# nothing and disagreement would be noise.
+exclude disable-iff @disable
+exclude initial-procedure @procedure
+exclude assume-kind @assume
+exclude x-z-literal @xz-literal
+exclude cover-vacuity @cover+|-> @cover+|=>
+exclude sampled-value-functions $past $rose $fell $stable $changed $sampled
+exclude isunknown $isunknown
+exclude system-functions $onehot $onehot0 $countones $bits $clog2
+exclude inside inside
+exclude goto-nonconsecutive-ranges [->m:n] [->m:$] [=N] [=m:n] [=m:$]
+exclude pending-match-operators intersect within throughout
+exclude unbounded-under-not not+##[m:$] not+[*m:$] not+s_eventually not+until not+s_until not+until_with not+s_until_with not+strong not+weak
+
+# --- BMC: finite and bounded properties, compared on the written samples ---------------------
+
+== bmc-sequences
+engine: bmc
+kinds: assert cover
+vocabulary: ##N ##[m:n] and or
+positive: cover_pending:cover_sequence_ends_once_per_sample
+negative: ieee_directives:ieee_16_14_8_a_sequence_is_always_nonvacuous
+note: Boolean expressions, fixed delays, bounded delay ranges, and/or of sequences (asserts and covers)
+
+== bmc-repetition
+engine: bmc
+kinds: assert cover
+vocabulary: ##N ##[m:n] [*N] [*m:n] and or |-> |=>
+requires: [*N] [*m:n]
+positive: repetition:p08_three_in_a_row
+negative: repetition:p08_gap_fails
+note: consecutive repetition with fixed bounds
+
+== bmc-implication
+engine: bmc
+kinds: assert
+vocabulary: ##N ##[m:n] [*N] [*m:n] and or |-> |=>
+requires: |-> |=>
+positive: delays:p05_latest_valid_match
+negative: delays:p05_fail_at_last_chance
+note: overlapping and non-overlapping implication of bounded sequences
+
+== bmc-not
+engine: bmc
+kinds: assert
+vocabulary: ##N ##[m:n] [*N] [*m:n] and or |-> |=> not
+requires: not
+positive: not:not_after_nonoverlapping_implication_passes
+negative: not:not_fails_at_the_first_match
+note: not of a bounded sequence or property
+
+== bmc-if-else
+engine: bmc
+kinds: assert
+vocabulary: ##N ##[m:n] [*N] [*m:n] and or |-> |=> not if else
+requires: if else
+positive: ieee_directives:ieee_16_14_8_g_if_else_selected_branch
+negative: if:if_else_selects_one_branch
+note: if (b) p else q
+
+== bmc-until
+engine: bmc
+kinds: assert
+vocabulary: ##N ##[m:n] [*N] [*m:n] and or |-> |=> not if else until s_until
+requires: until s_until
+positive: ieee_properties:ieee_16_12_12_until_weak_p1
+negative: ieee_properties:ieee_16_12_12_until_left_drops_before_right
+note: until and s_until on a finite trace (a pending strong until is not a failure within the samples)
+
+# --- BDD: unbounded recurrence on a lasso, plain --bdd (the raw directive covers every attempt) ---
+
+== bdd-recurrence
+engine: bdd
+kinds: assert
+vocabulary: always s_eventually
+requires: s_eventually
+forbids: @eventually-always
+positive: lasso:always_eventually_infinitely_often
+negative: lasso:always_eventually_b_only_once
+note: always s_eventually and s_eventually (EBMC wraps a directive in always, so both are recurrence); plain --bdd refuses implication into s_eventually and s_eventually always (not supported by the BDD engine)
+
+# --- BUECHI: --bdd --buechi on a lasso, one assertion per start (Spot's ltl2tgba on the PATH) ---
+
+== buechi-strong-sequence
+engine: buechi
+kinds: assert
+vocabulary: strong ##N ##[m:n] ##[m:$] [*N] [*m:n] [*m:$] [->N] and or |->
+requires: strong
+positive: strong_liveness:strong_consequent_with_a_and_b_at_every_sample
+negative: constants:lasso_strong_constant_false_after_an_unbounded_delay_is_false_for_ever
+note: strong sequences, also as the consequent of an implication
+
+== buechi-s-until
+engine: buechi
+kinds: assert
+vocabulary: s_until s_until_with
+requires: s_until s_until_with
+positive: strong_liveness:s_until_c_in_the_loop
+negative: strong_liveness:s_until_never_c_while_b_holds
+note: strong until
+
+== buechi-eventually-always
+engine: buechi
+kinds: assert
+vocabulary: s_eventually always
+requires: @eventually-always
+forbids: @recurrence
+positive: ieee_properties:ieee_16_12_13_s_eventually_always_stays_high_p2
+negative: ieee_properties:ieee_16_12_13_s_eventually_always_alternating_p2
+note: s_eventually always
+
+== buechi-s-eventually
+engine: buechi
+kinds: assert
+vocabulary: s_eventually |->
+requires: s_eventually
+positive: lasso:s_eventually_b_periodic
+negative: lasso:s_eventually_b_never
+note: s_eventually and implication into it, each attempt alone (not under always: no recurrence)

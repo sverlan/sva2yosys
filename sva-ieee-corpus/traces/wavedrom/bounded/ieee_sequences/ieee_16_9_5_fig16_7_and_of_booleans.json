@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp............"
+    },
+    {
+      "name": "te1",
+      "wave": "1010...10...1."
+    },
+    {
+      "name": "te2",
+      "wave": "1.....01....01"
+    },
+    {
+      "name": "fail",
+      "wave": "0101...01....0"
+    },
+    {
+      "name": "pass",
+      "wave": "1010...10....1"
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_9_5_fig16_7_and_of_booleans",
+    "tock": 0
+  }
+}

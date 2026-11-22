@@ -1,0 +1,37 @@
+# Expected results of sva2yosys on the Yosys SVA tests (CONTRACT.md).
+# Written for YosysHQ/yosys main at ba8e952, Yosys 0.63+173 (OSS CAD Suite).
+corpus-sha256: c3ae9a328eccb13f2e5fde4ea1cc9dae8b7ce6c7dfad7d3d6b186e7b8cbd4221
+#
+# case                         variant  expectation [fragment]                      # note
+basic00                        pass     pass
+basic00                        fail     fail
+basic01                        pass     pass
+basic01                        fail     fail
+basic02                        pass     pass                                          # bind
+basic02                        fail     fail
+basic03                        pass     pass
+basic03                        fail     fail
+basic04                        pass     skipped the design is VHDL (basic04.vhd)
+basic04                        fail     skipped the design is VHDL (basic04.vhd)
+basic05                        pass     skipped the design is VHDL (basic05.vhd)
+basic05                        fail     skipped the design is VHDL (basic05.vhd)
+counter                        pass     pass
+counter                        fail     fail
+extnets                        pass     fail                                          # no concurrent SVA; plain read_verilog fails the same way on this Yosys build (undriven external net top.o)
+extnets                        fail     fail
+nested_clk_else                pass     pass
+nested_clk_else                fail     fail
+sva_not                        pass     pass
+sva_not                        fail     fail
+sva_range                      pass     pass                                          # accepted: a ##[*] b |=> c until d, the weak until as an unbounded consequent; the assumptions make c hold from b+1 until d (d at b+6 at the latest), so it proves (IEEE agrees)
+sva_range                      fail     fail                                          # without the assumptions c may be low right after b, so the assertion fails (IEEE agrees)
+sva_throughout                 pass     pass
+sva_throughout                 fail     fail
+sva_value_change_changed       pass     pass
+sva_value_change_changed       fail     fail
+sva_value_change_changed_wide  pass     rejected contains x/z bits                   # a !== 'x: two-state model
+sva_value_change_changed_wide  fail     fail
+sva_value_change_rose          pass     pass
+sva_value_change_rose          fail     fail
+sva_value_change_sim           pass     skipped checked by the corpus in simulation (.ys) with X values, not by SBY; read_verilog -formal cannot parse its $fell(a, @(posedge clk)) wires
+sva_value_change_sim           fail     skipped checked by the corpus in simulation (.ys) with X values, not by SBY; read_verilog -formal cannot parse its $fell(a, @(posedge clk)) wires

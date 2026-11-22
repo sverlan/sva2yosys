@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "e",
+      "wave": "01"
+    },
+    {
+      "name": "a",
+      "wave": "1."
+    },
+    {
+      "name": "fail",
+      "wave": "0."
+    },
+    {
+      "name": "pass",
+      "wave": "01"
+    }
+  ],
+  "head": {
+    "text": "if/cover_of_if_without_else",
+    "tock": 0
+  }
+}

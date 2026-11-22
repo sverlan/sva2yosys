@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "10..."
+    },
+    {
+      "name": "b",
+      "wave": "1..0."
+    },
+    {
+      "name": "c",
+      "wave": "0...."
+    },
+    {
+      "name": "fail",
+      "wave": "0..10"
+    },
+    {
+      "name": "pass",
+      "wave": "0...."
+    }
+  ],
+  "head": {
+    "text": "unbounded/repeat_plus_then_c_fails",
+    "tock": 0
+  }
+}

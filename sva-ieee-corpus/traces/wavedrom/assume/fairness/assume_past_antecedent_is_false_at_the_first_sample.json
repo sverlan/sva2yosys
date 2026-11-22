@@ -1,0 +1,40 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "b",
+      "wave": "0."
+    },
+    {
+      "name": "a",
+      "wave": "1."
+    },
+    {
+      "name": "fail",
+      "wave": "0."
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    },
+    {
+      "name": "repeat",
+      "wave": "01"
+    },
+    {
+      "name": "outcome",
+      "wave": "==",
+      "data": [
+        "T",
+        "F"
+      ]
+    }
+  ],
+  "head": {
+    "text": "fairness/assume_past_antecedent_is_false_at_the_first_sample",
+    "tock": 0
+  }
+}

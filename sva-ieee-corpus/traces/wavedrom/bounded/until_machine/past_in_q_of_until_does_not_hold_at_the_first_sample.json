@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "10."
+    },
+    {
+      "name": "b",
+      "wave": "0.."
+    },
+    {
+      "name": "c",
+      "wave": "10."
+    },
+    {
+      "name": "fail",
+      "wave": "10."
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "until_machine/past_in_q_of_until_does_not_hold_at_the_first_sample",
+    "tock": 0
+  }
+}

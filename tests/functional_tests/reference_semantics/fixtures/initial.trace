@@ -1,0 +1,178 @@
+# Concurrent assertions in an `initial` procedure (IEEE 1800-2017 16.14.6).
+# `procedure: initial` places the directive in an initial block; its clock is the explicit
+# @(posedge clk) of every case. A condition around the directive is not covered here: it is
+# rejected (docs/semantics.md section 6). The procedure runs once at time 0, so the directive has ONE evaluation attempt, at the first tick of its clock
+# (sample 0 here). Every expected row is derived by hand from that rule; each case notes what
+# the same directive gives at module level (an attempt at every sample), to show the rows
+# depend on it. In the lowered form (`first |-> p`, docs/semantics.md section 6) the starts
+# after sample 0 are vacuous successes: `t` in the outcome rows, decided at their own sample.
+
+== initial_starts_one_attempt
+property: a |-> ##1 b
+procedure: initial
+clause: 16.14.6 16.12.7
+class: normative
+origin: hand-derived
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 1 1 1
+b       : . 1 . .
+# start 0: a at 0, b at 1: TRUE, decided at 1. Starts 1-3: no attempt (vacuous in the lowered
+# form). At module level starts 1 and 2 would fail at 2 and 3 (b low there).
+outcome : T t t t
+decided : 1 1 2 3
+pass    : . 1 . .
+pending : 0
+final-fail: 0
+
+== initial_attempt_fails
+property: a |-> ##1 b
+procedure: initial
+clause: 16.14.6 16.12.7
+class: normative
+origin: hand-derived
+sample : 0 1 2
+a      : 1 . .
+b      : . . 1
+# start 0: a at 0, b low at 1: fails at 1. (Module level: the same failure, nothing else.)
+fail   : . 1 .
+pass   : . . .
+
+== initial_vacuous_first_attempt_leaves_none
+property: a |-> ##1 b
+procedure: initial
+clause: 16.14.6 16.12.7
+class: normative
+origin: hand-derived
+sample : 0 1 2 3
+a      : . 1 1 .
+b      : . . . .
+# start 0: a low, vacuous success. No later attempt, so a at 1 and 2 triggers nothing.
+# (Module level: starts 1 and 2 fail at 2 and 3.)
+fail   : . . . .
+pass   : . . . .
+
+== initial_holds_once_but_not_at_every_tick
+property: always [0:3] v < 4
+procedure: initial
+clause: 16.14.6 16.12.11
+class: normative
+origin: hand-derived (the shape of EBMC's always_with_range1 p0)
+signals: v:4
+scope: attempt
+# Attempt scope: the result of the single attempt. (At obligation scope `always [0:3]` has
+# one obligation per sample 0 to 3, each a success: the first version of this case mixed the
+# two scopes; fixed before the review.)
+sample  : 0 1 2 3 4 5
+v       : 0 1 2 3 4 5
+# start 0 checks v < 4 at samples 0 to 3 (0, 1, 2, 3): TRUE, decided at 3; a Boolean
+# operand makes it nonvacuous (16.14.8). Starts 1-5: no attempt (vacuous in the lowered
+# form, decided at their own sample). (Module level: the start at 1 sees v = 4 at 4 and
+# fails there, the start at 2 at 4 too, and so on.)
+outcome : T t t t t t
+decided : 3 1 2 3 4 5
+pass    : . . . 1 . .
+pending : 0
+final-fail: 0
+
+== initial_cover_reports_only_the_first_attempt
+property: a ##1 b
+kind: cover
+procedure: initial
+clause: 16.14.6 16.14.3
+class: normative
+origin: hand-derived
+sample : 0 1 2
+a      : 1 1 .
+b      : . . 1
+# start 0: a at 0, b low at 1: no match. The start at 1 would match at 2 at module level;
+# here there is no such attempt, so nothing is covered.
+pass   : . . .
+
+== initial_cover_matches
+property: a ##1 b
+kind: cover
+procedure: initial
+clause: 16.14.6 16.14.3
+class: normative
+origin: hand-derived
+sample : 0 1
+a      : 1 .
+b      : . 1
+# start 0: a at 0, b at 1: covered at 1.
+pass   : . 1
+
+== initial_assume_constrains_one_attempt
+property: a |-> ##1 b
+kind: assume
+procedure: initial
+clause: 16.14.6 16.14.2
+class: normative
+origin: hand-derived
+sample : 0 1 2
+a      : 1 1 1
+b      : . . .
+# The trace violates the assumption only through start 0, at 1. (Module level: also start
+# 1, at 2.)
+fail   : . 1 .
+pass   : . . .
+
+== initial_disable_at_first_tick_leaves_no_attempt
+property: a |-> ##1 b
+disable: r
+procedure: initial
+clause: 16.14.6 16.12
+class: normative
+origin: hand-derived
+sample : 0 1 2 3
+r      : 1 . . .
+a      : 1 1 1 1
+b      : . . . .
+# start 0 is disabled at 0 (r true at its start). disable iff does not start a new attempt
+# and does not reset the first tick, so nothing can fail. (Module level: starts 1 and 2
+# fail at 2 and 3.)
+fail   : . . . .
+pass   : . . . .
+
+== initial_disable_during_the_attempt
+property: a |-> ##2 b
+disable: r
+procedure: initial
+clause: 16.14.6 16.12
+class: normative
+origin: hand-derived
+sample : 0 1 2 3
+r      : . 1 . .
+a      : 1 . . .
+b      : . . . .
+# start 0: a at 0, b due at 2; r at 1 disables it before. No failure.
+fail   : . . . .
+pass   : . . . .
+
+== initial_past_at_the_first_tick
+property: a |-> $past(b)
+procedure: initial
+clause: 16.14.6 16.9.3
+class: normative
+origin: hand-derived
+sample : 0 1
+a      : 1 1
+b      : 1 1
+# The only attempt is at the first tick, where $past(b) has no history (X, not a known 1:
+# docs/semantics.md section 8), so it fails at 0. (Module level: the start at 1 sees
+# $past(b) = 1 and passes.)
+fail   : 1 .
+pass   : . .
+
+== initial_past_after_the_first_tick
+property: a |-> ##1 $past(b)
+procedure: initial
+clause: 16.14.6 16.9.3
+class: normative
+origin: hand-derived
+sample : 0 1 2
+a      : 1 . .
+b      : 1 . .
+# start 0: at 1, $past(b) is b at 0 = 1: TRUE at 1.
+fail   : . . .
+pass   : . 1 .

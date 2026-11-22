@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "1.0.."
+    },
+    {
+      "name": "b",
+      "wave": "01..0"
+    },
+    {
+      "name": "c",
+      "wave": "0...1"
+    },
+    {
+      "name": "fail",
+      "wave": "0...."
+    },
+    {
+      "name": "pass",
+      "wave": "0...1"
+    }
+  ],
+  "head": {
+    "text": "unbounded_covers/cover_identical_configurations_of_two_attempts",
+    "tock": 0
+  }
+}

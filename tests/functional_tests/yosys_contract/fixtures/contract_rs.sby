@@ -1,0 +1,29 @@
+[tasks]
+bmc_ok    bmc   ok
+bmc_bad   bmc   bad
+prove_ok  prove ok
+cover_d2  cover ok
+cover_d3  cover d3
+
+[options]
+bmc: mode bmc
+bmc: depth 12
+prove: mode prove
+cover: mode cover
+cover: depth 12
+
+[engines]
+bmc: smtbmc yices
+prove: abc pdr
+cover: smtbmc yices
+
+[script]
+plugin -i slang
+ok: read_slang -D FORMAL --top top_delay -G DELAY=2 monitor_window.sv dut_delay.sv
+bad: read_slang -D FORMAL --top top_delay -G DELAY=4 monitor_window.sv dut_delay.sv
+d3: read_slang -D FORMAL --top top_delay -G DELAY=3 monitor_window.sv dut_delay.sv
+prep -top top_delay
+
+[files]
+monitor_window.sv
+dut_delay.sv

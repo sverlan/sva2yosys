@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "b",
+      "wave": "1010."
+    },
+    {
+      "name": "c",
+      "wave": "010.1"
+    },
+    {
+      "name": "d",
+      "wave": "0...."
+    },
+    {
+      "name": "fail",
+      "wave": "010.."
+    },
+    {
+      "name": "pass",
+      "wave": "0...."
+    }
+  ],
+  "head": {
+    "text": "unbounded/goto_dollar_antecedent_never_decides",
+    "tock": 0
+  }
+}

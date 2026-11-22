@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "b",
+      "wave": "10."
+    },
+    {
+      "name": "c",
+      "wave": "010"
+    },
+    {
+      "name": "fail",
+      "wave": "01."
+    },
+    {
+      "name": "pass",
+      "wave": "010"
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_14_8_a_sequence_is_always_nonvacuous",
+    "tock": 0
+  }
+}

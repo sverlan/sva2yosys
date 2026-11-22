@@ -1,0 +1,777 @@
+{
+  "examples": [
+    {
+      "id": "defaults",
+      "source": "tests/functional_tests/documentation_examples/fixtures/defaults.sv",
+      "top": "top",
+      "topics": [
+        "clocking",
+        "disable",
+        "declarations",
+        "directives"
+      ],
+      "counts": {
+        "accepted": 2,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "procedural",
+      "source": "tests/functional_tests/documentation_examples/fixtures/procedural.sv",
+      "top": "top",
+      "topics": [
+        "procedural",
+        "directives"
+      ],
+      "counts": {
+        "accepted": 2,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "initial",
+      "source": "tests/functional_tests/documentation_examples/fixtures/initial.sv",
+      "top": "top",
+      "topics": [
+        "initial",
+        "directives"
+      ],
+      "counts": {
+        "accepted": 1,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "integral",
+      "source": "tests/functional_tests/documentation_examples/fixtures/integral.sv",
+      "top": "top",
+      "topics": [
+        "types",
+        "expressions"
+      ],
+      "counts": {
+        "accepted": 3,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "sampled",
+      "source": "tests/functional_tests/documentation_examples/fixtures/sampled.sv",
+      "top": "top",
+      "topics": [
+        "sampled-values"
+      ],
+      "counts": {
+        "accepted": 4,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "functions",
+      "source": "tests/functional_tests/documentation_examples/fixtures/functions.sv",
+      "top": "top",
+      "topics": [
+        "functions"
+      ],
+      "counts": {
+        "accepted": 3,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "inside",
+      "source": "tests/functional_tests/documentation_examples/fixtures/inside.sv",
+      "top": "top",
+      "topics": [
+        "inside"
+      ],
+      "counts": {
+        "accepted": 3,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "bounded-sequences",
+      "source": "tests/functional_tests/documentation_examples/fixtures/bounded-sequences.sv",
+      "top": "top",
+      "topics": [
+        "delays",
+        "repetition"
+      ],
+      "counts": {
+        "accepted": 4,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "sequence-composition",
+      "source": "tests/functional_tests/documentation_examples/fixtures/sequence-composition.sv",
+      "top": "top",
+      "topics": [
+        "sequence-composition"
+      ],
+      "counts": {
+        "accepted": 5,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "property-composition",
+      "source": "tests/functional_tests/documentation_examples/fixtures/property-composition.sv",
+      "top": "top",
+      "topics": [
+        "property-composition",
+        "cover"
+      ],
+      "counts": {
+        "accepted": 6,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "bounded-properties",
+      "source": "tests/functional_tests/documentation_examples/fixtures/bounded-properties.sv",
+      "top": "top",
+      "topics": [
+        "bounded-properties"
+      ],
+      "counts": {
+        "accepted": 6,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "unbounded-antecedents",
+      "source": "tests/functional_tests/documentation_examples/fixtures/unbounded-antecedents.sv",
+      "top": "top",
+      "topics": [
+        "unbounded-antecedents",
+        "always"
+      ],
+      "counts": {
+        "accepted": 3,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "weak-unbounded",
+      "source": "tests/functional_tests/documentation_examples/fixtures/weak-unbounded.sv",
+      "top": "top",
+      "topics": [
+        "unbounded-sequences",
+        "until"
+      ],
+      "counts": {
+        "accepted": 6,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": [
+        "can never fail"
+      ]
+    },
+    {
+      "id": "unbounded-covers",
+      "source": "tests/functional_tests/documentation_examples/fixtures/unbounded-covers.sv",
+      "top": "top",
+      "topics": [
+        "unbounded-sequences",
+        "cover"
+      ],
+      "counts": {
+        "accepted": 4,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "strong-forms",
+      "source": "tests/functional_tests/documentation_examples/fixtures/strong-forms.sv",
+      "top": "top",
+      "topics": [
+        "strength",
+        "liveness",
+        "until"
+      ],
+      "counts": {
+        "accepted": 6,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": [
+        "5 liveness parts in one `live` task would report only the first verdict",
+        "5 liveness parts in one `live` task would report only the first verdict",
+        "5 liveness parts in one `live` task would report only the first verdict",
+        "5 liveness parts in one `live` task would report only the first verdict",
+        "5 liveness parts in one `live` task would report only the first verdict"
+      ]
+    },
+    {
+      "id": "fairness",
+      "source": "tests/functional_tests/documentation_examples/fixtures/fairness.sv",
+      "top": "top",
+      "topics": [
+        "fairness",
+        "cover"
+      ],
+      "counts": {
+        "accepted": 3,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": [
+        "provisional"
+      ]
+    },
+    {
+      "id": "variants",
+      "source": "tests/functional_tests/documentation_examples/fixtures/variants.sv",
+      "top": "top",
+      "topics": [
+        "parameters",
+        "generate"
+      ],
+      "counts": {
+        "accepted": 4,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "proof-cover",
+      "source": "tests/functional_tests/documentation_examples/fixtures/proof-cover.sv",
+      "top": "top",
+      "topics": [
+        "behavioral-controls"
+      ],
+      "counts": {
+        "accepted": 2,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "assertion-failure",
+      "source": "tests/functional_tests/documentation_examples/fixtures/assertion-failure.sv",
+      "top": "top",
+      "topics": [
+        "behavioral-controls"
+      ],
+      "counts": {
+        "accepted": 1,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "strong-pass",
+      "source": "tests/functional_tests/documentation_examples/fixtures/strong-pass.sv",
+      "top": "top",
+      "topics": [
+        "behavioral-controls",
+        "liveness"
+      ],
+      "counts": {
+        "accepted": 1,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "strong-fail",
+      "source": "tests/functional_tests/documentation_examples/fixtures/strong-fail.sv",
+      "top": "top",
+      "topics": [
+        "behavioral-controls",
+        "liveness"
+      ],
+      "counts": {
+        "accepted": 1,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    },
+    {
+      "id": "binding",
+      "source": "examples/handshake/props/handshake_props.sv",
+      "top": "handshake",
+      "libraries": [
+        "examples/handshake/rtl"
+      ],
+      "topics": [
+        "binding",
+        "directives"
+      ],
+      "counts": {
+        "accepted": 4,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0
+    },
+    {
+      "id": "x-checks",
+      "source": "tests/functional_tests/documentation_examples/fixtures/x-checks.sv",
+      "top": "top",
+      "topics": [
+        "x-checks"
+      ],
+      "counts": {
+        "accepted": 1,
+        "skipped": 1,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": [
+        "the X part of this assert is dropped"
+      ]
+    },
+    {
+      "id": "reject-x-checks",
+      "source": "tests/functional_tests/documentation_examples/fixtures/x-checks.sv",
+      "top": "top",
+      "topics": [
+        "x-checks"
+      ],
+      "options": [
+        "--x-checks=reject"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 2
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "$isunknown"
+      ],
+      "generation_messages": [
+        "$isunknown"
+      ]
+    },
+    {
+      "id": "reject-disable",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-disable.sv",
+      "top": "top",
+      "topics": [
+        "disable"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "disable iff"
+      ],
+      "generation_messages": [
+        "disable iff"
+      ]
+    },
+    {
+      "id": "reject-initial",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-initial.sv",
+      "top": "top",
+      "topics": [
+        "initial"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "initial"
+      ],
+      "generation_messages": [
+        "initial"
+      ]
+    },
+    {
+      "id": "reject-past-default",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-past-default.sv",
+      "top": "top",
+      "topics": [
+        "sampled-values"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "before the first clock tick is not unknown"
+      ],
+      "generation_messages": [
+        "before the first clock tick is not unknown"
+      ]
+    },
+    {
+      "id": "reject-past-first",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-past-first.sv",
+      "top": "top",
+      "topics": [
+        "sampled-values"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "first sample"
+      ],
+      "generation_messages": [
+        "first sample"
+      ]
+    },
+    {
+      "id": "reject-gated-past",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-gated-past.sv",
+      "top": "top",
+      "topics": [
+        "sampled-values"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "$past"
+      ],
+      "generation_messages": [
+        "$past"
+      ]
+    },
+    {
+      "id": "reject-negedge",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-negedge.sv",
+      "top": "top",
+      "topics": [
+        "clocking"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "negedge clocks are not supported yet"
+      ],
+      "generation_messages": [
+        "negedge clocks are not supported yet"
+      ]
+    },
+    {
+      "id": "reject-first-match",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-first-match.sv",
+      "top": "top",
+      "topics": [
+        "sequence-composition"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "FirstMatch"
+      ],
+      "generation_messages": [
+        "FirstMatch"
+      ]
+    },
+    {
+      "id": "reject-empty-product",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-empty-product.sv",
+      "top": "top",
+      "topics": [
+        "sequence-composition"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "empty"
+      ],
+      "generation_messages": [
+        "empty"
+      ]
+    },
+    {
+      "id": "reject-inside",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-inside.sv",
+      "top": "top",
+      "topics": [
+        "inside"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "not all of one width and signedness"
+      ],
+      "generation_messages": [
+        "not all of one width and signedness"
+      ]
+    },
+    {
+      "id": "reject-cover",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-cover.sv",
+      "top": "top",
+      "topics": [
+        "cover"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "nonvacuity is not known"
+      ],
+      "generation_messages": [
+        "nonvacuity is not known"
+      ]
+    },
+    {
+      "id": "reject-fairness",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-fairness.sv",
+      "top": "top",
+      "topics": [
+        "fairness"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "(liveness) in 'assume'"
+      ],
+      "generation_messages": [
+        "(liveness) in 'assume'"
+      ]
+    },
+    {
+      "id": "reject-member",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-member.sv",
+      "top": "top",
+      "topics": [
+        "types"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "member"
+      ],
+      "generation_messages": [
+        "member"
+      ]
+    },
+    {
+      "id": "reject-history-selector",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-history-selector.sv",
+      "top": "top",
+      "topics": [
+        "property-composition"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "$past"
+      ],
+      "generation_messages": [
+        "$past"
+      ]
+    },
+    {
+      "id": "reject-division",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-division.sv",
+      "top": "top",
+      "topics": [
+        "expressions"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "divisor"
+      ],
+      "generation_messages": [
+        "divisor"
+      ]
+    },
+    {
+      "id": "frontend-error",
+      "source": "tests/functional_tests/cli/fixtures/broken.sv",
+      "top": "broken",
+      "topics": [
+        "frontend-errors"
+      ],
+      "counts": null,
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "missing_signal"
+      ],
+      "generation_messages": [
+        "missing_signal"
+      ]
+    },
+    {
+      "id": "reject-past-int",
+      "source": "tests/functional_tests/documentation_examples/fixtures/reject-past-int.sv",
+      "top": "top",
+      "topics": [
+        "sampled-values",
+        "types"
+      ],
+      "counts": {
+        "accepted": 0,
+        "skipped": 0,
+        "rejected": 1
+      },
+      "check_exit": 1,
+      "generation_exit": 1,
+      "check_messages": [
+        "before the first clock tick is not unknown"
+      ],
+      "generation_messages": [
+        "before the first clock tick is not unknown"
+      ]
+    },
+    {
+      "id": "restrict",
+      "source": "tests/functional_tests/documentation_examples/fixtures/restrict.sv",
+      "top": "top",
+      "topics": [
+        "directives"
+      ],
+      "counts": {
+        "accepted": 2,
+        "skipped": 0,
+        "rejected": 0
+      },
+      "check_exit": 0,
+      "generation_exit": 0,
+      "warnings": []
+    }
+  ]
+}

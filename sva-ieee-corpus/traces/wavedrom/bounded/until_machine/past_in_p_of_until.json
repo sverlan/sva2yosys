@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "01.0."
+    },
+    {
+      "name": "b",
+      "wave": "1.0.."
+    },
+    {
+      "name": "c",
+      "wave": "0..10"
+    },
+    {
+      "name": "fail",
+      "wave": "0...."
+    },
+    {
+      "name": "pass",
+      "wave": "0..10"
+    }
+  ],
+  "head": {
+    "text": "until_machine/past_in_p_of_until",
+    "tock": 0
+  }
+}

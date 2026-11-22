@@ -1,0 +1,110 @@
+name: Tools and corpora
+description: >-
+  Download and cache the tools of the full suite on a Linux runner (a pinned OSS CAD Suite, EBMC,
+  the slang executable and Spot compiled from its source) and the three third-party test corpora,
+  and export the variables the tests read. Every download is checked by its SHA-256. The caches
+  are deleted after seven days without use, so a cold run downloads and compiles again. The pins
+  are those of docker/ci/Dockerfile (a test keeps them equal).
+
+runs:
+  using: composite
+  steps:
+    - name: Pins
+      shell: bash
+      run: |
+        {
+          echo "OSS_CAD_TAG=2026-10-31"
+          echo "OSS_CAD_FILE=oss-cad-suite-linux-x64-20261031.tgz"
+          echo "OSS_CAD_SHA256=e0349f66547ca1ac9a24b5e06287d4719aa0213d431e1168eb319915340dc665"
+          echo "EBMC_URL=https://github.com/diffblue/hw-cbmc/releases/download/ebmc-6.1/ebmc_6.1_amd64.deb"
+          echo "EBMC_SHA256=aa0d3e6ab04efcd85c270fd3f192bbcbc18fdc03bda2f21832a481c28a32da0c"
+          echo "SLANG_URL=https://github.com/MikePopoloski/slang/releases/download/v12.0/slang-linux-x86_64.tar.gz"
+          echo "SLANG_SHA256=d1f680e2c90b95daab3b812a6431055e3d8828fde281dbf89b72ee3eceb90dd5"
+          echo "SPOT_URL=https://www.lre.epita.fr/dload/spot/spot-2.16.1.tar.gz"
+          echo "SPOT_SHA256=182f4180da851588886a2e5f1540c3e2bb5cfddd228fd20689fa7ce498f57733"
+        } >> "${GITHUB_ENV}"
+    - name: Restore the OSS CAD Suite
+      id: suite
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ~/oss-cad-suite
+        key: oss-cad-suite-${{ env.OSS_CAD_TAG }}-${{ env.OSS_CAD_SHA256 }}
+    - name: Download the OSS CAD Suite
+      if: steps.suite.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        url="https://github.com/YosysHQ/oss-cad-suite-build/releases/download/${OSS_CAD_TAG}/${OSS_CAD_FILE}"
+        curl -fsSL -o "${RUNNER_TEMP}/${OSS_CAD_FILE}" "${url}"
+        echo "${OSS_CAD_SHA256}  ${RUNNER_TEMP}/${OSS_CAD_FILE}" | sha256sum -c -
+        tar -xzf "${RUNNER_TEMP}/${OSS_CAD_FILE}" -C "${HOME}"
+        rm "${RUNNER_TEMP}/${OSS_CAD_FILE}"
+    - name: Restore EBMC and the slang executable
+      id: small
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: |
+          ~/tools/ebmc
+          ~/tools/slang
+        key: ebmc-slang-${{ env.EBMC_SHA256 }}-${{ env.SLANG_SHA256 }}
+    - name: Download EBMC and the slang executable
+      if: steps.small.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        mkdir -p "${HOME}/tools/ebmc" "${HOME}/tools/slang"
+        curl -fsSL -o "${RUNNER_TEMP}/ebmc.deb" "${EBMC_URL}"
+        echo "${EBMC_SHA256}  ${RUNNER_TEMP}/ebmc.deb" | sha256sum -c -
+        dpkg-deb -x "${RUNNER_TEMP}/ebmc.deb" "${RUNNER_TEMP}/ebmc"
+        cp "$(find "${RUNNER_TEMP}/ebmc" -type f -name ebmc | head -n 1)" "${HOME}/tools/ebmc/ebmc"
+        curl -fsSL -o "${RUNNER_TEMP}/slang.tar.gz" "${SLANG_URL}"
+        echo "${SLANG_SHA256}  ${RUNNER_TEMP}/slang.tar.gz" | sha256sum -c -
+        mkdir "${RUNNER_TEMP}/slang"
+        tar -xzf "${RUNNER_TEMP}/slang.tar.gz" -C "${RUNNER_TEMP}/slang"
+        cp "$(find "${RUNNER_TEMP}/slang" -type f -name slang | head -n 1)" "${HOME}/tools/slang/slang"
+    - name: Restore Spot
+      id: spot
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ~/tools/spot
+        key: spot-${{ env.SPOT_SHA256 }}
+    - name: Compile Spot
+      if: steps.spot.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        curl -fsSL -o "${RUNNER_TEMP}/spot.tar.gz" "${SPOT_URL}"
+        echo "${SPOT_SHA256}  ${RUNNER_TEMP}/spot.tar.gz" | sha256sum -c -
+        tar -xzf "${RUNNER_TEMP}/spot.tar.gz" -C "${RUNNER_TEMP}"
+        cd "${RUNNER_TEMP}"/spot-*/
+        ./configure --disable-python --disable-doxygen --disable-shared --enable-static CXXFLAGS="-O2 -g0"
+        make -j"$(nproc)"
+        mkdir -p "${HOME}/tools/spot"
+        cp bin/ltl2tgba "${HOME}/tools/spot/ltl2tgba"
+        strip "${HOME}/tools/spot/ltl2tgba"
+    - name: Restore the corpora
+      id: corpora
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ~/corpora
+        key: corpora-${{ hashFiles('tests/support/corpora.py') }}
+    - name: Download the corpora
+      if: steps.corpora.outputs.cache-hit != 'true'
+      shell: bash
+      run: python3 tests/support/corpora.py "${HOME}/corpora" yosys ebmc sby
+    - name: Export the variables the tests read
+      shell: bash
+      run: |
+        suite="${HOME}/oss-cad-suite"
+        {
+          echo "SVA2YOSYS_YOSYS=${suite}/bin/yosys"
+          echo "SVA2YOSYS_SBY=${suite}/bin/sby"
+          echo "SVA2YOSYS_SBY_LIVE=${suite}/bin/sby"
+          echo "SVA2YOSYS_VERILATOR=${suite}/bin/verilator_bin"
+          echo "SVA2YOSYS_VERILATOR_SHELL=/bin/sh"
+          echo "SVA2YOSYS_VERILATOR_ROOT=${suite}/share/verilator"
+          echo "SVA2YOSYS_VERILATOR_BUILD_PATH=/usr/bin:/usr/local/bin"
+          echo "SVA2YOSYS_EBMC=${HOME}/tools/ebmc/ebmc"
+          echo "SVA2YOSYS_LTL2TGBA=${HOME}/tools/spot"
+          echo "SVA2YOSYS_SLANG=${HOME}/tools/slang/slang"
+          echo "SVA2YOSYS_YOSYS_SVA_TESTS=${HOME}/corpora/yosys/tests/sva"
+          echo "SVA2YOSYS_EBMC_TESTS=${HOME}/corpora/ebmc/regression/verilog/SVA"
+          echo "SVA2YOSYS_SBY_EXAMPLES=${HOME}/corpora/sby"
+        } >> "${GITHUB_ENV}"

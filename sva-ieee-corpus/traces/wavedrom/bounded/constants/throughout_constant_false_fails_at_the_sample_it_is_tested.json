@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "a",
+      "wave": "10"
+    },
+    {
+      "name": "b",
+      "wave": "10"
+    },
+    {
+      "name": "c",
+      "wave": "01"
+    },
+    {
+      "name": "fail",
+      "wave": "10"
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    }
+  ],
+  "head": {
+    "text": "constants/throughout_constant_false_fails_at_the_sample_it_is_tested",
+    "tock": 0
+  }
+}

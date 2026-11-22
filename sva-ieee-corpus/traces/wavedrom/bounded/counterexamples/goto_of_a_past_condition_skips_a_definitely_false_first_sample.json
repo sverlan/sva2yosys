@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "x",
+      "wave": "10."
+    },
+    {
+      "name": "a",
+      "wave": "010"
+    },
+    {
+      "name": "b",
+      "wave": "1.0"
+    },
+    {
+      "name": "fail",
+      "wave": "010"
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "counterexamples/goto_of_a_past_condition_skips_a_definitely_false_first_sample",
+    "tock": 0
+  }
+}

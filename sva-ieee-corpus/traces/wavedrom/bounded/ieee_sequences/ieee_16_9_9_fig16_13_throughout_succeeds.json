@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp............"
+    },
+    {
+      "name": "go",
+      "wave": "010..........."
+    },
+    {
+      "name": "burst_mode",
+      "wave": "10.........1.."
+    },
+    {
+      "name": "trdy",
+      "wave": "1..0......1..."
+    },
+    {
+      "name": "irdy",
+      "wave": "1.0........1.."
+    },
+    {
+      "name": "fail",
+      "wave": "0............."
+    },
+    {
+      "name": "pass",
+      "wave": "0........10..."
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_9_9_fig16_13_throughout_succeeds",
+    "tock": 0
+  }
+}

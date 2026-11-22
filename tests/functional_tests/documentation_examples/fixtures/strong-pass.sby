@@ -1,0 +1,21 @@
+[tasks]
+prove prove
+live live
+
+[options]
+prove: mode prove
+live: mode live
+
+[engines]
+prove: abc pdr
+live: aiger suprove
+
+[script]
+prove: script sva2yosys_read.ys
+live: script sva2yosys_read_live.ys
+prove: prep -top top
+live: prep -top top
+
+[files]
+build/sva2yosys_read.ys
+build/sva2yosys_read_live.ys

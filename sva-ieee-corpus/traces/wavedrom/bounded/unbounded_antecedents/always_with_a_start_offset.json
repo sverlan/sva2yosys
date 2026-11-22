@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "b",
+      "wave": "0.1010"
+    },
+    {
+      "name": "fail",
+      "wave": "0..101"
+    },
+    {
+      "name": "pass",
+      "wave": "0.1010"
+    }
+  ],
+  "head": {
+    "text": "unbounded_antecedents/always_with_a_start_offset",
+    "tock": 0
+  }
+}

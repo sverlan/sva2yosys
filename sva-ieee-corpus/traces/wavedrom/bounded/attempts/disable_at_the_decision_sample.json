@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "rst",
+      "wave": "1."
+    },
+    {
+      "name": "a",
+      "wave": "1."
+    },
+    {
+      "name": "b",
+      "wave": "1."
+    },
+    {
+      "name": "c",
+      "wave": "0."
+    },
+    {
+      "name": "fail",
+      "wave": "01"
+    },
+    {
+      "name": "pass",
+      "wave": "0."
+    }
+  ],
+  "head": {
+    "text": "attempts/disable_at_the_decision_sample",
+    "tock": 0
+  },
+  "foot": {
+    "text": "rst: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

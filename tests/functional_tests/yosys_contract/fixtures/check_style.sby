@@ -1,0 +1,23 @@
+[tasks]
+sc_comb  sc comb
+sc_clk   sc clkd
+mc_comb  mc comb
+mc_clk   mc clkd
+
+[options]
+mode bmc
+depth 12
+mc: multiclock on
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -formal -sv check_style.sv
+sc_comb: chparam -set CLKD 0 tb_sc
+mc_comb: chparam -set CLKD 0 tb_mc
+sc: prep -top tb_sc
+mc: prep -top tb_mc
+
+[files]
+check_style.sv

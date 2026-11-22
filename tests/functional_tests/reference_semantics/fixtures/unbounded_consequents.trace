@@ -1,0 +1,172 @@
+# Weak unbounded consequents (docs/semantics.md 9.6 R2), hand-derived, per attempt
+# (scope: attempt). Accepted by the configuration-set machine. "attempt s" starts at sample s.
+# An implication attempt is TRUE when its antecedent can match no more and every started
+# consequent is TRUE (vacuous t when there is none), FALSE at the first FALSE consequent.
+
+== merged_frontier_counterexample_unbounded
+# a |-> b[*1:$] ##1 c. a = 1 1 . ., b = 1 . . ., c = . 1 . .
+# attempt 0 (trigger 0): b0 holds; at sample 1 c1 holds: the match b0 c1 ends at 1: TRUE at 1.
+# attempt 1 (trigger 1): b1 is low: no match is possible: FALSE at 1. A frontier shared by both
+# attempts (the union of {b, c} and {b}) would let c1 satisfy attempt 1 and miss the failure.
+# attempts 2, 3: a low, vacuous at their own sample.
+property: a |-> b[*1:$] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 1 . .
+b       : 1 . . .
+c       : . 1 . .
+outcome : T F t t
+decided : 1 1 2 3
+fail    : . 1 . .
+pass    : . 1 . .
+pending: 0
+final-fail: 0
+
+== nonoverlapping_goto_consequent_matches
+# a |=> b[->2]. a = 1 . . . . ., b = . 1 . 1 . .
+# attempt 0: the consequent starts at 1; b occurs at 1 and 3: the goto ends at 3: TRUE at 3.
+# attempts 1-5: a low, vacuous at their own sample.
+property: a |=> b[->2]
+clause: 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 . . . . .
+b       : . 1 . 1 . .
+outcome : T t t t t t
+decided : 3 1 2 3 4 5
+pass    : . . . 1 . .
+pending: 0
+final-fail: 0
+
+== goto_then_c_fails
+# a |-> b[->2] ##1 c. a = 1 . . . ., b = . 1 . 1 ., c always low
+# attempt 0: the second b is at 3, so c must hold at 4: it does not: FALSE at 4.
+property: a |-> b[->2] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+signals: a b c
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . . .
+b       : . 1 . 1 .
+outcome : F t t t t
+decided : 4 1 2 3 4
+fail    : . . . . 1
+pending: 0
+final-fail: 0
+
+== overlapping_attempts_one_dies_while_others_match
+# a |-> b[*2:$] ##1 c. a = 1 1 1 . ., b = 1 1 1 . ., c = . . . 1 .
+# attempt 0: run b0..b2, c3: match ends at 3: TRUE at 3. attempt 1: run b1, b2, c3: TRUE at 3.
+# attempt 2: b2 then b3 is low: the run of two cannot be completed: FALSE at 3. Three
+# obligations in three different frontiers at sample 3; the verdicts differ.
+# attempts 3, 4: a low, vacuous at their own sample.
+property: a |-> b[*2:$] ##1 c
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 1 1 . .
+b       : 1 1 1 . .
+c       : . . . 1 .
+outcome : T T F t t
+decided : 3 3 3 3 4
+fail    : . . . 1 .
+pass    : . . . 1 .
+pending: 0
+final-fail: 0
+
+== disable_aborts_every_unbounded_obligation
+# a |-> b[*1:$] ##1 c disable iff (d). a = 1 . 1 . ., b = 1 1 1 . ., c low, d = . . . 1 .
+# attempts 0 and 2 stay alive through sample 2 (b high); d is high at sample 3: both are
+# disabled there, and so is the attempt that starts at sample 3. attempts 1, 4: vacuous.
+property: a |-> b[*1:$] ##1 c
+clause: 16.7 16.9.2 16.12 16.12.2 16.12.7 Annex F
+class: normative
+disable: d
+signals: a b c d
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . 1 . .
+b       : 1 1 1 . .
+d       : . . . 1 .
+outcome : d t d d t
+decided : 3 1 3 3 4
+pending: 0
+final-fail: 0
+
+== past_inside_an_unbounded_consequent
+# a |-> b[*1:$] ##1 $past(c). a = 1 . . ., b = 1 1 . ., c = . 1 . .
+# attempt 0: the frontier is {b, $past(c)} from sample 1. $past(c) at 1 is c0 = 0; at 2 it is
+# c1 = 1: the match ends at 2: TRUE at 2. attempts 1, 2: vacuous.
+property: a |-> b[*1:$] ##1 $past(c)
+clause: 16.7 16.9.2 16.9.3 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : 1 1 .
+c       : . 1 .
+outcome : T t t
+decided : 2 1 2
+pass    : . . 1
+pending: 0
+final-fail: 0
+
+== past_at_the_first_sample_does_not_hold
+# a |-> ##[0:$] $past(b). a = 1 . ., b = . 1 . : the ##0 fusion tests $past(b) at sample 0
+# (no previous sample: it does not hold), then 1 (b0 = 0), then 2 (b1 = 1): TRUE at 2.
+property: a |-> ##[0:$] $past(b)
+clause: 16.7 16.9.3 16.12.2 16.12.7 Annex F
+class: interpretation I3
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : . 1 .
+outcome : T t t
+decided : 2 1 2
+pass    : . . 1
+pending: 0
+final-fail: 0
+
+== unbounded_sequence_property_decides_each_attempt
+# assert property (b[*1:$] ##1 c). b = 1 1 . 1, c = . 1 . .
+# attempt 0: b0, c1: TRUE at 1. attempt 1: b1 then b2 and c2 are low: FALSE at 2. attempt 2:
+# b2 low: FALSE at 2. attempt 3: b3 high, nothing more is known: pending (weak: true at the end).
+property: b[*1:$] ##1 c
+clause: 16.7 16.9.2 16.12.2 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3
+b       : 1 1 . 1
+c       : . 1 . .
+outcome : T F F p
+decided : 1 2 2 .
+fail    : . . 1 .
+pass    : . 1 . .
+pending: 1
+final-fail: 0
+
+== always_over_an_unbounded_consequent
+# always (a |-> b[*1:$] ##1 c) is (1 ##[0:$] 1) |-> (a |-> ...): the attempt at every sample
+# checks every later trigger. a = 1 . 1 ., b = 1 1 . 1, c = . . . .
+# attempt 0 contains the obligations of triggers 0 and 2: the one of 0 lives (b0, b1 high, then
+# b2 low and c2 low): FALSE at 2. The obligation of trigger 2 has b2 low: FALSE at 2. attempt 1:
+# only trigger 2: FALSE at 2. attempt 2: trigger 2: FALSE at 2. attempt 3: no trigger so far
+# (a3 low), vacuous, and the antecedent window can still produce triggers: pending.
+property: always (a |-> b[*1:$] ##1 c)
+clause: 16.7 16.9.2 16.12.7 16.12.11 Annex F
+class: normative
+signals: a b c
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . 1 .
+b       : 1 1 . 1
+outcome : F F F p
+decided : 2 2 2 .
+fail    : . . 1 .
+pending: 1
+final-fail: 0

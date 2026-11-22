@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Lint, types and tests (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.14"]
+    env:
+      UV_PYTHON: ${{ matrix.python }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+      - run: uv sync --locked
+      - run: uv run ruff check .
+      - run: uv run ruff format --check src tests
+      - run: uv run mypy
+      # The default tier: no external tool and no corpus.
+      - run: uv run pytest -n auto
+
+  package:
+    name: Build and check the package
+    runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: "3.12"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+      - run: uv sync --locked
+      - run: uv build
+      - name: The files hold nothing private and the package
+        run: uv run python tests/support/package_check.py dist
+      - name: The wheel installs and runs
+        run: |
+          uvx --from dist/*.whl sva2yosys --version
+          cd examples/counter
+          uvx --from ../../dist/*.whl sva2yosys props/counter_props.sv -y rtl --top counter
+
+  formal-tools:
+    name: Tests with Yosys and SBY
+    runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: "3.12"
+      # A pinned release of the OSS CAD Suite and the checksum of its Linux archive. To change the
+      # version, give the three values of one release of
+      # https://github.com/YosysHQ/oss-cad-suite-build/releases (the checksum is shown with the
+      # asset). The extracted suite is cached under the same key.
+      OSS_CAD_TAG: "2026-10-31"
+      OSS_CAD_FILE: oss-cad-suite-linux-x64-20261031.tgz
+      OSS_CAD_SHA256: e0349f66547ca1ac9a24b5e06287d4719aa0213d431e1168eb319915340dc665
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+      - name: Restore the OSS CAD Suite
+        id: suite
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/oss-cad-suite
+          key: oss-cad-suite-${{ env.OSS_CAD_TAG }}-${{ env.OSS_CAD_SHA256 }}
+      - name: Download the OSS CAD Suite
+        if: steps.suite.outputs.cache-hit != 'true'
+        run: |
+          url="https://github.com/YosysHQ/oss-cad-suite-build/releases/download/${OSS_CAD_TAG}/${OSS_CAD_FILE}"
+          curl -fsSL -o "${RUNNER_TEMP}/${OSS_CAD_FILE}" "${url}"
+          echo "${OSS_CAD_SHA256}  ${RUNNER_TEMP}/${OSS_CAD_FILE}" | sha256sum -c -
+          tar -xzf "${RUNNER_TEMP}/${OSS_CAD_FILE}" -C "${HOME}"
+          rm "${RUNNER_TEMP}/${OSS_CAD_FILE}"
+      - run: uv sync --locked
+      - name: Tests with Yosys and SBY (default tier)
+        run: |
+          export SVA2YOSYS_YOSYS="${HOME}/oss-cad-suite/bin/yosys"
+          export SVA2YOSYS_SBY="${HOME}/oss-cad-suite/bin/sby"
+          uv run pytest -n auto --external-tools=yosys,sby

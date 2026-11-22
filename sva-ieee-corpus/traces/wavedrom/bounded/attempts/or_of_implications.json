@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "a",
+      "wave": "1..0.."
+    },
+    {
+      "name": "b",
+      "wave": "10...."
+    },
+    {
+      "name": "c",
+      "wave": "01.010"
+    },
+    {
+      "name": "d",
+      "wave": "0.10.."
+    },
+    {
+      "name": "fail",
+      "wave": "0..10."
+    },
+    {
+      "name": "pass",
+      "wave": "101010"
+    }
+  ],
+  "head": {
+    "text": "attempts/or_of_implications",
+    "tock": 0
+  }
+}

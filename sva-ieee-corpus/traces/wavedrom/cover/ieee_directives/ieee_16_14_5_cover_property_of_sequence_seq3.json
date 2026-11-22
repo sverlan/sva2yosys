@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "b",
+      "wave": "1.0."
+    },
+    {
+      "name": "c",
+      "wave": "01.0"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "01.0"
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_14_5_cover_property_of_sequence_seq3",
+    "tock": 0
+  }
+}

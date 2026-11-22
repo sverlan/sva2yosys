@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "101."
+    },
+    {
+      "name": "b",
+      "wave": "0.10"
+    },
+    {
+      "name": "c",
+      "wave": "0101"
+    },
+    {
+      "name": "d",
+      "wave": "0..."
+    },
+    {
+      "name": "fail",
+      "wave": "0..1"
+    },
+    {
+      "name": "pass",
+      "wave": "0.10"
+    }
+  ],
+  "head": {
+    "text": "attempts/or_of_strong_and_weak_sequences_at_the_end",
+    "tock": 0
+  }
+}

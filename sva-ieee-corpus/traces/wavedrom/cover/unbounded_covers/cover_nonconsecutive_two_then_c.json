@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "b",
+      "wave": "1..0."
+    },
+    {
+      "name": "c",
+      "wave": "0...1"
+    },
+    {
+      "name": "fail",
+      "wave": "0...."
+    },
+    {
+      "name": "pass",
+      "wave": "0...1"
+    }
+  ],
+  "head": {
+    "text": "unbounded_covers/cover_nonconsecutive_two_then_c",
+    "tock": 0
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "l"
+    },
+    {
+      "name": "a",
+      "wave": "1"
+    },
+    {
+      "name": "b",
+      "wave": "0"
+    },
+    {
+      "name": "c",
+      "wave": "0"
+    },
+    {
+      "name": "fail",
+      "wave": "0"
+    },
+    {
+      "name": "pass",
+      "wave": "0"
+    }
+  ],
+  "head": {
+    "text": "strength/strong_pending_antecedent_is_not_a_failure",
+    "tock": 0
+  }
+}

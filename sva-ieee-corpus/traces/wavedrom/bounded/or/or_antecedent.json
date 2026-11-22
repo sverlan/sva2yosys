@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "010."
+    },
+    {
+      "name": "b",
+      "wave": "0.10"
+    },
+    {
+      "name": "c",
+      "wave": "10.1"
+    },
+    {
+      "name": "d",
+      "wave": "0.1."
+    },
+    {
+      "name": "fail",
+      "wave": "10.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.1."
+    }
+  ],
+  "head": {
+    "text": "or/or_antecedent",
+    "tock": 0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp............"
+    },
+    {
+      "name": "req",
+      "wave": "0.1..0...1...."
+    },
+    {
+      "name": "fail",
+      "wave": "1.0..1...0...."
+    },
+    {
+      "name": "pass",
+      "wave": "0.1..0...1...."
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_5_fig16_1_sampled_values",
+    "tock": 0
+  }
+}

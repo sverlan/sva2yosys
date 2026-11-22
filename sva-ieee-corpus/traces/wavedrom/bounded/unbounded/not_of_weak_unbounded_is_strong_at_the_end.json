@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "10101"
+    },
+    {
+      "name": "b",
+      "wave": "0..10"
+    },
+    {
+      "name": "fail",
+      "wave": "0..10"
+    },
+    {
+      "name": "pass",
+      "wave": "01010"
+    }
+  ],
+  "head": {
+    "text": "unbounded/not_of_weak_unbounded_is_strong_at_the_end",
+    "tock": 0
+  }
+}

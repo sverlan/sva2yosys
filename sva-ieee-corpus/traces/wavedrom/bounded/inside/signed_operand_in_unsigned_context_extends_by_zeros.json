@@ -1,0 +1,41 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "1.."
+    },
+    {
+      "name": "v",
+      "wave": "=.=",
+      "data": [
+        "F",
+        "7"
+      ]
+    },
+    {
+      "name": "w",
+      "wave": "===",
+      "data": [
+        "F",
+        "0",
+        "7"
+      ]
+    },
+    {
+      "name": "fail",
+      "wave": "010"
+    },
+    {
+      "name": "pass",
+      "wave": "101"
+    }
+  ],
+  "head": {
+    "text": "inside/signed_operand_in_unsigned_context_extends_by_zeros",
+    "tock": 0
+  }
+}

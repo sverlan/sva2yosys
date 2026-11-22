@@ -1,0 +1,55 @@
+# Concatenation with a range inside the consequent (specification p06, p07).
+
+== p06_fail_in_trigger_sample
+property: a |-> b ##[1:3] c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4
+a      : 1 . . . .
+b      : . . . . .
+c      : . . . . .
+fail   : 1 . . . .
+
+== p06_latest_match
+property: a |-> b ##[1:3] c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4
+a      : 1 . . . .
+b      : 1 . . . .
+c      : . . . 1 .
+pass   : . . . 1 .
+
+== p06_window_missed
+property: a |-> b ##[1:3] c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4 5
+a      : 1 . . . . .
+b      : 1 . . . . .
+c      : . . . . 1 .
+fail   : . . . 1 . .
+
+== p07_second_path_matches
+# c at 1 is followed by !d; c at 3 is followed by d.
+property: a |-> b ##[1:3] c ##1 d
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4 5
+a      : 1 . . . . .
+b      : 1 . . . . .
+c      : . 1 . 1 . .
+d      : . . . . 1 .
+pass   : . . . . 1 .
+
+== p07_fail_when_last_path_dies
+# After sample 2 a path through c at 3 is still possible; it dies at 3.
+property: a |-> b ##[1:3] c ##1 d
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4 5
+a      : 1 . . . . .
+b      : 1 . . . . .
+c      : . 1 . . . .
+d      : . . . . . .
+fail   : . . . 1 . .

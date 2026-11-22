@@ -1,0 +1,102 @@
+{
+  "probes": [
+    {
+      "key": "control",
+      "topic": "I1",
+      "objective": "Positive and negative assertion-execution calibration",
+      "source": "control.sv",
+      "limit": "Calibration only, not a disputed semantic interpretation."
+    },
+    {
+      "key": "constant-next",
+      "topic": "I1",
+      "objective": "Failure sample of a constant-false nonoverlapping consequent",
+      "source": "constant_next.sv",
+      "limit": "Finite online event time; EBMC can check validity only."
+    },
+    {
+      "key": "constant-delay",
+      "topic": "I1",
+      "objective": "Explicit delayed constant-false sequence",
+      "source": "constant_delay.sv",
+      "limit": "Native syntax only; no rewriting unsupported operators."
+    },
+    {
+      "key": "disable-edges",
+      "topic": "I2",
+      "objective": "Disable register rising and falling at the clock edge",
+      "source": "disable_edges.sv",
+      "limit": "Our compiler rejects this timing; EBMC timing is excluded."
+    },
+    {
+      "key": "first-past",
+      "topic": "I3",
+      "objective": "First past predicate and later real history",
+      "source": "first_past.sv",
+      "limit": "Two-state first value does not establish an all-X sampled default."
+    },
+    {
+      "key": "history-disable",
+      "topic": "I4",
+      "objective": "History retained across disable",
+      "source": "history_disable.sv",
+      "limit": "Independent initialized finite trace; no EBMC sampled-function comparison."
+    },
+    {
+      "key": "cover-vacuity",
+      "topic": "I5",
+      "objective": "Native cover implication and Boolean-cover actions",
+      "source": "cover_vacuity.sv",
+      "limit": "Native action/coverage objective may differ from our nonvacuous objective."
+    },
+    {
+      "key": "cover-matches",
+      "topic": "I6",
+      "objective": "Several possible endpoints for one cover attempt",
+      "source": "cover_matches.sv",
+      "limit": "Coverage-point hits are not automatically per-attempt counts."
+    },
+    {
+      "key": "not-strength",
+      "topic": "I7",
+      "objective": "Negation of a default-strength unbounded sequence",
+      "source": "not_strength.sv",
+      "limit": "Finite simulation cannot establish infinite liveness; syntax may be unsupported."
+    },
+    {
+      "key": "finite-end",
+      "topic": "I8",
+      "objective": "Explicit strong pending obligation at finite finish",
+      "source": "finite_end.sv",
+      "limit": "Simulation finalization differs from online and infinite-trace verdicts."
+    },
+    {
+      "key": "procedural-enable",
+      "topic": "I9",
+      "objective": "Stable versus procedurally updated enabling guards",
+      "source": "procedural_enable.sv",
+      "limit": "Current guard observations outside our stable enabling subset are not accepted behavior."
+    },
+    {
+      "key": "unknown-if",
+      "topic": "I10",
+      "objective": "Native property-if over initial missing history",
+      "source": "unknown_if.sv",
+      "limit": "Open: a two-state simulator cannot settle an unknown four-state selector."
+    },
+    {
+      "key": "inside-sizing",
+      "topic": "I11",
+      "objective": "Mixed-context sizing and uniform controls",
+      "source": "inside_sizing.sv",
+      "limit": "Nonuniform lists are rejected by our compiler; observations do not settle IEEE sizing."
+    },
+    {
+      "key": "defaults",
+      "topic": "D1",
+      "objective": "Known initialized versus two-state default sampled values",
+      "source": "defaults.sv",
+      "limit": "Our compiler rejects known-default sampled operands; no all-X guarantee from this simulator."
+    }
+  ]
+}

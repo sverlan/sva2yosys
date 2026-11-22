@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+build/
+dist/
+*.egg-info/
+
+# Tool caches and reports
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+.coverage
+coverage.xml
+htmlcov/
+
+# Local tool paths (see .env.example)
+.env
+
+# External test corpus (tests/functional_tests/yosys_corpus/CONTRACT.md)
+.yosys-tests/

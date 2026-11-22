@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1010"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0101"
+    }
+  ],
+  "head": {
+    "text": "unbounded_covers/cover_unbounded_delay_to_constant_true_matches_at_the_next_sample",
+    "tock": 0
+  }
+}

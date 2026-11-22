@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "a",
+      "wave": "01..01"
+    },
+    {
+      "name": "b",
+      "wave": "010..1"
+    },
+    {
+      "name": "fail",
+      "wave": "0..10."
+    },
+    {
+      "name": "pass",
+      "wave": "010.1."
+    }
+  ],
+  "head": {
+    "text": "temporal/eventually_of_implication_vacuous_first_offset",
+    "tock": 0
+  }
+}

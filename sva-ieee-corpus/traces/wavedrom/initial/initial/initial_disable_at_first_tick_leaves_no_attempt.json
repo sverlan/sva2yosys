@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "r",
+      "wave": "1.0."
+    },
+    {
+      "name": "a",
+      "wave": "1..."
+    },
+    {
+      "name": "b",
+      "wave": "0..."
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0..."
+    }
+  ],
+  "head": {
+    "text": "initial/initial_disable_at_first_tick_leaves_no_attempt",
+    "tock": 0
+  },
+  "foot": {
+    "text": "r: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

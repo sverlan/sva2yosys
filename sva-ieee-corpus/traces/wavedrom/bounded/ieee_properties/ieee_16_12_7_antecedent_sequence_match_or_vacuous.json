@@ -1,0 +1,40 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp......"
+    },
+    {
+      "name": "a",
+      "wave": "10..10.."
+    },
+    {
+      "name": "b",
+      "wave": "010..10."
+    },
+    {
+      "name": "c",
+      "wave": "0.10..10"
+    },
+    {
+      "name": "d",
+      "wave": "0.10..10"
+    },
+    {
+      "name": "e",
+      "wave": "0..10..."
+    },
+    {
+      "name": "fail",
+      "wave": "0......1"
+    },
+    {
+      "name": "pass",
+      "wave": "0..10..."
+    }
+  ],
+  "head": {
+    "text": "ieee_properties/ieee_16_12_7_antecedent_sequence_match_or_vacuous",
+    "tock": 0
+  }
+}

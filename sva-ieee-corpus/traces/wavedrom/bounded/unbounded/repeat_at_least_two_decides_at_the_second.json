@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "101.0"
+    },
+    {
+      "name": "b",
+      "wave": "1.01."
+    },
+    {
+      "name": "fail",
+      "wave": "0.10."
+    },
+    {
+      "name": "pass",
+      "wave": "010.1"
+    }
+  ],
+  "head": {
+    "text": "unbounded/repeat_at_least_two_decides_at_the_second",
+    "tock": 0
+  }
+}

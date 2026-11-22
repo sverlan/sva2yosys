@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "go",
+      "wave": "10."
+    },
+    {
+      "name": "b",
+      "wave": "10."
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "10."
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_9_2_1_true_overlap_matches_when_b",
+    "tock": 0
+  }
+}

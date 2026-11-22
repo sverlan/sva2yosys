@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "101"
+    },
+    {
+      "name": "b",
+      "wave": "0.."
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "101"
+    }
+  ],
+  "head": {
+    "text": "until_machine/until_true_q_is_decided_at_the_start",
+    "tock": 0
+  }
+}

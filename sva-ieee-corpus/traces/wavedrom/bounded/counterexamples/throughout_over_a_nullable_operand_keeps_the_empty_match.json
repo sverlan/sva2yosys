@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "1.0"
+    },
+    {
+      "name": "b",
+      "wave": "101"
+    },
+    {
+      "name": "fail",
+      "wave": "010"
+    },
+    {
+      "name": "pass",
+      "wave": "101"
+    }
+  ],
+  "head": {
+    "text": "counterexamples/throughout_over_a_nullable_operand_keeps_the_empty_match",
+    "tock": 0
+  }
+}

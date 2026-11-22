@@ -1,0 +1,35 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "rst",
+      "wave": "0.1"
+    },
+    {
+      "name": "a",
+      "wave": "10."
+    },
+    {
+      "name": "b",
+      "wave": "0.."
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "ieee_directives/ieee_16_15_default_disable_inferred_a3",
+    "tock": 0
+  },
+  "foot": {
+    "text": "rst: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

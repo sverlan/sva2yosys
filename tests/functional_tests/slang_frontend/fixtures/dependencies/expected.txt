@@ -1,0 +1,67 @@
+# Hand-derived from the text of each fixture and the rules of CONTRACT.md point 28.
+# <file>:<label> -> {names, sorted} | unknown
+# A label that occurs in several elaborated instances or generate iterations has the same set in each.
+
+direct_delay.sv:a1 -> {N}
+generate_exists.sv:a2 -> {}
+unrelated_assign.sv:a3 -> {}
+
+typed_signals.sv:a4a -> {T}
+typed_signals.sv:a4b -> {W}
+typed_signals.sv:a4c -> {}
+
+widths.sv:a5a -> {W}
+widths.sv:a5b -> {W}
+widths.sv:a5c -> {}
+
+property_argument.sv:a6a -> {K}
+property_argument.sv:a6b -> {}
+
+local_function.sv:a7 -> {P}
+package_function.sv:a8 -> {}
+
+genvar_select.sv:a9a -> {i}
+genvar_select.sv:a9b -> {}
+
+derived_localparam.sv:a10a -> {LP}
+derived_localparam.sv:a10b -> {LP}
+derived_localparam.sv:a10c -> {LQ}
+
+struct_parameter.sv:a11a -> {}
+struct_parameter.sv:a11b -> {cfg}
+
+unread_type_parameter.sv:a12 -> {}
+
+# x1: enum base W, enum value D, sequence body D, default disable iff E.
+defaults_and_casts.sv:x1 -> {D,E,W}
+# x1b: an explicit disable iff replaces the default one, so E is not a dependency.
+defaults_and_casts.sv:x1b -> {D,W}
+defaults_and_casts.sv:x2 -> {E,W}
+defaults_and_casts.sv:x4 -> {E,T}
+defaults_and_casts.sv:x5 -> {E,H}
+
+non_ansi.sv:x6 -> {W}
+non_ansi.sv:x7 -> {N}
+non_ansi.sv:x8 -> {F,L}
+non_ansi.sv:x9 -> {G}
+non_ansi.sv:x10 -> {LF}
+non_ansi.sv:x11 -> {T}
+
+interface_signal.sv:x3 -> unknown
+checker_assertion.sv:a13 -> unknown
+checker_assertion.sv:am -> {}
+
+escaped_names.sv:e1 -> {P-x}
+escaped_names.sv:e2 -> {W-1}
+escaped_names.sv:e3 -> {}
+
+# Review counterexamples: the explicit type of a parameter is followed, a hidden name is reported.
+# A hidden name's namesake that is visible at the assertion is also a dependency (the identifier scan),
+# a harmless superset: the directive is rejected anyway.
+explicit_parameter_type.sv:e1 -> {LP,W}
+explicit_parameter_type.sv:e2 -> {LQ}
+shadowed_parameter.sv:s1 -> {D} ; hidden {D}
+shadowed_parameter.sv:s2 -> {D}
+hidden_overridable_parameter.sv:h1 -> {D} ; hidden {D}
+hidden_type_parameter.sv:h2 -> {T} ; hidden {T}
+unit_parameter_shadowed.sv:u1 -> unknown

@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "10..."
+    },
+    {
+      "name": "b",
+      "wave": "01010"
+    },
+    {
+      "name": "c",
+      "wave": "010.."
+    },
+    {
+      "name": "fail",
+      "wave": "0..10"
+    },
+    {
+      "name": "pass",
+      "wave": "0...."
+    }
+  ],
+  "head": {
+    "text": "unbounded/antecedent_unbounded_fails_at_the_first_failing_trigger",
+    "tock": 0
+  }
+}

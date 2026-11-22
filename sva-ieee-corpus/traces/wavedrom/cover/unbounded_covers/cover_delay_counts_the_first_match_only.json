@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "10..."
+    },
+    {
+      "name": "b",
+      "wave": "01010"
+    },
+    {
+      "name": "fail",
+      "wave": "0...."
+    },
+    {
+      "name": "pass",
+      "wave": "010.."
+    }
+  ],
+  "head": {
+    "text": "unbounded_covers/cover_delay_counts_the_first_match_only",
+    "tock": 0
+  }
+}

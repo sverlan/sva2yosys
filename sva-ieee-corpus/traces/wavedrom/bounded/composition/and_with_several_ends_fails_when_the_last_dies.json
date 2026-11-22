@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "10..."
+    },
+    {
+      "name": "b",
+      "wave": "1.0.."
+    },
+    {
+      "name": "c",
+      "wave": "1..0."
+    },
+    {
+      "name": "d",
+      "wave": "0...."
+    },
+    {
+      "name": "fail",
+      "wave": "0..10"
+    },
+    {
+      "name": "pass",
+      "wave": "0...."
+    }
+  ],
+  "head": {
+    "text": "composition/and_with_several_ends_fails_when_the_last_dies",
+    "tock": 0
+  }
+}

@@ -1,0 +1,293 @@
+# The until family (until, s_until, until_with, s_until_with), Boolean operands,
+# reference semantics (docs/semantics.md 9.2, 9.3, 9.6, IEEE 1800 16.12.12), per attempt
+# (scope: attempt). The machines accept the weak until and until_with in assert
+# and assume; the cases with the strong forms, with not, in a cover and with disable iff on a
+# strong form stay support: oracle. More machine cases: until_machine.trace.
+# Derived by hand from the written semantics.
+# p until q at the samples t = start, start+1, ...: TRUE at the first t where q holds (p is not
+# needed there); FALSE at the first t where p does not hold (and q did not hold). until_with: TRUE
+# at the first t where p and q hold, FALSE at the first t where p does not hold (q or not). If
+# neither happens the attempt stays pending: a weak form finalizes TRUE, a strong form FALSE.
+# The operands are Boolean, so the attempt is nonvacuous from its start (16.14.8).
+
+== until_decides
+# a until b. a = 1 1 . . 1 1, b = . . 1 . . .
+# attempts 0, 1: TRUE at 2 (b2; a2 is low but the exclusive form does not need p there).
+# attempt 2: b2: TRUE at 2. attempt 3: a3 and b3 low: FALSE at 3. attempts 4, 5: p holds, q never:
+# pending, weak: finalize TRUE.
+property: a until b
+clause: 16.12.12 16.14.8 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 1 . . 1 1
+b       : . . 1 . . .
+outcome : T T T F p p
+decided : 2 2 2 3 . .
+fail    : . . . 1 . .
+pass    : . . 1 . . .
+pending: 2
+final-fail: 0
+
+== s_until_decides
+# The trace of until_decides with s_until: the same online rows; the pending attempts finalize
+# FALSE.
+property: a s_until b
+clause: 16.12.12 16.14.8 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 1 . . 1 1
+b       : . . 1 . . .
+outcome : T T T F p p
+decided : 2 2 2 3 . .
+fail    : . . . 1 . .
+pass    : . . 1 . . .
+pending: 2
+final-fail: 2
+
+== until_with_decides
+# a until_with b. a = 1 1 1 . 1 1, b = . . 1 . . .
+# attempts 0-2: a and b hold at 2: TRUE at 2. attempt 3: a3 low: FALSE at 3. attempts 4, 5:
+# pending, weak: finalize TRUE.
+property: a until_with b
+clause: 16.12.12 16.14.8 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 1 1 . 1 1
+b       : . . 1 . . .
+outcome : T T T F p p
+decided : 2 2 2 3 . .
+fail    : . . . 1 . .
+pass    : . . 1 . . .
+pending: 2
+final-fail: 0
+
+== s_until_with_decides
+property: a s_until_with b
+clause: 16.12.12 16.14.8 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 1 1 . 1 1
+b       : . . 1 . . .
+outcome : T T T F p p
+decided : 2 2 2 3 . .
+fail    : . . . 1 . .
+pass    : . . 1 . . .
+pending: 2
+final-fail: 2
+
+== until_with_needs_p_where_q_holds
+# a until_with b. a = . . 1, b = 1 . .
+# attempt 0: b0 holds but a0 does not: FALSE at 0. attempt 1: a1 low: FALSE at 1. attempt 2: a2
+# high, b2 low: pending, weak: finalize TRUE.
+property: a until_with b
+clause: 16.12.12 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2
+a       : . . 1
+b       : 1 . .
+outcome : F F p
+decided : 0 1 .
+fail    : 1 1 .
+pending: 1
+final-fail: 0
+
+== until_q_at_the_first_sample_needs_no_p
+# a until b on the previous trace. attempt 0: b0 holds: TRUE at 0 although a0 is low. attempt 1:
+# a1 and b1 low: FALSE at 1. attempt 2: pending, weak.
+property: a until b
+clause: 16.12.12 16.14.8 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2
+a       : . . 1
+b       : 1 . .
+outcome : T F p
+decided : 0 1 .
+fail    : . 1 .
+pass    : 1 . .
+pending: 1
+final-fail: 0
+
+== until_never_q_weak
+# a is always high, b never: no attempt is ever decided; weak: all finalize TRUE.
+property: a until b
+clause: 16.12.12 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 1 1 1
+b       : . . . .
+outcome : p p p p
+decided : . . . .
+pending: 4
+final-fail: 0
+
+== s_until_never_q_strong
+# The same trace with s_until: q must occur, so all four attempts finalize FALSE.
+property: a s_until b
+clause: 16.12.12 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 1 1 1
+b       : . . . .
+outcome : p p p p
+decided : . . . .
+pending: 4
+final-fail: 4
+
+== until_as_an_implication_consequent
+# a |-> (b until c). a = 1 . 1 . ., b = 1 . 1 1 ., c = . 1 . . .
+# attempt 0: trigger 0; until from 0: b0 high, c0 low; c1 high: TRUE at 1. attempt 2: trigger 2:
+# b2 high, b3 high, then b4 and c4 low: FALSE at 4. attempts 1, 3, 4: vacuous at their sample.
+property: a |-> (b until c)
+clause: 16.12.7 16.12.12 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . 1 . .
+b       : 1 . 1 1 .
+c       : . 1 . . .
+outcome : T t F t t
+decided : 1 1 4 3 4
+fail    : . . . . 1
+pass    : . 1 . . .
+pending: 0
+final-fail: 0
+
+== not_of_a_weak_until
+# not (a until b). a = 1 1 . 1 1, b = . . 1 . .
+# attempts 0-2: until is TRUE at 2, so not is FALSE at 2. attempts 3, 4: pending. The weak until
+# finalizes TRUE, so not finalizes FALSE: strength reversal.
+property: not (a until b)
+clause: 16.12.3 16.12.12 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 1 . 1 1
+b       : . . 1 . .
+outcome : F F F p p
+decided : 2 2 2 . .
+fail    : . . 1 . .
+pending: 2
+final-fail: 2
+
+== not_of_a_strong_until
+# The trace of the previous case with s_until: the strong until finalizes FALSE, so not
+# finalizes TRUE.
+property: not (a s_until b)
+clause: 16.12.3 16.12.12 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 1 . 1 1
+b       : . . 1 . .
+outcome : F F F p p
+decided : 2 2 2 . .
+fail    : . . 1 . .
+pending: 2
+final-fail: 0
+
+== until_with_disable
+# disable iff (d) a s_until b. a = 1 1 1 1 1, b = 0, d = . . 1 . .
+# attempts 0-2: pending, d is high at 2 in [start, end]: disabled at 2. attempts 3, 4: pending,
+# no d in [start, end]: finalize FALSE (strong).
+property: a s_until b
+clause: 16.12 16.12.12 Annex F
+class: interpretation I8
+disable: d
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 1 1 1 1
+b       : . . . . .
+d       : . . 1 . .
+outcome : d d d p p
+decided : 2 2 2 . .
+pending: 2
+final-fail: 2
+
+== cover_until
+# cover property (a until b) on the trace of until_q_at_the_first_sample_needs_no_p. The until is
+# weak (its own keyword decides, not the cover default): attempt 2 finalizes TRUE.
+property: a until b
+clause: 16.12.12 16.14.3 16.14.8 Annex F
+class: interpretation I5
+kind: cover
+scope: attempt
+support: oracle
+sample  : 0 1 2
+a       : . . 1
+b       : 1 . .
+outcome : T F p
+decided : 0 1 .
+pass    : 1 . .
+pending: 1
+final-fail: 0
+
+== law_until_as_a_weak_sequence
+# weak(a[*0:$] ##1 b): the same rows as until_decides (law pair).
+property: weak(a[*0:$] ##1 b)
+clause: 16.7 16.9.2 16.12.2 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 1 . . 1 1
+b       : . . 1 . . .
+outcome : T T T F p p
+decided : 2 2 2 3 . .
+fail    : . . . 1 . .
+pass    : . . 1 . . .
+pending: 2
+final-fail: 0
+
+== law_s_until_as_a_strong_sequence
+# strong(a[*0:$] ##1 b): the same rows as s_until_decides, with final-fail 2.
+property: strong(a[*0:$] ##1 b)
+clause: 16.7 16.9.2 16.12.2 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 1 . . 1 1
+b       : . . 1 . . .
+outcome : T T T F p p
+decided : 2 2 2 3 . .
+fail    : . . . 1 . .
+pass    : . . 1 . . .
+pending: 2
+final-fail: 2
+
+== law_until_with_as_a_weak_sequence
+# weak(a[*0:$] ##1 (a && b)): the same rows as until_with_decides.
+property: weak(a[*0:$] ##1 (a && b))
+clause: 16.7 16.9.2 16.12.2 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 1 1 . 1 1
+b       : . . 1 . . .
+outcome : T T T F p p
+decided : 2 2 2 3 . .
+fail    : . . . 1 . .
+pass    : . . 1 . . .
+pending: 2
+final-fail: 0
+
+== law_s_until_with_as_a_strong_sequence
+property: strong(a[*0:$] ##1 (a && b))
+clause: 16.7 16.9.2 16.12.2 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 1 1 . 1 1
+b       : . . 1 . . .
+outcome : T T T F p p
+decided : 2 2 2 3 . .
+fail    : . . . 1 . .
+pass    : . . 1 . . .
+pending: 2
+final-fail: 2

@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp.."
+    },
+    {
+      "name": "a",
+      "wave": "1..."
+    },
+    {
+      "name": "b",
+      "wave": "0..1"
+    },
+    {
+      "name": "fail",
+      "wave": "0..."
+    },
+    {
+      "name": "pass",
+      "wave": "0..1"
+    },
+    {
+      "name": "repeat",
+      "wave": "01.."
+    },
+    {
+      "name": "outcome",
+      "wave": "=...",
+      "data": [
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "lasso/overlapping_triggers_with_a_rare_b",
+    "tock": 0
+  }
+}

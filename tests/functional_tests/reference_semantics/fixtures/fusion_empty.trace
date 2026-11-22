@@ -1,0 +1,78 @@
+# ##0 fusion, zero-length delay ranges, empty repetition inside sequences, and the
+# operational "alive" rule for future samples (docs/semantics.md section 3).
+
+== fusion_in_the_same_sample
+property: a ##0 b |-> c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2
+a      : 1 1 .
+b      : 1 . .
+c      : . . .
+fail   : 1 . .
+
+== zero_delay_range
+property: a |-> ##[0:2] b
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4 5
+a      : 1 . . 1 . .
+b      : 1 . . . . 1
+pass   : 1 . . . . 1
+
+== empty_repetition_between_delays
+# b ##1 c[*0:1] ##1 d matches b ##1 d (empty c) or b ##1 c ##1 d.
+property: a |-> b ##1 c[*0:1] ##1 d
+clause: 16.7 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3 4 5
+a      : 1 . . 1 . .
+b      : 1 . . 1 . .
+c      : . . . . 1 .
+d      : . 1 . . . 1
+pass   : . 1 . . . 1
+
+== constant_false_on_a_future_sample_fails_at_that_sample
+# The next sample must satisfy 1'b0. After sample 0 the path is still alive (an unknown future
+# sample satisfies every Boolean, 1'b0 included); sample 1 refutes it (constants.trace).
+property: a |-> b ##1 1'b0
+clause: 16.7 16.12.7 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 . .
+b      : 1 . .
+fail   : . 1 .
+
+== contradiction_on_a_future_sample_fails_when_it_arrives
+# c ##0 !c cannot hold, but conditions on a future sample are not combined.
+property: a |-> b ##1 (c ##0 !c)
+clause: 16.7 16.12.7 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 . .
+b      : 1 . .
+c      : 1 1 .
+fail   : . 1 .
+
+== constant_false_antecedent_never_triggers
+property: 1'b0 |-> b
+clause: 16.12.7
+class: normative
+sample : 0 1 2
+b      : . 1 .
+
+== constant_false_consequent_fails_on_every_trigger
+property: a |-> 1'b0
+clause: 16.12.7
+class: normative
+sample : 0 1 2
+a      : 1 . 1
+fail   : 1 . 1
+
+== constant_false_cover_is_never_reached
+property: 1'b0 ##1 a
+clause: 16.7 16.14.3
+class: normative
+kind: cover
+sample : 0 1 2
+a      : 1 1 1

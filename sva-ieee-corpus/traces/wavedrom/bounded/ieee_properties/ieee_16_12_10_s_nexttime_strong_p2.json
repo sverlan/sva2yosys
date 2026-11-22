@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "010"
+    },
+    {
+      "name": "fail",
+      "wave": "0.1"
+    },
+    {
+      "name": "pass",
+      "wave": "010"
+    }
+  ],
+  "head": {
+    "text": "ieee_properties/ieee_16_12_10_s_nexttime_strong_p2",
+    "tock": 0
+  }
+}

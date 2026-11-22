@@ -1,0 +1,926 @@
+{
+ "format": "sva2yosys-slang-ast",
+ "formatVersion": 2,
+ "slangVersion": "12.0.0",
+ "assertions": [
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_named",
+   "scope": "top.u3",
+   "source_file_start": "defaults_and_decls.sv",
+   "source_file_end": "defaults_and_decls.sv",
+   "source_line_start": 18,
+   "source_line_end": 18,
+   "source_column_start": 5,
+   "source_column_end": 55,
+   "propertySpec": {
+    "kind": "Simple",
+    "source_file_start": "defaults_and_decls.sv",
+    "source_file_end": "defaults_and_decls.sv",
+    "source_line_start": 18,
+    "source_line_end": 18,
+    "source_column_start": 32,
+    "source_column_end": 53,
+    "expr": {
+     "kind": "AssertionInstance",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 18,
+     "source_line_end": 18,
+     "source_column_start": 32,
+     "source_column_end": 43,
+     "type": "property",
+     "sva2yosys_integral": false,
+     "symbol": "p_handshake",
+     "body": {
+      "kind": "Binary",
+      "source_file_start": "defaults_and_decls.sv",
+      "source_file_end": "defaults_and_decls.sv",
+      "source_line_start": 15,
+      "source_line_end": 15,
+      "source_column_start": 9,
+      "source_column_end": 30,
+      "op": "OverlappedImplication",
+      "left": {
+       "kind": "Simple",
+       "source_file_start": "defaults_and_decls.sv",
+       "source_file_end": "defaults_and_decls.sv",
+       "source_line_start": 15,
+       "source_line_end": 15,
+       "source_column_start": 9,
+       "source_column_end": 10,
+       "expr": {
+        "kind": "NamedValue",
+        "source_file_start": "defaults_and_decls.sv",
+        "source_file_end": "defaults_and_decls.sv",
+        "source_line_start": 15,
+        "source_line_end": 15,
+        "source_column_start": 9,
+        "source_column_end": 10,
+        "type": "logic",
+        "sva2yosys_integral": {
+         "width": 1,
+         "signed": false,
+         "msb": 0,
+         "lsb": 0,
+         "dims": 0
+        },
+        "symbol": "req",
+        "sva2yosys_path": "top.u3.req",
+        "sva2yosys_sampledDefault": "x",
+        "sva2yosys_visibleAtSite": true
+       }
+      },
+      "right": {
+       "kind": "Simple",
+       "source_file_start": "defaults_and_decls.sv",
+       "source_file_end": "defaults_and_decls.sv",
+       "source_line_start": 15,
+       "source_line_end": 15,
+       "source_column_start": 15,
+       "source_column_end": 30,
+       "expr": {
+        "kind": "AssertionInstance",
+        "source_file_start": "defaults_and_decls.sv",
+        "source_file_end": "defaults_and_decls.sv",
+        "source_line_start": 15,
+        "source_line_end": 15,
+        "source_column_start": 15,
+        "source_column_end": 21,
+        "type": "sequence",
+        "sva2yosys_integral": false,
+        "symbol": "s_resp",
+        "body": {
+         "kind": "SequenceConcat",
+         "source_file_start": "defaults_and_decls.sv",
+         "source_file_end": "defaults_and_decls.sv",
+         "source_line_start": 11,
+         "source_line_end": 11,
+         "source_column_start": 9,
+         "source_column_end": 20,
+         "elements": [
+          {
+           "sequence": {
+            "kind": "Simple",
+            "source_file_start": "defaults_and_decls.sv",
+            "source_file_end": "defaults_and_decls.sv",
+            "source_line_start": 11,
+            "source_line_end": 11,
+            "source_column_start": 19,
+            "source_column_end": 20,
+            "expr": {
+             "kind": "NamedValue",
+             "source_file_start": "defaults_and_decls.sv",
+             "source_file_end": "defaults_and_decls.sv",
+             "source_line_start": 11,
+             "source_line_end": 11,
+             "source_column_start": 19,
+             "source_column_end": 20,
+             "type": "logic",
+             "sva2yosys_integral": {
+              "width": 1,
+              "signed": false,
+              "msb": 0,
+              "lsb": 0,
+              "dims": 0
+             },
+             "symbol": "ack",
+             "sva2yosys_path": "top.u3.ack",
+             "sva2yosys_sampledDefault": "x",
+             "sva2yosys_visibleAtSite": true
+            }
+           },
+           "min": 1,
+           "max": 3
+          }
+         ]
+        },
+        "isRecursiveProperty": false
+       }
+      }
+     },
+     "isRecursiveProperty": false
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "defaults_and_decls.sv",
+    "source_file_end": "defaults_and_decls.sv",
+    "source_line_start": 7,
+    "source_line_end": 7,
+    "source_column_start": 27,
+    "source_column_end": 38,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 7,
+     "source_line_end": 7,
+     "source_column_start": 35,
+     "source_column_end": 38,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "top.u3.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": {
+    "kind": "UnaryOp",
+    "source_file_start": "defaults_and_decls.sv",
+    "source_file_end": "defaults_and_decls.sv",
+    "source_line_start": 8,
+    "source_line_end": 8,
+    "source_column_start": 26,
+    "source_column_end": 32,
+    "type": "logic",
+    "sva2yosys_integral": {
+     "width": 1,
+     "signed": false,
+     "msb": 0,
+     "lsb": 0,
+     "dims": 0
+    },
+    "op": "LogicalNot",
+    "operand": {
+     "kind": "NamedValue",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 8,
+     "source_line_end": 8,
+     "source_column_start": 27,
+     "source_column_end": 32,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "rst_n",
+     "sva2yosys_path": "top.u3.rst_n",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    }
+   },
+   "sva2yosys_parameters": [
+    {
+     "name": "N",
+     "value": "3"
+    }
+   ],
+   "sva2yosys_dependencies": [
+    "N"
+   ],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_inline",
+   "scope": "top.u3",
+   "source_file_start": "defaults_and_decls.sv",
+   "source_file_end": "defaults_and_decls.sv",
+   "source_line_start": 19,
+   "source_line_end": 19,
+   "source_column_start": 5,
+   "source_column_end": 45,
+   "propertySpec": {
+    "kind": "Binary",
+    "source_file_start": "defaults_and_decls.sv",
+    "source_file_end": "defaults_and_decls.sv",
+    "source_line_start": 19,
+    "source_line_end": 19,
+    "source_column_start": 32,
+    "source_column_end": 43,
+    "op": "NonOverlappedImplication",
+    "left": {
+     "kind": "Simple",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 19,
+     "source_line_end": 19,
+     "source_column_start": 32,
+     "source_column_end": 35,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "defaults_and_decls.sv",
+      "source_file_end": "defaults_and_decls.sv",
+      "source_line_start": 19,
+      "source_line_end": 19,
+      "source_column_start": 32,
+      "source_column_end": 35,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "req",
+      "sva2yosys_path": "top.u3.req",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     }
+    },
+    "right": {
+     "kind": "Simple",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 19,
+     "source_line_end": 19,
+     "source_column_start": 40,
+     "source_column_end": 43,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "defaults_and_decls.sv",
+      "source_file_end": "defaults_and_decls.sv",
+      "source_line_start": 19,
+      "source_line_end": 19,
+      "source_column_start": 40,
+      "source_column_end": 43,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "ack",
+      "sva2yosys_path": "top.u3.ack",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "defaults_and_decls.sv",
+    "source_file_end": "defaults_and_decls.sv",
+    "source_line_start": 7,
+    "source_line_end": 7,
+    "source_column_start": 27,
+    "source_column_end": 38,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 7,
+     "source_line_end": 7,
+     "source_column_start": 35,
+     "source_column_end": 38,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "top.u3.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": {
+    "kind": "UnaryOp",
+    "source_file_start": "defaults_and_decls.sv",
+    "source_file_end": "defaults_and_decls.sv",
+    "source_line_start": 8,
+    "source_line_end": 8,
+    "source_column_start": 26,
+    "source_column_end": 32,
+    "type": "logic",
+    "sva2yosys_integral": {
+     "width": 1,
+     "signed": false,
+     "msb": 0,
+     "lsb": 0,
+     "dims": 0
+    },
+    "op": "LogicalNot",
+    "operand": {
+     "kind": "NamedValue",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 8,
+     "source_line_end": 8,
+     "source_column_start": 27,
+     "source_column_end": 32,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "rst_n",
+     "sva2yosys_path": "top.u3.rst_n",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    }
+   },
+   "sva2yosys_parameters": [
+    {
+     "name": "N",
+     "value": "3"
+    }
+   ],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_named",
+   "scope": "top.u5",
+   "source_file_start": "defaults_and_decls.sv",
+   "source_file_end": "defaults_and_decls.sv",
+   "source_line_start": 18,
+   "source_line_end": 18,
+   "source_column_start": 5,
+   "source_column_end": 55,
+   "propertySpec": {
+    "kind": "Simple",
+    "source_file_start": "defaults_and_decls.sv",
+    "source_file_end": "defaults_and_decls.sv",
+    "source_line_start": 18,
+    "source_line_end": 18,
+    "source_column_start": 32,
+    "source_column_end": 53,
+    "expr": {
+     "kind": "AssertionInstance",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 18,
+     "source_line_end": 18,
+     "source_column_start": 32,
+     "source_column_end": 43,
+     "type": "property",
+     "sva2yosys_integral": false,
+     "symbol": "p_handshake",
+     "body": {
+      "kind": "Binary",
+      "source_file_start": "defaults_and_decls.sv",
+      "source_file_end": "defaults_and_decls.sv",
+      "source_line_start": 15,
+      "source_line_end": 15,
+      "source_column_start": 9,
+      "source_column_end": 30,
+      "op": "OverlappedImplication",
+      "left": {
+       "kind": "Simple",
+       "source_file_start": "defaults_and_decls.sv",
+       "source_file_end": "defaults_and_decls.sv",
+       "source_line_start": 15,
+       "source_line_end": 15,
+       "source_column_start": 9,
+       "source_column_end": 10,
+       "expr": {
+        "kind": "NamedValue",
+        "source_file_start": "defaults_and_decls.sv",
+        "source_file_end": "defaults_and_decls.sv",
+        "source_line_start": 15,
+        "source_line_end": 15,
+        "source_column_start": 9,
+        "source_column_end": 10,
+        "type": "logic",
+        "sva2yosys_integral": {
+         "width": 1,
+         "signed": false,
+         "msb": 0,
+         "lsb": 0,
+         "dims": 0
+        },
+        "symbol": "req",
+        "sva2yosys_path": "top.u5.req",
+        "sva2yosys_sampledDefault": "x",
+        "sva2yosys_visibleAtSite": true
+       }
+      },
+      "right": {
+       "kind": "Simple",
+       "source_file_start": "defaults_and_decls.sv",
+       "source_file_end": "defaults_and_decls.sv",
+       "source_line_start": 15,
+       "source_line_end": 15,
+       "source_column_start": 15,
+       "source_column_end": 30,
+       "expr": {
+        "kind": "AssertionInstance",
+        "source_file_start": "defaults_and_decls.sv",
+        "source_file_end": "defaults_and_decls.sv",
+        "source_line_start": 15,
+        "source_line_end": 15,
+        "source_column_start": 15,
+        "source_column_end": 21,
+        "type": "sequence",
+        "sva2yosys_integral": false,
+        "symbol": "s_resp",
+        "body": {
+         "kind": "SequenceConcat",
+         "source_file_start": "defaults_and_decls.sv",
+         "source_file_end": "defaults_and_decls.sv",
+         "source_line_start": 11,
+         "source_line_end": 11,
+         "source_column_start": 9,
+         "source_column_end": 20,
+         "elements": [
+          {
+           "sequence": {
+            "kind": "Simple",
+            "source_file_start": "defaults_and_decls.sv",
+            "source_file_end": "defaults_and_decls.sv",
+            "source_line_start": 11,
+            "source_line_end": 11,
+            "source_column_start": 19,
+            "source_column_end": 20,
+            "expr": {
+             "kind": "NamedValue",
+             "source_file_start": "defaults_and_decls.sv",
+             "source_file_end": "defaults_and_decls.sv",
+             "source_line_start": 11,
+             "source_line_end": 11,
+             "source_column_start": 19,
+             "source_column_end": 20,
+             "type": "logic",
+             "sva2yosys_integral": {
+              "width": 1,
+              "signed": false,
+              "msb": 0,
+              "lsb": 0,
+              "dims": 0
+             },
+             "symbol": "ack",
+             "sva2yosys_path": "top.u5.ack",
+             "sva2yosys_sampledDefault": "x",
+             "sva2yosys_visibleAtSite": true
+            }
+           },
+           "min": 1,
+           "max": 5
+          }
+         ]
+        },
+        "isRecursiveProperty": false
+       }
+      }
+     },
+     "isRecursiveProperty": false
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "defaults_and_decls.sv",
+    "source_file_end": "defaults_and_decls.sv",
+    "source_line_start": 7,
+    "source_line_end": 7,
+    "source_column_start": 27,
+    "source_column_end": 38,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 7,
+     "source_line_end": 7,
+     "source_column_start": 35,
+     "source_column_end": 38,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "top.u5.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": {
+    "kind": "UnaryOp",
+    "source_file_start": "defaults_and_decls.sv",
+    "source_file_end": "defaults_and_decls.sv",
+    "source_line_start": 8,
+    "source_line_end": 8,
+    "source_column_start": 26,
+    "source_column_end": 32,
+    "type": "logic",
+    "sva2yosys_integral": {
+     "width": 1,
+     "signed": false,
+     "msb": 0,
+     "lsb": 0,
+     "dims": 0
+    },
+    "op": "LogicalNot",
+    "operand": {
+     "kind": "NamedValue",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 8,
+     "source_line_end": 8,
+     "source_column_start": 27,
+     "source_column_end": 32,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "rst_n",
+     "sva2yosys_path": "top.u5.rst_n",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    }
+   },
+   "sva2yosys_parameters": [
+    {
+     "name": "N",
+     "value": "5"
+    }
+   ],
+   "sva2yosys_dependencies": [
+    "N"
+   ],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "assertionKind": "Assert",
+   "name": "p_inline",
+   "scope": "top.u5",
+   "source_file_start": "defaults_and_decls.sv",
+   "source_file_end": "defaults_and_decls.sv",
+   "source_line_start": 19,
+   "source_line_end": 19,
+   "source_column_start": 5,
+   "source_column_end": 45,
+   "propertySpec": {
+    "kind": "Binary",
+    "source_file_start": "defaults_and_decls.sv",
+    "source_file_end": "defaults_and_decls.sv",
+    "source_line_start": 19,
+    "source_line_end": 19,
+    "source_column_start": 32,
+    "source_column_end": 43,
+    "op": "NonOverlappedImplication",
+    "left": {
+     "kind": "Simple",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 19,
+     "source_line_end": 19,
+     "source_column_start": 32,
+     "source_column_end": 35,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "defaults_and_decls.sv",
+      "source_file_end": "defaults_and_decls.sv",
+      "source_line_start": 19,
+      "source_line_end": 19,
+      "source_column_start": 32,
+      "source_column_end": 35,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "req",
+      "sva2yosys_path": "top.u5.req",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     }
+    },
+    "right": {
+     "kind": "Simple",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 19,
+     "source_line_end": 19,
+     "source_column_start": 40,
+     "source_column_end": 43,
+     "expr": {
+      "kind": "NamedValue",
+      "source_file_start": "defaults_and_decls.sv",
+      "source_file_end": "defaults_and_decls.sv",
+      "source_line_start": 19,
+      "source_line_end": 19,
+      "source_column_start": 40,
+      "source_column_end": 43,
+      "type": "logic",
+      "sva2yosys_integral": {
+       "width": 1,
+       "signed": false,
+       "msb": 0,
+       "lsb": 0,
+       "dims": 0
+      },
+      "symbol": "ack",
+      "sva2yosys_path": "top.u5.ack",
+      "sva2yosys_sampledDefault": "x",
+      "sva2yosys_visibleAtSite": true
+     }
+    }
+   },
+   "sva2yosys_procedural": false,
+   "sva2yosys_clock": {
+    "kind": "SignalEvent",
+    "source_file_start": "defaults_and_decls.sv",
+    "source_file_end": "defaults_and_decls.sv",
+    "source_line_start": 7,
+    "source_line_end": 7,
+    "source_column_start": 27,
+    "source_column_end": 38,
+    "expr": {
+     "kind": "NamedValue",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 7,
+     "source_line_end": 7,
+     "source_column_start": 35,
+     "source_column_end": 38,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "clk",
+     "sva2yosys_path": "top.u5.clk",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    },
+    "edge": "PosEdge"
+   },
+   "sva2yosys_defaultDisable": {
+    "kind": "UnaryOp",
+    "source_file_start": "defaults_and_decls.sv",
+    "source_file_end": "defaults_and_decls.sv",
+    "source_line_start": 8,
+    "source_line_end": 8,
+    "source_column_start": 26,
+    "source_column_end": 32,
+    "type": "logic",
+    "sva2yosys_integral": {
+     "width": 1,
+     "signed": false,
+     "msb": 0,
+     "lsb": 0,
+     "dims": 0
+    },
+    "op": "LogicalNot",
+    "operand": {
+     "kind": "NamedValue",
+     "source_file_start": "defaults_and_decls.sv",
+     "source_file_end": "defaults_and_decls.sv",
+     "source_line_start": 8,
+     "source_line_end": 8,
+     "source_column_start": 27,
+     "source_column_end": 32,
+     "type": "logic",
+     "sva2yosys_integral": {
+      "width": 1,
+      "signed": false,
+      "msb": 0,
+      "lsb": 0,
+      "dims": 0
+     },
+     "symbol": "rst_n",
+     "sva2yosys_path": "top.u5.rst_n",
+     "sva2yosys_sampledDefault": "x",
+     "sva2yosys_visibleAtSite": true
+    }
+   },
+   "sva2yosys_parameters": [
+    {
+     "name": "N",
+     "value": "5"
+    }
+   ],
+   "sva2yosys_dependencies": [],
+   "sva2yosys_hiddenParameters": [],
+   "sva2yosys_disableIssue": null
+  }
+ ],
+ "sva2yosys_syntax": [
+  {
+   "kind": "ModuleDeclaration",
+   "source_file_start": "defaults_and_decls.sv",
+   "source_file_end": "defaults_and_decls.sv",
+   "source_line_start": 2,
+   "source_line_end": 20,
+   "source_column_start": 1,
+   "source_column_end": 10,
+   "sva2yosys_start": 82,
+   "sva2yosys_end": 559,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "none",
+   "sva2yosys_inputFile": "defaults_and_decls.sv",
+   "name": "defaults_and_decls",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 550,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "DefaultClocking",
+   "source_file_start": "defaults_and_decls.sv",
+   "source_file_end": "defaults_and_decls.sv",
+   "source_line_start": 7,
+   "source_line_end": 7,
+   "source_column_start": 5,
+   "source_column_end": 52,
+   "sva2yosys_start": 209,
+   "sva2yosys_end": 256,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "defaults_and_decls.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "DefaultDisableDeclaration",
+   "source_file_start": "defaults_and_decls.sv",
+   "source_file_end": "defaults_and_decls.sv",
+   "source_line_start": 8,
+   "source_line_end": 8,
+   "source_column_start": 5,
+   "source_column_end": 34,
+   "sva2yosys_start": 261,
+   "sva2yosys_end": 290,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "defaults_and_decls.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "SequenceDeclaration",
+   "source_file_start": "defaults_and_decls.sv",
+   "source_file_end": "defaults_and_decls.sv",
+   "source_line_start": 10,
+   "source_line_end": 12,
+   "source_column_start": 5,
+   "source_column_end": 16,
+   "sva2yosys_start": 296,
+   "sva2yosys_end": 368,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "defaults_and_decls.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "PropertyDeclaration",
+   "source_file_start": "defaults_and_decls.sv",
+   "source_file_end": "defaults_and_decls.sv",
+   "source_line_start": 14,
+   "source_line_end": 16,
+   "source_column_start": 5,
+   "source_column_end": 16,
+   "sva2yosys_start": 374,
+   "sva2yosys_end": 448,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "defaults_and_decls.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "defaults_and_decls.sv",
+   "source_file_end": "defaults_and_decls.sv",
+   "source_line_start": 18,
+   "source_line_end": 18,
+   "source_column_start": 5,
+   "source_column_end": 55,
+   "sva2yosys_start": 454,
+   "sva2yosys_end": 504,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "defaults_and_decls.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ConcurrentAssertion",
+   "source_file_start": "defaults_and_decls.sv",
+   "source_file_end": "defaults_and_decls.sv",
+   "source_line_start": 19,
+   "source_line_end": 19,
+   "source_column_start": 5,
+   "source_column_end": 45,
+   "sva2yosys_start": 509,
+   "sva2yosys_end": 549,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "module",
+   "sva2yosys_inputFile": "defaults_and_decls.sv",
+   "name": "",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 0,
+   "sva2yosys_insertEnd": 0
+  },
+  {
+   "kind": "ModuleDeclaration",
+   "source_file_start": "defaults_and_decls.sv",
+   "source_file_end": "defaults_and_decls.sv",
+   "source_line_start": 22,
+   "source_line_end": 25,
+   "source_column_start": 1,
+   "source_column_end": 10,
+   "sva2yosys_start": 561,
+   "sva2yosys_end": 699,
+   "sva2yosys_macro": false,
+   "sva2yosys_container": "none",
+   "sva2yosys_inputFile": "defaults_and_decls.sv",
+   "name": "top",
+   "sva2yosys_instanceBind": false,
+   "sva2yosys_insertAt": 690,
+   "sva2yosys_insertEnd": 0
+  }
+ ],
+ "sva2yosys_includes": [],
+ "sva2yosys_packages": [],
+ "sva2yosys_packageUses": []
+}

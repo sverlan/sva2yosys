@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "b",
+      "wave": "101.0."
+    },
+    {
+      "name": "c",
+      "wave": "0...10"
+    },
+    {
+      "name": "d",
+      "wave": "0....."
+    },
+    {
+      "name": "fail",
+      "wave": "0...10"
+    },
+    {
+      "name": "pass",
+      "wave": "0....."
+    }
+  ],
+  "head": {
+    "text": "unbounded/goto_range_in_antecedent_is_a_union_of_counts",
+    "tock": 0
+  }
+}

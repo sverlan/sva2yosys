@@ -1,0 +1,506 @@
+# Constant conditions are evaluated at their own sample (docs/semantics.md section 3).
+# IEEE 1800 Annex F: an unknown future sample satisfies every Boolean, 1'b0 included, so a
+# constant-false letter refutes a partial match at its own sample and never before. Hand-derived.
+# "1'b1[=1]" is (!1'b1)[*0:$] ##1 1'b1 ##1 (!1'b1)[*0:$], where !1'b1 is 1'b0.
+
+== constant_false_one_sample_ahead_fails_one_sample_later
+# a |-> ##1 1'b0: the consequent starts at 0 and needs 1'b0 at sample 1, where it is
+# refuted. It cannot be known to fail at sample 0.
+property: a |-> ##1 1'b0
+clause: 16.7 16.12.7 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 . .
+fail   : . 1 .
+pending: 0
+
+== constant_false_one_sample_ahead_is_disabled_at_that_sample
+# The decisive sample is 1; disable iff (r) is true there: the attempt is disabled, no failure.
+disable: r
+property: a |-> ##1 1'b0
+clause: 16.7 16.12 16.12.7 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 . .
+r      : . 1 .
+pending: 0
+
+== constant_false_one_sample_ahead_disable_after_the_decision_is_late
+# r only rises at 2: the attempt of 0 already failed at 1.
+disable: r
+property: a |-> ##1 1'b0
+clause: 16.7 16.12 16.12.7 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 . .
+r      : . . 1
+fail   : . 1 .
+pending: 0
+
+== constant_false_one_sample_ahead_as_an_assumption_is_disabled_at_that_sample
+kind: assume
+disable: r
+property: a |-> ##1 1'b0
+clause: 16.7 16.12 16.12.7 16.14.2 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 . .
+r      : . 1 .
+pending: 0
+
+== constant_false_one_sample_ahead_as_an_assumption_fails_one_sample_later
+kind: assume
+property: a |-> ##1 1'b0
+clause: 16.7 16.12.7 16.14.2 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 . .
+fail   : . 1 .
+pending: 0
+
+== constant_false_at_the_trigger_sample_fails_there
+# a |-> 1'b0: the constant is evaluated at the trigger sample, which is the current one.
+disable: r
+property: a |-> 1'b0
+clause: 16.12 16.12.7
+class: normative
+sample : 0 1
+a      : 1 .
+r      : . 1
+fail   : 1 .
+pending: 0
+
+== constant_false_after_a_condition_fails_at_the_constant
+# b ##1 1'b0: b holds at 0, then 1'b0 is refuted at 1.
+property: a |-> b ##1 1'b0
+clause: 16.7 16.12.7 Annex F
+class: interpretation I1
+sample : 0 1 2 3
+a      : 1 . 1 .
+b      : 1 . . .
+fail   : . 1 1 .
+pending: 0
+
+== constant_false_after_a_failing_condition_fails_at_the_condition
+# The first letter b is refuted at 0 already.
+property: a |-> b ##1 1'b0
+clause: 16.7 16.12.7 Annex F
+class: normative
+sample : 0 1
+a      : 1 .
+b      : . .
+fail   : 1 .
+pending: 0
+
+== constant_false_first_letter_fails_at_the_trigger_sample
+property: a |-> 1'b0 ##1 b
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1
+a      : 1 .
+b      : 1 1
+fail   : 1 .
+pending: 0
+
+== constant_false_repetition_fails_at_the_first_repeated_sample
+# b ##1 1'b0[*1:$]: the first copy of 1'b0 is at sample 1.
+property: a |-> b ##1 1'b0[*1:$]
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: interpretation I1
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : 1 . .
+outcome : F t t
+decided : 1 1 2
+fail    : . 1 .
+pending: 0
+final-fail: 0
+
+== constant_false_between_loops_is_skipped_by_an_empty_repetition
+# b ##1 1'b0[*0:$] ##1 d: the repetition may be empty, so 1'b0 never needs to hold.
+property: a |-> b ##1 1'b0[*0:$] ##1 d
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : 1 . .
+d       : . 1 .
+outcome : T t t
+decided : 1 1 2
+pass    : . 1 .
+pending: 0
+final-fail: 0
+
+== constant_false_last_letter_of_an_or_branch
+# (b ##1 1'b0) or (c ##1 d): at 0 only b holds, so the first branch is alive; 1'b0 refutes it at 1.
+property: a |-> (b ##1 1'b0) or (c ##1 d)
+clause: 16.7 16.9.7 16.12.7 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 . .
+b      : 1 . .
+c      : . . .
+d      : . . .
+fail   : . 1 .
+pending: 0
+
+== constant_false_branch_of_an_or_is_beaten_by_the_other_branch
+property: a |-> (b ##1 1'b0) or (c ##1 d)
+clause: 16.7 16.9.7 16.12.7 Annex F
+class: normative
+sample : 0 1 2
+a      : 1 . .
+b      : 1 . .
+c      : 1 . .
+d      : . 1 .
+pass   : . 1 .
+pending: 0
+
+== constant_false_in_an_intersect_of_equal_lengths_fails_at_its_sample
+# (b ##1 1'b0) intersect (c ##1 d): the lengths agree, so the product is alive after 0
+# and 1'b0 at sample 1 refutes it.
+property: a |-> (b ##1 1'b0) intersect (c ##1 d)
+clause: 16.7 16.9.6 16.12.7 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 . .
+b      : 1 . .
+c      : 1 . .
+d      : . . .
+fail   : . 1 .
+pending: 0
+
+== intersect_of_different_fixed_lengths_fails_at_the_trigger_sample
+# Structural emptiness (no sample can give a match) is exact and decided at once.
+property: a |-> (b ##1 c) intersect d
+clause: 16.7 16.9.6 16.12.7
+class: normative
+sample : 0 1 2
+a      : 1 . .
+b      : 1 1 1
+c      : 1 1 1
+d      : 1 1 1
+fail   : 1 . .
+pending: 0
+
+== throughout_constant_false_fails_at_the_sample_it_is_tested
+property: a |-> (1'b0 throughout (b ##1 c))
+clause: 16.7 16.9.9 16.12.7 Annex F
+class: normative
+sample : 0 1
+a      : 1 .
+b      : 1 .
+c      : . 1
+fail   : 1 .
+pending: 0
+
+== constant_false_antecedent_letter_never_triggers
+property: a ##1 1'b0 |-> c
+clause: 16.7 16.12.7 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 1 .
+c      : . . .
+pending: 0
+
+== not_of_a_sequence_ending_in_a_constant_false_passes_when_it_is_refuted
+# a |-> not (b ##1 1'b0): the sequence is alive after 0 and refuted at 1, where the obligation passes.
+property: a |-> not (b ##1 1'b0)
+clause: 16.7 16.12.3 16.12.7 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 . .
+b      : 1 . .
+pass   : . 1 .
+pending: 0
+
+== not_of_a_sequence_ending_in_a_constant_false_is_disabled_at_the_refuting_sample
+disable: r
+property: a |-> not (b ##1 1'b0)
+clause: 16.7 16.12 16.12.3 16.12.7 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 . .
+b      : 1 . .
+r      : . 1 .
+pending: 0
+
+== past_condition_still_fails_at_the_first_sample
+# $past(b) does not hold at sample 0 (first-sample rule): the attempt of 0 fails at 0.
+# The attempt of 1 has $past(b) = 1 and 1'b0 refutes it at 2.
+property: a |-> $past(b) ##1 1'b0
+clause: 16.7 16.9.3 16.12.7 Annex F
+class: interpretation I1, I3
+sample : 0 1 2 3
+a      : 1 1 . .
+b      : 1 . . .
+fail   : 1 . 1 .
+pending: 0
+
+== cover_of_a_sequence_ending_in_a_constant_false_is_never_reached
+kind: cover
+property: a ##1 1'b0
+clause: 16.7 16.14.3 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 1 1
+pass   : . . .
+pending: 1
+
+== cover_of_an_or_reports_the_branch_without_the_constant
+kind: cover
+property: (a ##1 1'b0) or (c ##1 d)
+clause: 16.7 16.9.7 16.14.3 Annex F
+class: interpretation I1
+sample : 0 1 2
+a      : 1 1 .
+c      : 1 . .
+d      : . 1 .
+pass   : . 1 .
+
+== disabled_nonconsecutive_intersect_does_not_fail_at_the_first_sample
+# disable iff (r) 1'b1[=1] intersect (a ##[1:$] b): 1'b1[=1] is 1'b1 followed by samples of 1'b0,
+# or preceded by them; a match of length >= 2 (the other operand's minimum) needs 1'b0 at a later
+# sample. At sample 0 nothing is refuted (a holds, 1'b1 holds): alive, no failure.
+disable: r
+property: 1'b1[=1] intersect (a ##[1:$] b)
+clause: 16.7 16.9.2 16.9.6 16.12 16.12.2 Annex F
+class: interpretation I1
+scope: attempt
+sample  : 0
+a       : 1
+b       : .
+r       : .
+outcome : p
+decided : .
+pending: 1
+final-fail: 0
+
+== disabled_nonconsecutive_intersect_is_disabled_at_the_refuting_sample
+# The failure would come at sample 1 (1'b0 refuted); r is true there.
+disable: r
+property: 1'b1[=1] intersect (a ##[1:$] b)
+clause: 16.7 16.9.2 16.9.6 16.12 16.12.2 Annex F
+class: interpretation I1
+scope: attempt
+sample  : 0 1
+a       : 1 .
+b       : . .
+r       : . 1
+outcome : d d
+decided : 1 1
+pending: 0
+final-fail: 0
+
+== nonconsecutive_intersect_fails_at_the_refuting_sample
+# Without the disable: both attempts (0 and 1) are refuted at sample 1.
+disable: r
+property: 1'b1[=1] intersect (a ##[1:$] b)
+clause: 16.7 16.9.2 16.9.6 16.12 16.12.2 Annex F
+class: interpretation I1
+scope: attempt
+sample  : 0 1
+a       : 1 .
+b       : . .
+r       : . .
+outcome : F F
+decided : 1 1
+fail    : . 1
+pending: 0
+final-fail: 0
+
+== constant_false_after_an_unbounded_delay_never_fails
+# a |-> ##[1:$] 1'b0: the filler loop is alive for ever; weak, so pending (TRUE if the trace ends).
+property: a |-> ##[1:$] 1'b0
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: interpretation I1
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . . .
+outcome : p t t t
+decided : . 1 2 3
+pending: 1
+final-fail: 0
+
+== constant_false_after_an_unbounded_delay_is_disabled_while_pending
+disable: r
+property: a |-> ##[1:$] 1'b0
+clause: 16.7 16.12 16.12.2 16.12.7 Annex F
+class: interpretation I1
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . . .
+r       : . . 1 .
+outcome : d t d t
+decided : 2 1 2 3
+pending: 0
+final-fail: 0
+
+== intersect_of_constant_languages_after_an_unbounded_delay_never_fails
+# [=1] intersect [*2]: the only common length-2 matches use 1'b0 letters, refuted on known
+# samples, but the intersect may start at any later, unknown sample: alive for ever.
+property: a |-> ##[1:$] (1'b1[=1] intersect 1'b1[*2])
+clause: 16.7 16.9.2 16.9.6 16.12.2 16.12.7 Annex F
+class: interpretation I1
+scope: attempt
+sample  : 0 1 2 3
+a       : 1 . . .
+outcome : p t t t
+decided : . 1 2 3
+pending: 1
+final-fail: 0
+
+== constant_false_after_a_loop_fails_when_the_loop_ends_without_it
+# a |-> b[*1:$] ##1 1'b0: b holds at 0, is low at 1 where 1'b0 is also refuted: FALSE at 1.
+property: a |-> b[*1:$] ##1 1'b0
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: interpretation I1
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : 1 . .
+outcome : F t t
+decided : 1 1 2
+fail    : . 1 .
+pending: 0
+final-fail: 0
+
+== constant_false_after_a_loop_stays_alive_while_the_loop_holds
+property: a |-> b[*1:$] ##1 1'b0
+clause: 16.7 16.9.2 16.12.2 16.12.7 Annex F
+class: interpretation I1
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : 1 1 1
+outcome : p t t
+decided : . 1 2
+pending: 1
+final-fail: 0
+
+== constant_false_after_a_loop_is_disabled_at_the_decisive_sample
+disable: r
+property: a |-> b[*1:$] ##1 1'b0
+clause: 16.7 16.9.2 16.12 16.12.2 16.12.7 Annex F
+class: interpretation I1
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+b       : 1 . .
+r       : . 1 .
+outcome : d d t
+decided : 1 1 2
+pending: 0
+final-fail: 0
+
+== goto_of_constant_false_stays_alive
+# 1'b0[->1] is (1'b1)[*0:$] ##1 1'b0: the 1'b1 loop keeps it alive; weak, so never failed.
+property: a |-> 1'b0[->1]
+clause: 16.9.2 16.12.2 16.12.7 Annex F
+class: interpretation I1
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+outcome : p t t
+decided : . 1 2
+pending: 1
+final-fail: 0
+
+== goto_of_constant_true_matches_consecutive_samples
+property: a |-> 1'b1[->2]
+clause: 16.9.2 16.12.2 16.12.7 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+outcome : T t t
+decided : 1 1 2
+pass    : . 1 .
+pending: 0
+final-fail: 0
+
+== per_attempt_or_with_a_constant_false_operand_is_decided_when_it_is_refuted
+# (a |-> ##1 1'b0) or (c |-> d): attempt 0: the second operand is FALSE at 0 (c without d), the
+# first is refuted at 1: the or is FALSE at 1 (not at 0). Attempts 1 and 2: both operands vacuous.
+property: (a |-> ##1 1'b0) or (c |-> d)
+clause: 16.7 16.12.2 16.12.4 16.12.7 16.14.8 Annex F
+class: interpretation I1, I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+c       : 1 . .
+d       : . . .
+outcome : F t t
+decided : 1 1 2
+fail    : . 1 .
+pending: 0
+final-fail: 0
+
+== per_attempt_or_with_a_constant_false_operand_is_disabled_at_the_refuting_sample
+disable: r
+property: (a |-> ##1 1'b0) or (c |-> d)
+clause: 16.7 16.12 16.12.2 16.12.4 16.12.7 16.14.8 Annex F
+class: interpretation I1, I5
+scope: attempt
+sample  : 0 1 2
+a       : 1 . .
+c       : 1 . .
+d       : . . .
+r       : . 1 .
+outcome : d d t
+decided : 1 1 2
+pending: 0
+final-fail: 0
+
+== lasso_constant_false_refutes_at_its_sample_in_the_loop
+# a |-> b ##1 1'b0 on a one-sample... two-sample loop from 0. Attempt 0: b holds at 0, 1'b0 is refuted
+# at 1: FALSE at 1. Attempt 1: b holds at 1, and the next sample is sample 0 again (loop), where
+# 1'b0 is refuted: FALSE at 2 on the infinite trace (the finite trace has no sample 2 yet).
+property: a |-> b ##1 1'b0
+clause: 16.7 16.12.2 16.12.7 Annex F
+class: interpretation I1
+scope: attempt
+loop: 0
+sample  : 0 1
+a       : 1 1
+b       : 1 1
+outcome : F p
+decided : 1 .
+fail    : . 1
+pending: 1
+final-fail: 0
+inf-outcome : F F
+inf-decided : 1 2
+
+== lasso_weak_constant_false_after_an_unbounded_delay_is_true_for_ever
+# The filler loop is alive for ever and 1'b0 never holds: no match, no refutation; weak: TRUE.
+property: 1'b1 ##[1:$] 1'b0
+clause: 16.7 16.12.2 Annex F
+class: interpretation I1
+scope: attempt
+loop: 0
+sample  : 0 1
+a       : . .
+outcome : p p
+decided : . .
+pending: 2
+final-fail: 0
+inf-outcome : T T
+inf-decided : . .
+
+== lasso_strong_constant_false_after_an_unbounded_delay_is_false_for_ever
+property: strong(1'b1 ##[1:$] 1'b0)
+clause: 16.7 16.12.2 Annex F
+class: interpretation I1, I8
+scope: attempt
+loop: 0
+sample  : 0 1
+a       : . .
+outcome : p p
+decided : . .
+pending: 2
+final-fail: 2
+inf-outcome : F F
+inf-decided : . .

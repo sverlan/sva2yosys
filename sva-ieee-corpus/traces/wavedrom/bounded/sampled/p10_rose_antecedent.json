@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp......"
+    },
+    {
+      "name": "a",
+      "wave": "01..01.0"
+    },
+    {
+      "name": "b",
+      "wave": "0..10..."
+    },
+    {
+      "name": "fail",
+      "wave": "0......."
+    },
+    {
+      "name": "pass",
+      "wave": "0..10..."
+    }
+  ],
+  "head": {
+    "text": "sampled/p10_rose_antecedent",
+    "tock": 0
+  }
+}

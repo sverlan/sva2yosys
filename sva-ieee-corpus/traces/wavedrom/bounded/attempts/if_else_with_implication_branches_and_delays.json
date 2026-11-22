@@ -1,0 +1,40 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "e",
+      "wave": "1.0.10"
+    },
+    {
+      "name": "a",
+      "wave": "1..0.."
+    },
+    {
+      "name": "b",
+      "wave": "010..."
+    },
+    {
+      "name": "c",
+      "wave": "0.1.01"
+    },
+    {
+      "name": "d",
+      "wave": "0...10"
+    },
+    {
+      "name": "fail",
+      "wave": "0.10.1"
+    },
+    {
+      "name": "pass",
+      "wave": "010.10"
+    }
+  ],
+  "head": {
+    "text": "attempts/if_else_with_implication_branches_and_delays",
+    "tock": 0
+  }
+}

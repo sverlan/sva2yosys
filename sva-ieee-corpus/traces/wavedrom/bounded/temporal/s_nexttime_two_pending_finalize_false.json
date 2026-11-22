@@ -1,0 +1,24 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "b",
+      "wave": "10.10"
+    },
+    {
+      "name": "fail",
+      "wave": "0.101"
+    },
+    {
+      "name": "pass",
+      "wave": "0..10"
+    }
+  ],
+  "head": {
+    "text": "temporal/s_nexttime_two_pending_finalize_false",
+    "tock": 0
+  }
+}

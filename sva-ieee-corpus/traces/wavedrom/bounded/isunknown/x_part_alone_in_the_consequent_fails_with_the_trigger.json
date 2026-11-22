@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "101"
+    },
+    {
+      "name": "c",
+      "wave": "1.."
+    },
+    {
+      "name": "fail",
+      "wave": "101"
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    }
+  ],
+  "head": {
+    "text": "isunknown/x_part_alone_in_the_consequent_fails_with_the_trigger",
+    "tock": 0
+  }
+}

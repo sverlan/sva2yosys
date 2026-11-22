@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "v",
+      "wave": "======",
+      "data": [
+        "2",
+        "3",
+        "C",
+        "F",
+        "D",
+        "0"
+      ]
+    },
+    {
+      "name": "b",
+      "wave": "010101"
+    },
+    {
+      "name": "fail",
+      "wave": "0...10"
+    },
+    {
+      "name": "pass",
+      "wave": "010101"
+    }
+  ],
+  "head": {
+    "text": "inside/inside_as_antecedent",
+    "tock": 0
+  }
+}

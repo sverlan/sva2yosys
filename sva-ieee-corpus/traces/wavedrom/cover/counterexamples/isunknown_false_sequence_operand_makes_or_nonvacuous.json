@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp"
+    },
+    {
+      "name": "a",
+      "wave": "01"
+    },
+    {
+      "name": "c",
+      "wave": "1."
+    },
+    {
+      "name": "fail",
+      "wave": "0."
+    },
+    {
+      "name": "pass",
+      "wave": "1."
+    }
+  ],
+  "head": {
+    "text": "counterexamples/isunknown_false_sequence_operand_makes_or_nonvacuous",
+    "tock": 0
+  }
+}

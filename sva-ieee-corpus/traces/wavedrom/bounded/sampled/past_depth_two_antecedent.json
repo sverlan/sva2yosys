@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "1.010"
+    },
+    {
+      "name": "b",
+      "wave": "0...."
+    },
+    {
+      "name": "fail",
+      "wave": "0.1.0"
+    },
+    {
+      "name": "pass",
+      "wave": "0...."
+    }
+  ],
+  "head": {
+    "text": "sampled/past_depth_two_antecedent",
+    "tock": 0
+  }
+}

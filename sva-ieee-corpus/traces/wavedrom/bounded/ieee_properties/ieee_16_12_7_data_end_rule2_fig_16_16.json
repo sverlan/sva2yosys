@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp............"
+    },
+    {
+      "name": "irdy",
+      "wave": "1..0...1......"
+    },
+    {
+      "name": "frame",
+      "wave": "0.....1......."
+    },
+    {
+      "name": "fail",
+      "wave": "0.1...0.1....."
+    },
+    {
+      "name": "pass",
+      "wave": "0......10....."
+    }
+  ],
+  "head": {
+    "text": "ieee_properties/ieee_16_12_7_data_end_rule2_fig_16_16",
+    "tock": 0
+  }
+}

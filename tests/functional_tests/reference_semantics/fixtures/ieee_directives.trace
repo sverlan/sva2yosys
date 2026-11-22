@@ -1,0 +1,614 @@
+# Cases from IEEE 1800-2017 clauses 16.14 to 16.16 and 16.18 (printed pages 456-483).
+# 16.13 (multiclock) is skipped. Samples count from 0 at the first tick unless a case says otherwise.
+# This part of the standard has one waveform figure (16-17); most cases come from rules and sentences,
+# and the expected rows are derived by hand from them (marked "derived" where the text is silent).
+
+== ieee_16_14_8_vacuous_implication
+# evidence: derived
+# 16.14.8 intro: a |-> b succeeds vacuously when a is false; that is neither a pass nor a failure.
+# t0, t3: a low: vacuous TRUE (t), no pass. t1: a, b: TRUE nonvacuous. t2: a without b: FALSE.
+property: a |-> b
+clause: 16.14.8 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.14.8 introduction, re-expressed
+scope: attempt
+sample  : 0 1 2 3
+a       : 0 1 1 0
+b       : 0 1 0 0
+outcome : t T F t
+decided : 0 1 2 3
+fail    : . . 1 .
+pass    : . 1 . .
+pending : 0
+
+== ieee_16_14_8_a_sequence_is_always_nonvacuous
+# evidence: derived
+# 16.14.8 item a: an attempt of a sequence property is always nonvacuous. b ##1 c as the whole property.
+# t0: b, c at 1: TRUE nonvacuous (pass at 1). t1: b low: FALSE at 1, nonvacuous. t2: b low: FALSE at 2.
+# (The failure rows are derived from the sequence semantics.)
+property: b ##1 c
+clause: 16.14.8 16.12.2
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item a, re-expressed
+scope: attempt
+sample  : 0 1 2
+b       : 1 0 0
+c       : 0 1 0
+outcome : T F F
+decided : 1 1 2
+fail    : . 1 1
+pass    : . 1 .
+pending : 0
+
+== ieee_16_14_8_b_strong_sequence_is_nonvacuous
+# evidence: derived
+# 16.14.8 item b: strong(seq) is always nonvacuous. t0: TRUE at 1. t1: b low: FALSE at 1.
+# t2: b at the last sample, c would be at 3: pending; a strong sequence still pending at the end
+# fails (derived from 16.12.2). Correction found by the run: the first draft had c low at sample 1, which makes t0 FALSE;
+# c is high at 1 so that t0 is TRUE at 1 as the derivation says.
+property: strong(b ##1 c)
+clause: 16.14.8 16.12.2
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item b, re-expressed
+scope: attempt
+sample  : 0 1 2
+b       : 1 0 1
+c       : 0 1 0
+outcome : T F p
+decided : 1 1 .
+fail    : . 1 .
+pass    : . 1 .
+pending : 1
+final-fail: 1
+
+== ieee_16_14_8_c_weak_sequence_is_nonvacuous
+# evidence: derived
+# 16.14.8 item c: weak(seq) is always nonvacuous. Same trace as the strong case: the pending attempt at the
+# end does not fail (weak, derived from 16.12.2). As in the strong case, c is high at sample 1 so that t0 is TRUE.
+property: weak(b ##1 c)
+clause: 16.14.8 16.12.2
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item c, re-expressed
+scope: attempt
+sample  : 0 1 2
+b       : 1 0 1
+c       : 0 1 0
+outcome : T F p
+decided : 1 1 .
+fail    : . 1 .
+pass    : . 1 .
+pending : 1
+final-fail: 0
+
+== ieee_16_14_8_d_not_keeps_nonvacuity
+# evidence: derived
+# 16.14.8 item d: not p is nonvacuous iff p's attempt is. not (a |-> b): t0 a low: the implication is
+# vacuously true, so not is FALSE and vacuous (f). t1: a, b: implication true nonvacuous, not FALSE (F).
+# t2: a without b: implication FALSE, not TRUE nonvacuous (T).
+property: not (a |-> b)
+clause: 16.14.8 16.12.3
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item d, re-expressed
+scope: attempt
+sample  : 0 1 2
+a       : 0 1 1
+b       : 0 1 0
+outcome : f F T
+decided : 0 1 2
+fail    : 1 1 .
+pass    : . . 1
+pending : 0
+
+== ieee_16_14_8_e_or_nonvacuous_if_either
+# evidence: derived
+# 16.14.8 item e: p or q is nonvacuous iff either operand's attempt is. (a |-> b) or (c |-> d).
+# t0: a low (operand 1 vacuous TRUE), c, d: operand 2 nonvacuous TRUE: TRUE nonvacuous (T).
+# t1: both vacuous: t. t2: both FALSE: FALSE (nonvacuous).
+property: (a |-> b) or (c |-> d)
+clause: 16.14.8 16.12.4 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item e, re-expressed
+scope: attempt
+sample  : 0 1 2
+a       : 0 0 1
+b       : 0 0 0
+c       : 1 0 1
+d       : 1 0 0
+outcome : T t F
+decided : 0 1 2
+fail    : . . 1
+pass    : 1 . .
+pending : 0
+
+== ieee_16_14_8_f_and_nonvacuous_if_either
+# evidence: derived
+# 16.14.8 item f: p and q is nonvacuous iff either operand's attempt is. (a |-> b) and (c |-> d).
+# t0: operand 1 TRUE nonvacuous, operand 2 vacuous: TRUE nonvacuous (T). t1: both vacuous: t.
+# t2: operand 1 vacuous TRUE, operand 2 FALSE: FALSE, nonvacuous (F).
+# Limitation: a property `and` of implications is compiled to one monitor per operand, which the attempt
+# scope of the machine and monitor layers (one monitor per attempt) cannot run, and a first-failure case has no
+# pass row and is not a cover. No scope of the harness can therefore check the nonvacuous (t0) and vacuous (t1)
+# successes described above through the pipeline; this case checks only the failure at t2. The same nonvacuity
+# rule is checked for each operand alone (items a, e and g, `(a |-> b) or (c |-> d)` in item e: TRUE nonvacuous
+# when one operand is nonvacuous and true, t when both are vacuous).
+property: (a |-> b) and (c |-> d)
+clause: 16.14.8 16.12.5 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item f, re-expressed
+scope: first-failure
+sample  : 0 1 2
+a       : 1 0 0
+b       : 1 0 0
+c       : 0 0 1
+d       : 0 0 0
+fail    : . . 1
+
+== ieee_16_14_8_g_if_else_selected_branch
+# evidence: derived
+# 16.14.8 item g: if (e) p else q is nonvacuous iff the selected branch's attempt is.
+# t0: e, a low: branch 1 vacuous (t). t1: e, a, b: T. t2: e low, c low: branch 2 vacuous (t).
+# t3: e low, c, d: T.
+property: if (e) (a |-> b) else (c |-> d)
+clause: 16.14.8 16.12.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item g (if-else form), re-expressed
+scope: attempt
+sample  : 0 1 2 3
+e       : 1 1 0 0
+a       : 0 1 0 0
+b       : 0 1 0 0
+c       : 0 0 0 1
+d       : 0 0 0 1
+outcome : t T t T
+decided : 0 1 2 3
+pass    : . 1 . 1
+pending : 0
+
+== ieee_16_14_8_g_if_without_else
+# evidence: derived
+# 16.14.8 item g, if without else: nonvacuous iff the condition is true and the branch is nonvacuous.
+# t0: e low: TRUE (the missing else is true), vacuous (t). t1: e, a, b: T. t2: e, a low: branch vacuous (t).
+property: if (e) (a |-> b)
+clause: 16.14.8 16.12.6 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item g (if form), re-expressed
+scope: attempt
+sample  : 0 1 2
+e       : 0 1 1
+a       : 1 1 0
+b       : 0 1 0
+outcome : t T t
+decided : 0 1 2
+pass    : . 1 .
+pending : 0
+
+== ieee_16_14_8_h_overlapped_implication_sequence_antecedent
+# evidence: derived
+# 16.14.8 item h: s |-> p is nonvacuous iff s has an end point and p's attempt from it is nonvacuous.
+# a ##1 b |-> c, six samples. t0: end point 1, c at 1: T at 1. t1: a low: no match: t at 1.
+# t2: a at 2, b low at 3: no match: t at 3. t3: t at 3. t4: a at 4, b at 5, c low at 5: F at 5.
+# t5: a low: t at 5.
+property: a ##1 b |-> c
+clause: 16.14.8 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item h (|->), re-expressed
+scope: attempt
+sample  : 0 1 2 3 4 5
+a       : 1 0 1 0 1 0
+b       : 0 1 0 0 0 1
+c       : 0 1 0 0 0 0
+outcome : T t t t F t
+decided : 1 1 3 3 5 5
+fail    : . . . . . 1
+pass    : . 1 . . . .
+pending : 0
+
+== ieee_16_14_8_h_nonoverlapped_implication_pending_at_end
+# evidence: derived
+# 16.14.8 item h: s |=> p is nonvacuous iff s has a match point and p's attempt from the next clock event is.
+# a |=> b. t0: a, b at 1: T at 1. t1: a low: t at 1. t2: a at the last sample: the consequent would start
+# after the trace: pending (weak, so it does not fail at the end; derived from 16.12.2).
+property: a |=> b
+clause: 16.14.8 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item h (|=>), re-expressed
+scope: attempt
+sample  : 0 1 2
+a       : 1 0 1
+b       : 0 1 0
+outcome : T t p
+decided : 1 1 .
+pass    : . 1 .
+pending : 1
+final-fail: 0
+
+== ieee_16_14_8_l_nexttime_needs_a_next_clock_event
+# evidence: derived
+# 16.14.8 item l: nexttime p is nonvacuous iff there is a next clock event and p is nonvacuous in the attempt
+# starting there. nexttime (b |-> c). t0: next is 1: b high, c low: F at 1. t1: next is 2: b low: t at 2.
+# t2: no next event inside the trace: pending; nexttime is weak, so it does not fail at the end.
+property: nexttime (b |-> c)
+clause: 16.14.8 16.12
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item l, re-expressed
+scope: attempt
+sample  : 0 1 2
+b       : 0 1 0
+c       : 0 0 0
+outcome : F t p
+decided : 1 2 .
+fail    : . 1 .
+pending : 1
+final-fail: 0
+
+== ieee_16_14_8_n_s_nexttime_needs_a_next_clock_event
+# evidence: derived
+# 16.14.8 item n: s_nexttime p, same trace as the weak case. The attempt at the last sample is pending and,
+# the operator being strong, fails when the simulation ends there (derived from 16.12).
+property: s_nexttime (b |-> c)
+clause: 16.14.8 16.12
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item n, re-expressed
+scope: attempt
+sample  : 0 1 2
+b       : 0 1 0
+c       : 0 0 0
+outcome : F t p
+decided : 1 2 .
+fail    : . 1 .
+pending : 1
+final-fail: 1
+
+== ieee_16_14_8_q_bounded_always_nonvacuous_when_some_step_is
+# evidence: derived
+# 16.14.8 item q: always [m:n] p is nonvacuous iff some clock event of the range has a nonvacuous attempt
+# of p (and p did not fail before). always [0:1] (a |-> b). t0: a low at 0, a, b at 1: T at 1.
+# t1: a, b at 1 (nonvacuous), vacuous at 2: T at 2. t2: both steps vacuous: t at 3.
+# t3: its window reaches sample 4, outside the trace: pending (weak: no failure).
+property: always [0:1] (a |-> b)
+clause: 16.14.8 16.12
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item q, re-expressed
+scope: attempt
+sample  : 0 1 2 3
+a       : 0 1 0 0
+b       : 0 1 0 0
+outcome : T T t p
+decided : 1 2 3 .
+pass    : . 1 1 .
+pending : 1
+final-fail: 0
+
+== ieee_16_14_8_s_s_eventually_stops_at_first_satisfaction
+# evidence: derived
+# 16.14.8 item s: s_eventually p is nonvacuous iff some clock event has a nonvacuous attempt of p while p did
+# not hold at any earlier event. s_eventually (b |-> c). t0: p holds vacuously at 0, so later events are
+# excluded: TRUE, vacuous (t) at 0. t1: b, c at 1: TRUE nonvacuous (T) at 1.
+property: s_eventually (b |-> c)
+support: oracle
+rejected-by: unbounded 's_eventually'
+clause: 16.14.8 16.12
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item s, re-expressed
+scope: attempt
+sample  : 0 1
+b       : 0 1
+c       : 0 1
+outcome : t T
+decided : 0 1
+pass    : . 1
+pending : 0
+
+== ieee_16_14_8_ag_disable_iff_hides_the_attempt
+# evidence: derived
+# 16.14.8 item ag: disable iff (x) p is nonvacuous iff p's attempt is and x holds at no step of the attempt;
+# a disabled attempt is neither a pass nor a failure. a |-> ##1 b, disable iff rst.
+# t0: b low at 1 would fail, but rst is high at 1: disabled (d). t1: rst high at its start: d.
+# t2: a, b at 3: T at 3. t3: a low: t at 3.
+property: a |-> ##1 b
+disable: rst
+clause: 16.14.8 16.12
+class: normative
+origin: IEEE 1800-2017 §16.14.8 item ag, re-expressed
+scope: attempt
+sample  : 0 1 2 3
+rst     : . 1 . .
+a       : 1 0 1 0
+b       : . . . 1
+outcome : d d T t
+decided : 1 1 3 3
+pass    : . . . 1
+pending : 0
+
+== ieee_16_14_1_env_prop_disable_and_not
+# evidence: derived
+# 16.14.1 example env_prop (a property with disable iff (a==2) and not (b ##1 c)); the disable signal is
+# called x here (2 bits). not of a sequence fails when the sequence matches (derived from 16.12.3).
+# t0: b at 0, c at 1: the sequence matches, not FALSE at 1. t1: b low: no match, not TRUE (pass at 1).
+# t2: x == 2 at 2: disabled (d). t3: b low: TRUE at 3.
+property: not (b ##1 c)
+disable: x == 2
+signals: x:2 b c
+clause: 16.14.1 16.12.3 16.15
+class: normative
+origin: IEEE 1800-2017 §16.14.1 example env_prop, re-expressed
+scope: attempt
+sample  : 0 1 2 3
+x       : 0 0 2 0
+b       : 1 0 1 0
+c       : 0 1 0 1
+outcome : F T d T
+decided : 1 1 2 3
+fail    : . 1 . .
+pass    : . 1 . 1
+pending : 0
+
+== ieee_16_14_2_pa2_ack_not_extended_assert
+# evidence: derived
+# 16.14.2 protocol example, property pa2 (ack |=> !ack: ack must last one cycle), as assert_ack2.
+# t0: ack at 0 and still at 1: FALSE at 1. t1: ack at 1, low at 2: pass at 2. (Derived from 16.12.7.)
+property: ack |=> !ack
+clause: 16.14.2 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.14.2 property pa2, re-expressed
+sample  : 0 1 2
+ack     : 1 1 0
+fail    : . 1 .
+pass    : . . 1
+pending : 0
+
+== ieee_16_14_2_pr3_hold_req_until_ack_assume
+# evidence: derived
+# 16.14.2 protocol example, property pr3 (req must hold until and including the cycle ack is asserted), used
+# as the assumption assume_req3: an assumption fails like an assertion. req[*1:$] ##0 ack is an unbounded
+# consequent, so the case is checked per attempt (scope: attempt); the verdicts are derived from 16.9.2 and 16.12.7.
+# t0: req at 0, 1, ack never while req holds (req low at 2): FALSE at 2. t1: same, FALSE at 2.
+# t2: req low, vacuous. t3: req at 3, 4, ack at 4: pass at 4. t4: req and ack at 4: pass at 4.
+property: req |-> req[*1:$] ##0 ack
+kind: assume
+clause: 16.14.2 16.9.2 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.14.2 property pr3, assume_req3, re-expressed
+scope: attempt
+sample  : 0 1 2 3 4
+req     : 1 1 0 1 1
+ack     : 0 0 0 0 1
+outcome : F F t T T
+decided : 2 2 2 4 4
+fail    : . . 1 . .
+pass    : . . . . 1
+pending : 0
+final-fail: 0
+
+== ieee_16_14_3_cover_property_counts_nonvacuous_success_only
+# evidence: derived
+# 16.14.3: a cover property counts successes and, separately, vacuous successes; the nonvacuous success is
+# the pass reported here. cover property (a |-> b). t0: a low: vacuous success, no pass. t1: a, b: pass.
+# t2: a without b: failed attempt, no pass.
+property: a |-> b
+kind: cover
+clause: 16.14.3 16.14.8
+class: normative
+origin: IEEE 1800-2017 §16.14.3 cover property, re-expressed
+sample  : 0 1 2
+a       : 0 1 1
+b       : 0 1 0
+pass    : . 1 .
+pending : 0
+
+== ieee_16_14_3_cover_property_succeeds_once_per_attempt
+# evidence: derived
+# 16.14.3: for property coverage the count is incremented at most once per evaluation attempt, whereas
+# cover sequence counts every match. cover property (a ##[1:2] b). t0: a, b at 1 and at 2: two matches
+# but one success, at the first, sample 1. (The multiplicity of cover sequence cannot be expressed.)
+property: a ##[1:2] b
+kind: cover
+clause: 16.14.3
+class: normative
+origin: IEEE 1800-2017 §16.14.3 cover property, once per attempt, re-expressed
+sample  : 0 1 2
+a       : 1 0 0
+b       : 0 1 1
+pass    : . 1 .
+pending : 0
+
+== ieee_16_14_3_cover_does_not_count_disabled_attempts
+# evidence: derived
+# 16.14.3: the success counters do not include disabled evaluations. cover property (a ##2 b), disable iff rst.
+# t0: a at 0, b at 2, but rst is high at 1 (inside the attempt): disabled, no pass. t3: a at 3, b at 5:
+# pass at 5.
+property: a ##2 b
+kind: cover
+disable: rst
+clause: 16.14.3
+class: normative
+origin: IEEE 1800-2017 §16.14.3 disabled evaluations, re-expressed
+sample  : 0 1 2 3 4 5
+rst     : . 1 . . . .
+a       : 1 0 0 1 0 0
+b       : 0 0 1 0 0 1
+pass    : . . . . . 1
+pending : 0
+
+== ieee_16_14_5_static_assertion_starts_an_attempt_at_every_tick
+# evidence: derived
+# 16.14.5 (rule3, a |-> b ##1 c): a static concurrent assertion has always semantics: a new attempt begins
+# at every leading clock event. t0: a, b at 0, c at 1: pass at 1. t1: a, b at 1, c low at 2: FAIL at 2.
+# t2, t3: a low: vacuous.
+property: a |-> b ##1 c
+clause: 16.14.5 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.14.5 rule3 / a1, re-expressed
+sample  : 0 1 2 3
+a       : 1 1 0 0
+b       : 1 1 0 0
+c       : 0 1 0 0
+fail    : . . 1 .
+pass    : . 1 . .
+pending : 0
+
+== ieee_16_14_5_cover_property_of_sequence_seq3
+# evidence: derived
+# 16.14.5 (c1, cover property of seq3 = b ##1 c): the sequence is monitored from the start to the end of
+# simulation. t0: b at 0, c at 1: covered at 1. t1: b at 1, c at 2: covered at 2.
+property: b ##1 c
+kind: cover
+clause: 16.14.5 16.14.3
+class: normative
+origin: IEEE 1800-2017 §16.14.5 c1, re-expressed
+sample  : 0 1 2 3
+b       : 1 1 0 0
+c       : 0 1 1 0
+pass    : . 1 1 .
+pending : 0
+
+== ieee_16_14_7_a1_inferred_disable_condition
+# evidence: derived
+# 16.14.7 a1: p_triggers with the inferred disable rst1 is equivalent to (a ##0 b[->1]) |=> c disabled by
+# rst1. Outcomes derived from 16.12.7 and 16.12. t0: a, first b at 3, c at 4 would decide at 4, but rst1
+# is high at 2, inside the attempt: disabled (d, at 2). t1: a low: t at 1 (decided before rst1 rises).
+# t2: rst1 high at its start: d. t3, t4: a low: t.
+property: (a ##0 b[->1]) |=> c
+disable: rst1
+clause: 16.14.7 16.15 16.12.7
+class: normative
+origin: IEEE 1800-2017 §16.14.7 assertion a1 (equivalent form), re-expressed
+scope: attempt
+sample  : 0 1 2 3 4
+rst1    : . . 1 . .
+a       : 1 0 1 0 0
+b       : . . . 1 .
+c       : . . . . 1
+outcome : d t d t t
+decided : 2 1 2 3 4
+pending : 0
+
+== ieee_16_15_explicit_disable_overrides_default_a1
+# evidence: derived
+# 16.15 rule a, a1 (explicit disable iff (rst1) while a default disable iff rst exists): only rst1 counts.
+# The default signal is not modelled; the case is the explicit form. a |=> b, rst1 high at 2.
+# t0: a, b low at 1: FALSE at 1 (rst1 low): reported. t1: b low at 2, but rst1 high at 2: disabled (d).
+# t2: rst1 high at its start: d.
+property: a |=> b
+disable: rst1
+clause: 16.15
+class: normative
+origin: IEEE 1800-2017 §16.15 examples_with_default a1, re-expressed
+scope: attempt
+sample  : 0 1 2
+rst1    : . . 1
+a       : 1 1 0
+b       : . . .
+outcome : F d d
+decided : 1 2 2
+fail    : . 1 .
+pending : 0
+
+== ieee_16_15_default_disable_inferred_a3
+# evidence: derived
+# 16.15 rule b, a3 (no disable iff, inside the scope of default disable iff rst): the assertion behaves as
+# written with disable iff (rst). a |=> b. t0: b low at 1 would fail, rst high at 1: disabled (d).
+# t1: rst high at start: d. t2: a low: t.
+property: a |=> b
+disable: rst
+clause: 16.15
+class: normative
+origin: IEEE 1800-2017 §16.15 examples_with_default a3, re-expressed
+scope: attempt
+sample  : 0 1 2
+rst     : . 1 .
+a       : 1 0 0
+b       : . . .
+outcome : d d t
+decided : 1 1 2
+pending : 0
+
+== ieee_16_15_disable_zero_cancels_default_a4
+# evidence: derived
+# 16.15, a4: disable iff (1'b0) is the only way to cancel a default disable iff: the attempts are never
+# disabled, whatever the default signal does (the signal is unused here). a |=> b.
+# t0: b low at 1: FALSE at 1. t1: b low at 2: FALSE at 2. t2: a low: t at 2.
+property: a |=> b
+disable: 1'b0
+clause: 16.15
+class: normative
+origin: IEEE 1800-2017 §16.15 examples_with_default a4, re-expressed
+scope: attempt
+sample  : 0 1 2
+a       : 1 1 0
+b       : . . .
+outcome : F F t
+decided : 1 2 2
+fail    : . 1 1
+pending : 0
+
+== ieee_16_15_no_default_no_disable_a7
+# evidence: derived
+# 16.15 rule c, a7 (no disable iff and no default): no inference, equivalent to disable iff (1'b0).
+# Same trace as the a4 case, hence the same verdicts.
+property: a |=> b
+clause: 16.15
+class: normative
+origin: IEEE 1800-2017 §16.15 examples_without_default a7, re-expressed
+scope: attempt
+sample  : 0 1 2
+a       : 1 1 0
+b       : . . .
+outcome : F F t
+decided : 1 2 2
+fail    : . 1 1
+pending : 0
+
+== ieee_16_16_not_of_clocked_sequence_s2
+# evidence: derived
+# 16.16 (p2 = not s2 with s2 = @(posedge clk) a ##2 b; the same verdicts for p3, the procedural form and
+# the default-clock form: only the clock's source differs). Derived from 16.12.3.
+# t0: a at 0, b low at 2: no match, not TRUE (pass at 2). t1: a low: TRUE at 1. t2: a at 2, b at 4: the
+# sequence matches, not FALSE at 4. t3, t4: a low: TRUE.
+property: not (a ##2 b)
+clause: 16.16 16.12.3
+class: normative
+origin: IEEE 1800-2017 §16.16 s2/p2/p3, re-expressed
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 0 1 0 0
+b       : 0 0 0 0 1
+outcome : T T F T T
+decided : 2 1 4 3 4
+fail    : . . . . 1
+pass    : . 1 1 1 1
+pending : 0
+
+== ieee_16_16_cover_of_s2_default_clock_c1
+# evidence: derived
+# 16.16 c1 (cover property of s2 = $rose(a) ##[1:5] b under the default clock): legal and covers at the
+# first match of an attempt. Derived. t1: $rose(a) at 1, b at 3: pass at 3. Other attempts: no rise.
+property: $rose(a) ##[1:5] b
+kind: cover
+clause: 16.16 16.14.3 16.9.3
+class: normative
+origin: IEEE 1800-2017 §16.16 examples_with_default c1, re-expressed
+sample  : 0 1 2 3 4
+a       : 0 1 0 0 0
+b       : 0 0 0 1 0
+pass    : . . . 1 .
+pending : 0
+
+== ieee_16_18_figure_16_17_clocking_block_sampled_value
+# evidence: figure
+# 16.18 Figure 16-17: a1/a2/a3/a4 (assert property of a, sampled in the clocking block) are equivalent and
+# the figure shows one pass, at the third posedge, where a (high since before that edge, falling before the
+# next) has the sampled value 1 and cb.a goes high only after the edge. Sample 0 = the figure's first
+# posedge; sample 2 = the posedge with the arrow. Inputs as drawn: a low at posedges 1 and 2 (it rises after
+# the second edge), high at 3, low at 4 and 5. The figure marks no failure; the failures at the low samples
+# are the Boolean property's own rule (a low fails), not drawn.
+property: a
+clause: 16.18
+class: normative
+origin: IEEE 1800-2017 §16.18 Figure 16-17, re-expressed
+sample  : 0 1 2 3 4
+a       : 0 0 1 0 0
+fail    : 1 1 . 1 1
+pass    : . . 1 . .
+pending : 0
+

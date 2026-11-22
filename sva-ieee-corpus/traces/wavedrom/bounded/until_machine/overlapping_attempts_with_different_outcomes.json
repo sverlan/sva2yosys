@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "a",
+      "wave": "1...0."
+    },
+    {
+      "name": "b",
+      "wave": "1.0101"
+    },
+    {
+      "name": "c",
+      "wave": "0.10.."
+    },
+    {
+      "name": "fail",
+      "wave": "0...10"
+    },
+    {
+      "name": "pass",
+      "wave": "0.10.."
+    }
+  ],
+  "head": {
+    "text": "until_machine/overlapping_attempts_with_different_outcomes",
+    "tock": 0
+  }
+}

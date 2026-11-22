@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "a",
+      "wave": "10...."
+    },
+    {
+      "name": "b",
+      "wave": "01010."
+    },
+    {
+      "name": "c",
+      "wave": "0....1"
+    },
+    {
+      "name": "fail",
+      "wave": "0....."
+    },
+    {
+      "name": "pass",
+      "wave": "0....1"
+    }
+  ],
+  "head": {
+    "text": "unbounded/nonconsecutive_allows_trailing_samples",
+    "tock": 0
+  }
+}

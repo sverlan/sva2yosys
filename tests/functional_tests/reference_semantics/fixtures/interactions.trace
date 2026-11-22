@@ -1,0 +1,126 @@
+# Interactions of features that a state machine must get right together.
+
+== disable_keeps_past_history
+# The disable at 1 aborts attempts but does not reset sampled values: at 2,
+# $past(a) is a at 1 (= 1), so the obligation triggers and fails.
+property: $past(a) |-> b
+clause: 16.9.3 16.12 16.12.7
+class: interpretation I3, I4
+disable: d
+sample : 0 1 2 3
+d      : . 1 . .
+a      : . 1 . .
+b      : . . . .
+fail   : . . 1 .
+
+== disable_keeps_edge_history
+# $rose(a) holds at 0 (first-sample rule) and fails there. After the disable at 1,
+# a has stayed 1, so $rose(a) is false at 2: no new trigger.
+property: $rose(a) |-> b
+clause: 16.5.1 16.9.3 16.12 16.12.7
+class: interpretation I4
+disable: d
+sample : 0 1 2
+d      : . 1 .
+a      : 1 1 1
+b      : . . .
+fail   : 1 . .
+
+== disable_then_immediate_trigger
+# The trigger at 1 is suppressed by the disable; the trigger at 2 is not.
+property: a |-> ##1 b
+clause: 16.7 16.12 16.12.7
+class: normative
+disable: d
+sample : 0 1 2 3
+d      : . 1 . .
+a      : . 1 1 .
+b      : . . . .
+fail   : . . . 1
+
+== cover_counts_the_first_match_of_each_attempt
+# Attempt 0 matches at 1 and again at 2; only its first match is covered.
+property: a ##[1:2] b
+clause: 16.7 16.14.3
+class: interpretation I6
+kind: cover
+sample : 0 1 2
+a      : 1 . .
+b      : . 1 1
+pass   : . 1 .
+
+== nonoverlapping_with_fused_consequent
+property: a |=> b ##0 c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : 1 . 1 .
+b      : . 1 . 1
+c      : . 1 . .
+fail   : . . . 1
+pass   : . 1 . .
+
+== empty_branch_at_consequent_start
+# b[*0:1] ##1 c matches c at the start (empty b) or b then c.
+property: a |-> b[*0:1] ##1 c
+clause: 16.7 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : 1 . 1 .
+b      : . . 1 .
+c      : 1 . . 1
+pass   : 1 . . 1
+
+== acceptance_discharges_longer_paths
+# c in the trigger sample ends a match; the longer paths through ##1 and ##2 must not
+# fail the already discharged obligation later.
+property: a |-> b ##[0:2] c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2
+a      : 1 . .
+b      : 1 . .
+c      : 1 . .
+pass   : 1 . .
+
+== same_sample_triggers_from_two_starts
+# Attempts 0 (via ##2) and 1 (via ##1) both end their antecedent at 2: one obligation.
+property: a ##[1:2] b |-> c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : 1 1 . .
+b      : . . 1 .
+c      : . . . .
+fail   : . . 1 .
+
+== repetition_of_a_concatenation
+property: a |-> (b ##1 c)[*2]
+clause: 16.7 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3 4
+a      : 1 . . . .
+b      : 1 . 1 . .
+c      : . 1 . 1 .
+pass   : . . . 1 .
+
+== repetition_of_a_concatenation_with_a_gap
+property: a |-> (b ##1 c)[*2]
+clause: 16.7 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : 1 . . .
+b      : 1 . . .
+c      : . 1 . .
+fail   : . . 1 .
+
+== repetition_of_a_nullable_sequence
+# (b[*0:1])[*2] ##1 c: zero, one or two b, then c.
+property: a |-> (b[*0:1])[*2] ##1 c
+clause: 16.7 16.9.2 16.12.7
+class: normative
+sample : 0 1 2
+a      : 1 . .
+b      : 1 1 .
+c      : . . 1
+pass   : . . 1

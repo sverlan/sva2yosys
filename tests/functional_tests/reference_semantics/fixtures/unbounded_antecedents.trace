@@ -1,0 +1,240 @@
+# Unbounded antecedents and unbounded always, per obligation (the
+# default scope). The pipeline accepts them for assert and assume: the antecedent frontier is one
+# letter set merged over all attempts (a loop for each "$"), every antecedent match ends a
+# trigger sample, and each trigger starts one bounded consequent obligation. "fail" marks the
+# samples where an obligation fails, "pass" those where one passes (non-vacuously). Derived by
+# hand from the written semantics (IEEE 1800 16.9.2, 16.12.7, 16.12.11).
+# Notation: the "trigger" samples are the ends of antecedent matches of any attempt.
+
+== delay_to_dollar_antecedent
+# a ##[1:$] b |-> c. a = 1 . . 1 . ., b = . 1 . . 1 1, c = . 1 . . . 1
+# a at 0 matches with every later b: ends 1, 4, 5. a at 3: ends 4, 5. Triggers 1, 4, 5.
+# c1 = 1: pass at 1. c4 = 0: fail at 4. c5 = 1: pass at 5.
+property: a ##[1:$] b |-> c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4 5
+a      : 1 . . 1 . .
+b      : . 1 . . 1 1
+c      : . 1 . . . 1
+fail   : . . . . 1 .
+pass   : . 1 . . . 1
+pending: 0
+
+== delay_to_dollar_antecedent_assumed
+# The previous case as an assume: the same failures and successes.
+property: a ##[1:$] b |-> c
+clause: 16.7 16.12.7 16.14.2
+class: normative
+kind: assume
+sample : 0 1 2 3 4 5
+a      : 1 . . 1 . .
+b      : . 1 . . 1 1
+c      : . 1 . . . 1
+fail   : . . . . 1 .
+pass   : . 1 . . . 1
+pending: 0
+
+== delay_from_two_to_dollar_antecedent
+# a ##[2:$] b |-> c. a = 1 . . . ., b = . 1 1 . 1, c = 1 1 . . 1
+# Only b at 2 and 4 are at least two samples after a. Triggers 2, 4. c2 = 0: fail at 2; c4 = 1: pass.
+property: a ##[2:$] b |-> c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3 4
+a      : 1 . . . .
+b      : . 1 1 . 1
+c      : 1 1 . . 1
+fail   : . . 1 . .
+pass   : . . . . 1
+pending: 0
+
+== repetition_antecedent_nonoverlapping
+# a[*1:$] ##1 b |=> c. a = 1 1 . 1 . ., b = . . 1 . 1 ., c = . . . 1 . .
+# The run a0 a1 then b2 ends a match at 2; the run a3 then b4 ends one at 4. Triggers 2, 4; the
+# consequents are at 3 and 5. c3 = 1: pass at 3. c5 = 0: fail at 5.
+property: a[*1:$] ##1 b |=> c
+clause: 16.7 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3 4 5
+a      : 1 1 . 1 . .
+b      : . . 1 . 1 .
+c      : . . . 1 . .
+fail   : . . . . . 1
+pass   : . . . 1 . .
+pending: 0
+
+== delay_to_dollar_antecedent_nonoverlapping
+# a ##[1:$] b |=> c. a = 1 . . ., b = . 1 1 ., c = . . 1 .
+# Triggers 1, 2: the consequents are at 2 and 3. c2 = 1: pass at 2. c3 = 0: fail at 3.
+property: a ##[1:$] b |=> c
+clause: 16.7 16.12.7
+class: normative
+sample : 0 1 2 3
+a      : 1 . . .
+b      : . 1 1 .
+c      : . . 1 .
+fail   : . . . 1
+pass   : . . 1 .
+pending: 0
+
+== goto_antecedent
+# b[->2] |-> c. b = . 1 . 1 1 ., c = . . . 1 . .
+# The attempts from 0 and 1 reach their second b at 3; the attempts from 2 and 3 at 4; the attempt
+# from 4 has seen one b. Triggers 3, 4. c3 = 1: pass at 3. c4 = 0: fail at 4.
+property: b[->2] |-> c
+clause: 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3 4 5
+b      : . 1 . 1 1 .
+c      : . . . 1 . .
+fail   : . . . . 1 .
+pass   : . . . 1 . .
+pending: 0
+
+== nonconsecutive_antecedent_then_a_sample
+# b[=2] ##1 c |-> d. b = 1 . 1 . . 1 ., c = . . . 1 . 1 1, d = . . . 1 . . 1
+# From 0: the second b is at 2. c may follow after any run of samples without b: c at 3 (empty
+# run), at 4 (needs c4: low), at 5 (needs !b at 3, 4: yes, c5 high), at 6 needs !b5: no.
+# From 1 and 2: the second b is at 5, c6 right after (empty run). Triggers 3, 5, 6.
+# d3 = 1: pass. d5 = 0: fail. d6 = 1: pass.
+property: b[=2] ##1 c |-> d
+clause: 16.7 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3 4 5 6
+b      : 1 . 1 . . 1 .
+c      : . . . 1 . 1 1
+d      : . . . 1 . . 1
+fail   : . . . . . 1 .
+pass   : . . . 1 . . 1
+pending: 0
+
+== always_boolean
+# always b. b = 1 1 . 1 1
+# Every sample starts an obligation (1 ##[0:$] 1 |-> b): pass where b holds, fail where not.
+property: always b
+clause: 16.12.11
+class: normative
+sample : 0 1 2 3 4
+b      : 1 1 . 1 1
+fail   : . . 1 . .
+pass   : 1 1 . 1 1
+pending: 0
+
+== always_with_a_start_offset
+# always [2:$] b. b = . . 1 . 1 .
+# The samples 0 and 1 are before every window (offset at least 2): no obligation. Samples
+# 2 ... 5 each start one: pass at 2 and 4, fail at 3 and 5.
+property: always [2:$] b
+clause: 16.12.11
+class: normative
+sample : 0 1 2 3 4 5
+b      : . . 1 . 1 .
+fail   : . . . 1 . 1
+pass   : . . 1 . 1 .
+pending: 0
+
+== always_of_an_implication_with_an_offset
+# always [2:$] (a |-> ##1 b). a = 1 . 1 . 1 . ., b = . . . 1 . . .
+# The antecedent a is fused with the window: only a at 2 and 4 count (a at 0 is before every
+# window). Obligations: b3 = 1: pass at 3; b5 = 0: fail at 5.
+property: always [2:$] (a |-> ##1 b)
+clause: 16.7 16.12.7 16.12.11
+class: normative
+sample : 0 1 2 3 4 5 6
+a      : 1 . 1 . 1 . .
+b      : . . . 1 . . .
+fail   : . . . . . 1 .
+pass   : . . . 1 . . .
+pending: 0
+
+== always_of_a_nonoverlapping_implication
+# always (a |=> b). a = 1 . . 1 ., b = . 1 . . .
+# a at 0 gives the obligation at 1 (b1 = 1: pass), a at 3 the one at 4 (b4 = 0: fail); the
+# trace ends there.
+property: always (a |=> b)
+clause: 16.12.7 16.12.11
+class: normative
+sample : 0 1 2 3 4
+a      : 1 . . 1 .
+b      : . 1 . . .
+fail   : . . . . 1
+pass   : . 1 . . .
+pending: 0
+
+== implication_into_always
+# a |-> always b. a = . 1 . . 1 ., b = 1 1 1 . 1 1
+# a at 1 starts the window at 1: obligations at 1, 2 (pass), 3 (fail), ... a at 4 starts one at
+# 4. The obligation of a sample is shared by every attempt that reaches it.
+property: a |-> always b
+clause: 16.12.7 16.12.11
+class: normative
+sample : 0 1 2 3 4 5
+a      : . 1 . . 1 .
+b      : 1 1 1 . 1 1
+fail   : . . . 1 . .
+pass   : . 1 1 . 1 1
+pending: 0
+
+== nonoverlapping_implication_into_always
+# a |=> always b. a = 1 . . 1 ., b = 1 1 . 1 .
+# a at 0 starts the window at 1: pass at 1, fail at 2, pass at 3, fail at 4 (a at 3 adds the same
+# samples from 4).
+property: a |=> always b
+clause: 16.12.7 16.12.11
+class: normative
+sample : 0 1 2 3 4
+a      : 1 . . 1 .
+b      : 1 1 . 1 .
+fail   : . . 1 . 1
+pass   : . 1 . 1 .
+pending: 0
+
+== unbounded_antecedent_with_disable_and_past
+# disable iff (r) a ##[1:$] b |-> $past(c). a = 1 . . . . ., b = . 1 . 1 . 1, c = 1 . . . . .,
+# r = . . . . 1 .
+# a at 0 matches with every later b: ends 1, 3, 5. $past(c) at 1 is c0 = 1: pass. At 3 it is
+# c2 = 0: fail. r at 4 clears the pending antecedent: no trigger at 5 (without r, the c4 = 0
+# would fail there).
+disable: r
+property: a ##[1:$] b |-> $past(c)
+clause: 16.7 16.9.3 16.12 16.12.7
+class: normative
+sample : 0 1 2 3 4 5
+a      : 1 . . . . .
+b      : . 1 . 1 . 1
+c      : 1 . . . . .
+r      : . . . . 1 .
+fail   : . . . 1 . .
+pass   : . 1 . . . .
+pending: 0
+
+== always_with_disable_restarts_the_window
+# disable iff (r) always b. b = 1 . 1 1 ., r = . . . 1 .
+# The disable at 3 clears every window and the obligation of sample 3 itself; sample 4 starts
+# a new one: fail at 1 and 4, pass at 0 and 2.
+disable: r
+property: always b
+clause: 16.12 16.12.11
+class: normative
+sample : 0 1 2 3 4
+b      : 1 . 1 1 .
+r      : . . . 1 .
+fail   : . 1 . . 1
+pass   : 1 . 1 . .
+pending: 0
+
+== unbounded_antecedent_overlapping_runs
+# a[*2:$] ##1 b |-> c. a = 1 1 1 . 1 1 . 1, b = . . . 1 . . 1 ., c = . . . 1 . . . .
+# The run a0 a1 a2 then b3: a start at 0 (run of 3) or at 1 (run of 2) ends at 3. The run
+# a4 a5 then b6 ends at 6. Triggers 3, 6. c3 = 1: pass at 3; c6 = 0: fail at 6.
+property: a[*2:$] ##1 b |-> c
+clause: 16.7 16.9.2 16.12.7
+class: normative
+sample : 0 1 2 3 4 5 6 7
+a      : 1 1 1 . 1 1 . 1
+b      : . . . 1 . . 1 .
+c      : . . . 1 . . . .
+fail   : . . . . . . 1 .
+pass   : . . . 1 . . . .
+pending: 0

@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp...."
+    },
+    {
+      "name": "go",
+      "wave": "10...."
+    },
+    {
+      "name": "a",
+      "wave": "10...."
+    },
+    {
+      "name": "b",
+      "wave": "01010."
+    },
+    {
+      "name": "c",
+      "wave": "0.10.1"
+    },
+    {
+      "name": "fail",
+      "wave": "0....."
+    },
+    {
+      "name": "pass",
+      "wave": "0....."
+    }
+  ],
+  "head": {
+    "text": "ieee_sequences/ieee_16_9_2_goto_repetition_does_not_extend_match",
+    "tock": 0
+  }
+}

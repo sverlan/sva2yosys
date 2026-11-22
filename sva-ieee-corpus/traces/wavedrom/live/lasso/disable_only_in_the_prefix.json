@@ -1,0 +1,43 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "b",
+      "wave": "0.."
+    },
+    {
+      "name": "d",
+      "wave": "1.0"
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.."
+    },
+    {
+      "name": "repeat",
+      "wave": "01."
+    },
+    {
+      "name": "outcome",
+      "wave": "==.",
+      "data": [
+        "D",
+        "F"
+      ]
+    }
+  ],
+  "head": {
+    "text": "lasso/disable_only_in_the_prefix",
+    "tock": 0
+  },
+  "foot": {
+    "text": "d: read only by the disable iff condition, drawn right after the rising edge (current value)"
+  }
+}

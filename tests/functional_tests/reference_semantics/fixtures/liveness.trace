@@ -1,0 +1,326 @@
+# Unbounded always and s_eventually, reference semantics only
+# (docs/semantics.md 9.2, 9.3, 9.6), per attempt (scope: attempt); a case is support: oracle unless the
+# machines accept it (unbounded always over supported operands). Derived by hand
+# from the written semantics.
+# Notation: X_k is the attempt of the operand at sample k; "(k)" is a decision sample.
+# always [m:$] p: the attempts of p at the offsets m, m+1, ... must all hold: FALSE at the first
+# FALSE offset, never TRUE online (a window with no end never completes). Weak: at the end of a
+# simulation a pending always is TRUE.
+# s_eventually [m:$] p: TRUE at the first TRUE offset, never FALSE online. Strong: at the end of
+# a simulation the offsets after the trace count FALSE, so a pending attempt is FALSE unless some
+# started offset finalizes TRUE (a weak sequence operand that is pending finalizes TRUE).
+# Nonvacuity is offset-ordered (9.2): always when some offset is nonvacuous and every earlier
+# offset holds, eventually when some offset is nonvacuous and no earlier offset holds.
+
+== always_fails_at_the_first_low_sample
+# always b. b = 1 1 . 1 1
+# attempts 0, 1, 2: FALSE at 2 (the first low sample at or after the start). attempts 3, 4: b is
+# high so far and the window is open: pending (weak, finalize TRUE).
+property: always b
+clause: 16.12.11 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+b       : 1 1 . 1 1
+outcome : F F F p p
+decided : 2 2 2 . .
+fail    : . . 1 . .
+pending: 2
+final-fail: 0
+
+== always_from_two_ignores_early_samples
+# always [2:$] b. b = 1 . 1 1 . 1
+# attempt 0 looks at samples 2, 3, 4...: FALSE at 4 (b0, b1 are not in its window; b1 is low).
+# attempt 1: samples 3, 4: FALSE at 4. attempt 2: samples 4...: FALSE at 4. attempt 3: samples
+# 5, ...: b5 high so far: pending. attempts 4, 5: window not started: pending.
+property: always [2:$] b
+clause: 16.12.11 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4 5
+b       : 1 . 1 1 . 1
+outcome : F F F p p p
+decided : 4 4 4 . . .
+fail    : . . . . 1 .
+pending: 3
+final-fail: 0
+
+== implication_into_always
+# a |-> always b. a = 1 . . 1 ., b = 1 1 . 1 1
+# attempt 0: trigger 0, always b from 0: b2 low: FALSE at 2. attempt 3: trigger 3, b3, b4 high:
+# pending. attempts 1, 2, 4: vacuous at their sample.
+property: a |-> always b
+clause: 16.12.7 16.12.11 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+sample  : 0 1 2 3 4
+a       : 1 . . 1 .
+b       : 1 1 . 1 1
+outcome : F t t p t
+decided : 2 1 2 . 4
+fail    : . . 1 . .
+pending: 1
+final-fail: 0
+
+== always_of_an_implication
+# always (a |-> b). a = . 1 . 1 ., b = . 1 . . .
+# X_0 vacuous TRUE, X_1 TRUE (nonvacuous), X_2 vacuous TRUE, X_3 FALSE (3), X_4 vacuous TRUE.
+# attempts 0-3 see X_3 = FALSE: FALSE at 3. The offset-ordered nonvacuity: attempt 0 through X_1
+# (X_0 holds), attempt 1 through X_1, attempt 2 through X_3 (X_2 holds), attempt 3 through X_3:
+# all nonvacuous. attempt 4: X_4 holds, the window is open: pending.
+property: always (a |-> b)
+clause: 16.12.7 16.12.11 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : . 1 . 1 .
+b       : . 1 . . .
+outcome : F F F F p
+decided : 3 3 3 3 .
+fail    : . . . 1 .
+pending: 1
+final-fail: 0
+
+== always_with_disable
+# disable iff (d) always b. b = 1 1 . 1 1, d = . 1 . . .
+# attempts 0, 1: the property would be FALSE at 2 but d is high at 1, inside [start, 2]: disabled
+# at 1. attempt 2: FALSE at 2, d not in [2, 2]: FALSE. attempts 3, 4: pending, no d afterwards.
+property: always b
+clause: 16.12 16.12.11 Annex F
+class: normative
+disable: d
+scope: attempt
+sample  : 0 1 2 3 4
+b       : 1 1 . 1 1
+d       : . 1 . . .
+outcome : d d F p p
+decided : 1 1 2 . .
+fail    : . . 1 . .
+pending: 2
+final-fail: 0
+
+== nexttime_then_always
+# a |-> nexttime always b. a = 1 . . . ., b = . 1 1 . 1
+# attempt 0: trigger 0; nexttime moves to sample 1; always b from 1: b1, b2 high, b3 low: FALSE at
+# 3. attempts 1-4: vacuous at their sample.
+property: a |-> nexttime always b
+clause: 16.12.7 16.12.10 16.12.11 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+support: oracle
+sample  : 0 1 2 3 4
+a       : 1 . . . .
+b       : . 1 1 . 1
+outcome : F t t t t
+decided : 3 1 2 3 4
+fail    : . . . 1 .
+pending: 0
+final-fail: 0
+
+== s_eventually_first_true
+# s_eventually b. b = . . 1 . .
+# attempts 0-2: TRUE at 2 (the first TRUE offset), nonvacuous. attempts 3, 4: pending, finalize
+# FALSE (the offsets after the trace count FALSE for the strong form).
+property: s_eventually b
+clause: 16.12.13 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4
+b       : . . 1 . .
+outcome : T T T p p
+decided : 2 2 2 . .
+pass    : . . 1 . .
+pending: 2
+final-fail: 2
+
+== s_eventually_from_one
+# s_eventually [1:$] b. b = 1 . . 1 .
+# attempt 0 looks at samples 1, 2, 3, ...: b3: TRUE at 3 (b0 does not count). attempt 1: samples
+# 2, 3: TRUE at 3. attempt 2: samples 3...: TRUE at 3. attempt 3: samples 4...: b4 low: pending.
+# attempt 4: no offset started: pending. Both finalize FALSE.
+property: s_eventually [1:$] b
+clause: 16.12.13 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4
+b       : 1 . . 1 .
+outcome : T T T p p
+decided : 3 3 3 . .
+pass    : . . . 1 .
+pending: 2
+final-fail: 2
+
+== s_eventually_of_a_default_weak_sequence
+# s_eventually (a ##1 b), a plain sequence in an assert is weak. a = . 1 . . 1, b = . . 1 . .
+# X_0, X_2, X_3 are FALSE (a low), X_1 is TRUE at 2, X_4 is pending (b5 is beyond the trace).
+# attempts 0, 1: TRUE at 2. attempts 2, 3, 4: no TRUE offset: pending. At the end X_4 is weak and
+# pending, so it finalizes TRUE: every pending attempt finalizes TRUE (final-fail 0).
+property: s_eventually (a ##1 b)
+clause: 16.7 16.12.13 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : . 1 . . 1
+b       : . . 1 . .
+outcome : T T p p p
+decided : 2 2 . . .
+pass    : . . 1 . .
+pending: 3
+final-fail: 0
+
+== s_eventually_of_an_explicit_weak_sequence
+# The trace of the previous case with weak(a ##1 b): the same.
+property: s_eventually weak(a ##1 b)
+clause: 16.7 16.12.2 16.12.13 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+a       : . 1 . . 1
+b       : . . 1 . .
+outcome : T T p p p
+decided : 2 2 . . .
+pass    : . . 1 . .
+pending: 3
+final-fail: 0
+
+== s_eventually_of_a_strong_sequence
+# The trace of the previous case with strong(a ##1 b): X_4 is strong and pending, so it
+# finalizes FALSE, as do the offsets after the trace: attempts 2, 3, 4 finalize FALSE.
+property: s_eventually strong(a ##1 b)
+clause: 16.7 16.12.2 16.12.13 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4
+a       : . 1 . . 1
+b       : . . 1 . .
+outcome : T T p p p
+decided : 2 2 . . .
+pass    : . . 1 . .
+pending: 3
+final-fail: 3
+
+== s_eventually_with_disable
+# disable iff (d) s_eventually b. b = . . 1 . ., d = . . . 1 .
+# attempts 0-2: TRUE at 2, d is not in [start, 2]. attempt 3: pending, d is high at 3 (in
+# [3, end]): disabled at 3. attempt 4: pending, d is low in [4, 4].
+property: s_eventually b
+clause: 16.12 16.12.13 Annex F
+class: interpretation I8
+disable: d
+scope: attempt
+sample  : 0 1 2 3 4
+b       : . . 1 . .
+d       : . . . 1 .
+outcome : T T T d p
+decided : 2 2 2 3 .
+pass    : . . 1 . .
+pending: 1
+final-fail: 1
+
+== cover_s_eventually
+# cover property (s_eventually b). b = . 1 .
+# attempts 0, 1: TRUE at 1, reported. attempt 2: pending (finalize FALSE).
+property: s_eventually b
+clause: 16.12.13 16.14.3 Annex F
+class: interpretation I8
+kind: cover
+scope: attempt
+support: oracle
+sample  : 0 1 2
+b       : . 1 .
+outcome : T T p
+decided : 1 1 .
+pass    : . 1 .
+pending: 1
+final-fail: 1
+
+== law_not_s_eventually
+# not s_eventually b: the strong operand is reversed, so a pending attempt finalizes TRUE.
+# b = . . 1 . .: attempts 0-2: s_eventually b is TRUE at 2, so not is FALSE at 2.
+# attempts 3, 4: s_eventually pending (finalizes FALSE), not pending (finalizes TRUE).
+property: not s_eventually b
+clause: 16.12.3 16.12.13 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+b       : . . 1 . .
+outcome : F F F p p
+decided : 2 2 2 . .
+fail    : . . 1 . .
+pending: 2
+final-fail: 0
+
+== law_always_not
+# always !b: the same rows as not s_eventually b (law pair).
+property: always !b
+clause: 16.12.11 Annex F
+class: normative
+scope: attempt
+sample  : 0 1 2 3 4
+b       : . . 1 . .
+outcome : F F F p p
+decided : 2 2 2 . .
+fail    : . . 1 . .
+pending: 2
+final-fail: 0
+
+== law_s_eventually_as_a_strong_sequence
+# strong(1 ##[0:$] b): TRUE at the first occurrence of b at or after the start, pending
+# otherwise, strong. The same rows as s_eventually b, including final-fail 2.
+property: strong(1 ##[0:$] b)
+clause: 16.7 16.12.2 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4
+b       : . . 1 . .
+outcome : T T T p p
+decided : 2 2 2 . .
+pass    : . . 1 . .
+pending: 2
+final-fail: 2
+
+== law_s_eventually_from_one_as_a_strong_sequence
+# strong(1 ##[1:$] b) against s_eventually [1:$] b (trace of s_eventually_from_one).
+property: strong(1 ##[1:$] b)
+clause: 16.7 16.12.2 Annex F
+class: interpretation I8
+scope: attempt
+sample  : 0 1 2 3 4
+b       : 1 . . 1 .
+outcome : T T T p p
+decided : 3 3 3 . .
+pass    : . . . 1 .
+pending: 2
+final-fail: 2
+
+== s_eventually_first_offset_vacuous_excludes_later_ones
+# s_eventually (a |-> b), a = b = 0, one sample. Offset 0 is the implication's attempt: vacuously
+# TRUE at 0 (nonvacuity false). It decides the eventually (TRUE), and offset-ordered (9.2) it
+# excludes every later offset, so nonvacuity is known false at sample 0: outcome t, no pass.
+property: s_eventually (a |-> b)
+clause: 16.12.7 16.12.13 16.14.8 Annex F
+class: interpretation I5
+scope: attempt
+support: oracle
+signals: a b
+sample  : 0
+a       : .
+outcome : t
+decided : 0
+pending: 0
+final-fail: 0
+
+== always_of_a_vacuous_offset_stays_open
+# always (a |-> b), a = b = 0, one sample: offset 0 holds vacuously, later offsets may still fail
+# nonvacuously: pending, nonvacuity unknown (finalizes TRUE, weak).
+property: always (a |-> b)
+clause: 16.12.7 16.12.11 Annex F
+class: normative
+scope: attempt
+signals: a b
+sample  : 0
+a       : .
+outcome : p
+decided : .
+pending: 1
+final-fail: 0

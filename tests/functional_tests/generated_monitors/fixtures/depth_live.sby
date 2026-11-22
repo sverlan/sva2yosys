@@ -1,0 +1,15 @@
+[tasks]
+live
+
+[options]
+mode live
+
+[engines]
+aiger suprove
+
+[script]
+read_verilog -formal -sv -D SVA2YOSYS_LIVE monitor.sv
+prep -top mon
+
+[files]
+monitor.sv

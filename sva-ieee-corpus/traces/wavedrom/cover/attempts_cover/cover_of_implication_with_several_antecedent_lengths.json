@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp......"
+    },
+    {
+      "name": "a",
+      "wave": "1.0.1010"
+    },
+    {
+      "name": "b",
+      "wave": "01..0101"
+    },
+    {
+      "name": "c",
+      "wave": "01.0.101"
+    },
+    {
+      "name": "fail",
+      "wave": "0......."
+    },
+    {
+      "name": "pass",
+      "wave": "0.10..10"
+    }
+  ],
+  "head": {
+    "text": "attempts_cover/cover_of_implication_with_several_antecedent_lengths",
+    "tock": 0
+  }
+}

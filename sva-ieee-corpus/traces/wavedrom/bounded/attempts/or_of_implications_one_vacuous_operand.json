@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "a",
+      "wave": "0.1"
+    },
+    {
+      "name": "b",
+      "wave": "0.."
+    },
+    {
+      "name": "c",
+      "wave": "10."
+    },
+    {
+      "name": "d",
+      "wave": "0.."
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "101"
+    }
+  ],
+  "head": {
+    "text": "attempts/or_of_implications_one_vacuous_operand",
+    "tock": 0
+  }
+}

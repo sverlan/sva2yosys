@@ -1,0 +1,28 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "a",
+      "wave": "1.0.."
+    },
+    {
+      "name": "b",
+      "wave": "1.0.."
+    },
+    {
+      "name": "fail",
+      "wave": "0.10."
+    },
+    {
+      "name": "pass",
+      "wave": "010.."
+    }
+  ],
+  "head": {
+    "text": "repetition/p09_overlapping",
+    "tock": 0
+  }
+}

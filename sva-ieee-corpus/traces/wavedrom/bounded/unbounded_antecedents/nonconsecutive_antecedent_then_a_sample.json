@@ -1,0 +1,32 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp....."
+    },
+    {
+      "name": "b",
+      "wave": "1010.10"
+    },
+    {
+      "name": "c",
+      "wave": "0..101."
+    },
+    {
+      "name": "d",
+      "wave": "0..10.1"
+    },
+    {
+      "name": "fail",
+      "wave": "0....10"
+    },
+    {
+      "name": "pass",
+      "wave": "0..10.1"
+    }
+  ],
+  "head": {
+    "text": "unbounded_antecedents/nonconsecutive_antecedent_then_a_sample",
+    "tock": 0
+  }
+}

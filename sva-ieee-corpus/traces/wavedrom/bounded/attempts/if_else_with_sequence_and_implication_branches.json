@@ -1,0 +1,36 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp..."
+    },
+    {
+      "name": "e",
+      "wave": "1.0.."
+    },
+    {
+      "name": "a",
+      "wave": "101.."
+    },
+    {
+      "name": "c",
+      "wave": "101.0"
+    },
+    {
+      "name": "d",
+      "wave": "0.10."
+    },
+    {
+      "name": "fail",
+      "wave": "01010"
+    },
+    {
+      "name": "pass",
+      "wave": "1010."
+    }
+  ],
+  "head": {
+    "text": "attempts/if_else_with_sequence_and_implication_branches",
+    "tock": 0
+  }
+}

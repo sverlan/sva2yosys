@@ -1,0 +1,39 @@
+{
+  "signal": [
+    {
+      "name": "clk",
+      "wave": "lp."
+    },
+    {
+      "name": "b",
+      "wave": "1.."
+    },
+    {
+      "name": "c",
+      "wave": "0.1"
+    },
+    {
+      "name": "fail",
+      "wave": "0.."
+    },
+    {
+      "name": "pass",
+      "wave": "0.1"
+    },
+    {
+      "name": "repeat",
+      "wave": "1.."
+    },
+    {
+      "name": "outcome",
+      "wave": "=..",
+      "data": [
+        "T"
+      ]
+    }
+  ],
+  "head": {
+    "text": "strong_liveness/s_until_c_in_the_loop",
+    "tock": 0
+  }
+}
